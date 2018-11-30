@@ -28,6 +28,7 @@
 
 #include "rss_autodownloader.h"
 
+#include <QDataStream>
 #include <QDebug>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -37,10 +38,12 @@
 #include <QThread>
 #include <QTimer>
 #include <QVariant>
+#include <QVector>
 
 #include "../bittorrent/magneturi.h"
 #include "../bittorrent/session.h"
 #include "../asyncfilestorage.h"
+#include "../global.h"
 #include "../logger.h"
 #include "../profile.h"
 #include "../settingsstorage.h"
@@ -62,10 +65,43 @@ const QString ConfFolderName(QStringLiteral("rss"));
 const QString RulesFileName(QStringLiteral("download_rules.json"));
 
 const QString SettingsKey_ProcessingEnabled(QStringLiteral("RSS/AutoDownloader/EnableProcessing"));
+const QString SettingsKey_SmartEpisodeFilter(QStringLiteral("RSS/AutoDownloader/SmartEpisodeFilter"));
+const QString SettingsKey_DownloadRepacks(QStringLiteral("RSS/AutoDownloader/DownloadRepacks"));
+
+namespace
+{
+    QVector<RSS::AutoDownloadRule> rulesFromJSON(const QByteArray &jsonData)
+    {
+        QJsonParseError jsonError;
+        QJsonDocument jsonDoc = QJsonDocument::fromJson(jsonData, &jsonError);
+        if (jsonError.error != QJsonParseError::NoError)
+            throw RSS::ParsingError(jsonError.errorString());
+
+        if (!jsonDoc.isObject())
+            throw RSS::ParsingError(RSS::AutoDownloader::tr("Invalid data format."));
+
+        const QJsonObject jsonObj {jsonDoc.object()};
+        QVector<RSS::AutoDownloadRule> rules;
+        for (auto it = jsonObj.begin(); it != jsonObj.end(); ++it) {
+            const QJsonValue jsonVal {it.value()};
+            if (!jsonVal.isObject())
+                throw RSS::ParsingError(RSS::AutoDownloader::tr("Invalid data format."));
+
+            rules.append(RSS::AutoDownloadRule::fromJsonObject(jsonVal.toObject(), it.key()));
+        }
+
+        return rules;
+    }
+}
 
 using namespace RSS;
 
 QPointer<AutoDownloader> AutoDownloader::m_instance = nullptr;
+
+QString computeSmartFilterRegex(const QStringList &filters)
+{
+    return QString("(?:_|\\b)(?:%1)(?:_|\\b)").arg(filters.join(QString(")|(?:")));
+}
 
 AutoDownloader::AutoDownloader()
     : m_processingEnabled(SettingsStorage::instance()->loadValue(SettingsKey_ProcessingEnabled, false).toBool())
@@ -84,8 +120,8 @@ AutoDownloader::AutoDownloader()
     connect(m_ioThread, &QThread::finished, m_fileStorage, &AsyncFileStorage::deleteLater);
     connect(m_fileStorage, &AsyncFileStorage::failed, [](const QString &fileName, const QString &errorString)
     {
-        Logger::instance()->addMessage(QString("Couldn't save RSS AutoDownloader data in %1. Error: %2")
-                                       .arg(fileName).arg(errorString), Log::WARNING);
+        LogMsg(tr("Couldn't save RSS AutoDownloader data in %1. Error: %2")
+               .arg(fileName, errorString), Log::CRITICAL);
     });
 
     m_ioThread->start();
@@ -94,6 +130,13 @@ AutoDownloader::AutoDownloader()
             , this, &AutoDownloader::handleTorrentDownloadFinished);
     connect(BitTorrent::Session::instance(), &BitTorrent::Session::downloadFromUrlFailed
             , this, &AutoDownloader::handleTorrentDownloadFailed);
+
+    // initialise the smart episode regex
+    const QString regex = computeSmartFilterRegex(smartEpisodeFilters());
+    m_smartEpisodeRegex = QRegularExpression(regex,
+                                             QRegularExpression::CaseInsensitiveOption
+                                             | QRegularExpression::ExtendedPatternSyntaxOption
+                                             | QRegularExpression::UseUnicodePropertiesOption);
 
     load();
 
@@ -174,6 +217,110 @@ void AutoDownloader::removeRule(const QString &ruleName)
     }
 }
 
+QByteArray AutoDownloader::exportRules(AutoDownloader::RulesFileFormat format) const
+{
+    switch (format) {
+    case RulesFileFormat::Legacy:
+        return exportRulesToLegacyFormat();
+    default:
+        return exportRulesToJSONFormat();
+    }
+}
+
+void AutoDownloader::importRules(const QByteArray &data, AutoDownloader::RulesFileFormat format)
+{
+    switch (format) {
+    case RulesFileFormat::Legacy:
+        importRulesFromLegacyFormat(data);
+        break;
+    default:
+        importRulesFromJSONFormat(data);
+    }
+}
+
+QByteArray AutoDownloader::exportRulesToJSONFormat() const
+{
+    QJsonObject jsonObj;
+    for (const auto &rule : copyAsConst(rules()))
+        jsonObj.insert(rule.name(), rule.toJsonObject());
+
+    return QJsonDocument(jsonObj).toJson();
+}
+
+void AutoDownloader::importRulesFromJSONFormat(const QByteArray &data)
+{
+    for (const auto &rule : copyAsConst(rulesFromJSON(data)))
+        insertRule(rule);
+}
+
+QByteArray AutoDownloader::exportRulesToLegacyFormat() const
+{
+    QVariantHash dict;
+    for (const auto &rule : copyAsConst(rules()))
+        dict[rule.name()] = rule.toLegacyDict();
+
+    QByteArray data;
+    QDataStream out(&data, QIODevice::WriteOnly);
+    out.setVersion(QDataStream::Qt_4_5);
+    out << dict;
+
+    return data;
+}
+
+void AutoDownloader::importRulesFromLegacyFormat(const QByteArray &data)
+{
+    QDataStream in(data);
+    in.setVersion(QDataStream::Qt_4_5);
+    QVariantHash dict;
+    in >> dict;
+    if (in.status() != QDataStream::Ok)
+        throw ParsingError(tr("Invalid data format"));
+
+    for (const QVariant &val : qAsConst(dict))
+        insertRule(AutoDownloadRule::fromLegacyDict(val.toHash()));
+}
+
+QStringList AutoDownloader::smartEpisodeFilters() const
+{
+    const QVariant filtersSetting = SettingsStorage::instance()->loadValue(SettingsKey_SmartEpisodeFilter);
+
+    if (filtersSetting.isNull()) {
+        QStringList filters = {
+            "s(\\d+)e(\\d+)",                       // Format 1: s01e01
+            "(\\d+)x(\\d+)",                        // Format 2: 01x01
+            "(\\d{4}[.\\-]\\d{1,2}[.\\-]\\d{1,2})", // Format 3: 2017.01.01
+            "(\\d{1,2}[.\\-]\\d{1,2}[.\\-]\\d{4})"  // Format 4: 01.01.2017
+        };
+
+        return filters;
+    }
+
+    return filtersSetting.toStringList();
+}
+
+QRegularExpression AutoDownloader::smartEpisodeRegex() const
+{
+    return m_smartEpisodeRegex;
+}
+
+void AutoDownloader::setSmartEpisodeFilters(const QStringList &filters)
+{
+    SettingsStorage::instance()->storeValue(SettingsKey_SmartEpisodeFilter, filters);
+
+    const QString regex = computeSmartFilterRegex(filters);
+    m_smartEpisodeRegex.setPattern(regex);
+}
+
+bool AutoDownloader::downloadRepacks() const
+{
+    return SettingsStorage::instance()->loadValue(SettingsKey_DownloadRepacks, true).toBool();
+}
+
+void AutoDownloader::setDownloadRepacks(const bool downloadRepacks)
+{
+    SettingsStorage::instance()->storeValue(SettingsKey_DownloadRepacks, downloadRepacks);
+}
+
 void AutoDownloader::process()
 {
     if (m_processingQueue.isEmpty()) return; // processing was disabled
@@ -229,18 +376,8 @@ void AutoDownloader::processJob(const QSharedPointer<ProcessingJob> &job)
     for (AutoDownloadRule &rule: m_rules) {
         if (!rule.isEnabled()) continue;
         if (!rule.feedURLs().contains(job->feedURL)) continue;
-        if (!rule.matches(job->articleData.value(Article::KeyTitle).toString())) continue;
+        if (!rule.accepts(job->articleData)) continue;
 
-        auto articleDate = job->articleData.value(Article::KeyDate).toDateTime();
-        // if rule is in ignoring state do nothing with matched torrent
-        if (rule.ignoreDays() > 0) {
-            if (rule.lastMatch().isValid()) {
-                if (articleDate < rule.lastMatch().addDays(rule.ignoreDays()))
-                    return;
-            }
-        }
-
-        rule.setLastMatch(articleDate);
         m_dirty = true;
         storeDeferred();
 
@@ -248,6 +385,8 @@ void AutoDownloader::processJob(const QSharedPointer<ProcessingJob> &job)
         params.savePath = rule.savePath();
         params.category = rule.assignedCategory();
         params.addPaused = rule.addPaused();
+        if (!rule.savePath().isEmpty())
+            params.useAutoTMM = TriStateBool::False;
         auto torrentURL = job->articleData.value(Article::KeyTorrentURL).toString();
         BitTorrent::Session::instance()->addTorrent(torrentURL, params);
 
@@ -276,39 +415,20 @@ void AutoDownloader::load()
     else if (rulesFile.open(QFile::ReadOnly))
         loadRules(rulesFile.readAll());
     else
-        Logger::instance()->addMessage(
-                    QString("Couldn't read RSS AutoDownloader rules from %1. Error: %2")
-                    .arg(rulesFile.fileName()).arg(rulesFile.errorString()), Log::WARNING);
+        LogMsg(tr("Couldn't read RSS AutoDownloader rules from %1. Error: %2")
+               .arg(rulesFile.fileName(), rulesFile.errorString()), Log::CRITICAL);
 }
 
 void AutoDownloader::loadRules(const QByteArray &data)
 {
-    QJsonParseError jsonError;
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(data, &jsonError);
-    if (jsonError.error != QJsonParseError::NoError) {
-        Logger::instance()->addMessage(
-                    QString("Couldn't parse RSS AutoDownloader rules. Error: %1")
-                    .arg(jsonError.errorString()), Log::WARNING);
-        return;
+    try {
+        const auto rules = rulesFromJSON(data);
+        for (const auto &rule : rules)
+            setRule_impl(rule);
     }
-
-    if (!jsonDoc.isObject()) {
-        Logger::instance()->addMessage(
-                    QString("Couldn't load RSS AutoDownloader rules. Invalid data format."), Log::WARNING);
-        return;
-    }
-
-    QJsonObject jsonObj = jsonDoc.object();
-    foreach (const QString &key, jsonObj.keys()) {
-        const QJsonValue jsonVal = jsonObj.value(key);
-        if (!jsonVal.isObject()) {
-            Logger::instance()->addMessage(
-                        QString("Couldn't load RSS AutoDownloader rule '%1'. Invalid data format.")
-                        .arg(key), Log::WARNING);
-            continue;
-        }
-
-        setRule_impl(AutoDownloadRule::fromJsonObject(jsonVal.toObject(), key));
+    catch (const ParsingError &error) {
+        LogMsg(tr("Couldn't load RSS AutoDownloader rules. Reason: %1")
+               .arg(error.message()), Log::CRITICAL);
     }
 }
 
@@ -317,7 +437,7 @@ void AutoDownloader::loadRulesLegacy()
     SettingsPtr settings = Profile::instance().applicationSettings(QStringLiteral("qBittorrent-rss"));
     QVariantHash rules = settings->value(QStringLiteral("download_rules")).toHash();
     foreach (const QVariant &ruleVar, rules) {
-        auto rule = AutoDownloadRule::fromVariantHash(ruleVar.toHash());
+        auto rule = AutoDownloadRule::fromLegacyDict(ruleVar.toHash());
         if (!rule.name().isEmpty())
             insertRule(rule);
     }
@@ -351,6 +471,8 @@ bool AutoDownloader::isProcessingEnabled() const
 void AutoDownloader::resetProcessingQueue()
 {
     m_processingQueue.clear();
+    if (!m_processingEnabled) return;
+
     foreach (Article *article, Session::instance()->rootFolder()->articles()) {
         if (!article->isRead() && !article->torrentUrl().isEmpty())
             addJobForArticle(article);
@@ -384,4 +506,14 @@ void AutoDownloader::timerEvent(QTimerEvent *event)
 {
     Q_UNUSED(event);
     store();
+}
+
+ParsingError::ParsingError(const QString &message)
+    : std::runtime_error(message.toUtf8().data())
+{
+}
+
+QString ParsingError::message() const
+{
+    return what();
 }

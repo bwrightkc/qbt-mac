@@ -55,6 +55,7 @@ public:
         DHT_DOWN,
         TRACKER_UP,
         TRACKER_DOWN,
+
         NB_GRAPHS
     };
 
@@ -68,8 +69,8 @@ public:
 
     struct PointData
     {
-        uint x;
-        int y[NB_GRAPHS];
+        qint64 x;
+        quint64 y[NB_GRAPHS];
     };
 
     explicit SpeedPlotView(QWidget *parent = nullptr);
@@ -77,27 +78,26 @@ public:
     void setGraphEnable(GraphID id, bool enable);
     void setViewableLastPoints(TimePeriod period);
 
-    void pushPoint(PointData point);
+    void pushPoint(const PointData &point);
 
     void replot();
 
 protected:
-    virtual void paintEvent(QPaintEvent *event);
+    void paintEvent(QPaintEvent *event) override;
 
 private:
-    enum PeriodInSeconds
+    class Averager
     {
-        MIN1_SEC = 60,
-        MIN5_SEC = 5 * 60,
-        MIN30_SEC = 30 * 60,
-        HOUR6_SEC = 6 * 60 * 60
-    };
+    public:
+        Averager(int divider, boost::circular_buffer<PointData> &sink);
+        void push(const PointData &pointData);
+        bool isReady() const;
 
-    enum PointsToSave
-    {
-        MIN5_BUF_SIZE = 5 * 60,
-        MIN30_BUF_SIZE = 10 * 60,
-        HOUR6_BUF_SIZE = 20 * 60
+    private:
+        const int m_divider;
+        boost::circular_buffer<PointData> &m_sink;
+        int m_counter;
+        PointData m_accumulator;
     };
 
     struct GraphProperties
@@ -110,20 +110,19 @@ private:
         bool enable;
     };
 
+    quint64 maxYValue();
+    boost::circular_buffer<PointData> &getCurrentData();
+
     boost::circular_buffer<PointData> m_data5Min;
     boost::circular_buffer<PointData> m_data30Min;
     boost::circular_buffer<PointData> m_data6Hour;
+    Averager m_averager30Min;
+    Averager m_averager6Hour;
+
     QMap<GraphID, GraphProperties> m_properties;
 
     TimePeriod m_period;
     int m_viewablePointsCount;
-
-    int m_counter30Min;
-    int m_counter6Hour;
-
-    int maxYValue();
-
-    boost::circular_buffer<PointData> &getCurrentData();
 };
 
 #endif // SPEEDPLOTVIEW_H

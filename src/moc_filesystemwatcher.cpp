@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'filesystemwatcher.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'filesystemwatcher.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -37,13 +37,13 @@ QT_MOC_LITERAL(2, 32, 0), // ""
 QT_MOC_LITERAL(3, 33, 8), // "pathList"
 QT_MOC_LITERAL(4, 42, 15), // "scanLocalFolder"
 QT_MOC_LITERAL(5, 58, 4), // "path"
-QT_MOC_LITERAL(6, 63, 18), // "scanNetworkFolders"
-QT_MOC_LITERAL(7, 82, 22) // "processPartialTorrents"
+QT_MOC_LITERAL(6, 63, 22), // "processPartialTorrents"
+QT_MOC_LITERAL(7, 86, 18) // "scanNetworkFolders"
 
     },
     "FileSystemWatcher\0torrentsAdded\0\0"
     "pathList\0scanLocalFolder\0path\0"
-    "scanNetworkFolders\0processPartialTorrents"
+    "processPartialTorrents\0scanNetworkFolders"
 };
 #undef QT_MOC_LITERAL
 
@@ -86,17 +86,16 @@ void FileSystemWatcher::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->torrentsAdded((*reinterpret_cast< const QStringList(*)>(_a[1]))); break;
-        case 1: _t->scanLocalFolder((*reinterpret_cast< QString(*)>(_a[1]))); break;
-        case 2: _t->scanNetworkFolders(); break;
-        case 3: _t->processPartialTorrents(); break;
+        case 1: _t->scanLocalFolder((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 2: _t->processPartialTorrents(); break;
+        case 3: _t->scanNetworkFolders(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (FileSystemWatcher::*_t)(const QStringList & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&FileSystemWatcher::torrentsAdded)) {
+            using _t = void (FileSystemWatcher::*)(const QStringList & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&FileSystemWatcher::torrentsAdded)) {
                 *result = 0;
                 return;
             }
@@ -104,7 +103,7 @@ void FileSystemWatcher::qt_static_metacall(QObject *_o, QMetaObject::Call _c, in
     }
 }
 
-const QMetaObject FileSystemWatcher::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject FileSystemWatcher::staticMetaObject = {
     { &QFileSystemWatcher::staticMetaObject, qt_meta_stringdata_FileSystemWatcher.data,
       qt_meta_data_FileSystemWatcher,  qt_static_metacall, nullptr, nullptr}
 };

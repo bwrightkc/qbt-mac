@@ -30,7 +30,6 @@
 #define TAGFILTERMODEL_H
 
 #include <QAbstractListModel>
-#include <QHash>
 #include <QModelIndex>
 #include <QSet>
 #include <QVector>
@@ -42,13 +41,13 @@ namespace BitTorrent
 
 class TagModelItem;
 
-class TagFilterModel: public QAbstractListModel
+class TagFilterModel : public QAbstractListModel
 {
     Q_OBJECT
 
 public:
     explicit TagFilterModel(QObject *parent = nullptr);
-    ~TagFilterModel();
+    ~TagFilterModel() override;
 
     static bool isSpecialItem(const QModelIndex &index);
 

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'statsdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,14 +10,11 @@
 #define UI_STATSDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QVBoxLayout>
@@ -30,16 +27,16 @@ public:
     QVBoxLayout *verticalLayout;
     QGroupBox *groupUser;
     QGridLayout *gridLayout_2;
+    QLabel *labelWaste;
     QLabel *labelPeersText;
     QLabel *labelGlobalRatioText;
     QLabel *labelPeers;
     QLabel *labelAlltimeDLText;
-    QLabel *labelAlltimeUL;
     QLabel *labelAlltimeDL;
-    QLabel *labelAlltimeULText;
     QLabel *labelGlobalRatio;
     QLabel *labelWasteText;
-    QLabel *labelWaste;
+    QLabel *labelAlltimeULText;
+    QLabel *labelAlltimeUL;
     QGroupBox *groupCache;
     QGridLayout *gridLayout;
     QLabel *labelCacheHitsText;
@@ -72,60 +69,60 @@ public:
         groupUser->setObjectName(QStringLiteral("groupUser"));
         gridLayout_2 = new QGridLayout(groupUser);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        labelWaste = new QLabel(groupUser);
+        labelWaste->setObjectName(QStringLiteral("labelWaste"));
+        labelWaste->setText(QStringLiteral("TextLabel"));
+
+        gridLayout_2->addWidget(labelWaste, 3, 1, 1, 1, Qt::AlignRight);
+
         labelPeersText = new QLabel(groupUser);
         labelPeersText->setObjectName(QStringLiteral("labelPeersText"));
 
-        gridLayout_2->addWidget(labelPeersText, 11, 0, 1, 1);
+        gridLayout_2->addWidget(labelPeersText, 4, 0, 1, 1);
 
         labelGlobalRatioText = new QLabel(groupUser);
         labelGlobalRatioText->setObjectName(QStringLiteral("labelGlobalRatioText"));
 
-        gridLayout_2->addWidget(labelGlobalRatioText, 3, 0, 1, 1);
+        gridLayout_2->addWidget(labelGlobalRatioText, 2, 0, 1, 1);
 
         labelPeers = new QLabel(groupUser);
         labelPeers->setObjectName(QStringLiteral("labelPeers"));
         labelPeers->setText(QStringLiteral("TextLabel"));
 
-        gridLayout_2->addWidget(labelPeers, 11, 1, 1, 1, Qt::AlignRight);
+        gridLayout_2->addWidget(labelPeers, 4, 1, 1, 1, Qt::AlignRight);
 
         labelAlltimeDLText = new QLabel(groupUser);
         labelAlltimeDLText->setObjectName(QStringLiteral("labelAlltimeDLText"));
 
-        gridLayout_2->addWidget(labelAlltimeDLText, 0, 0, 1, 1);
-
-        labelAlltimeUL = new QLabel(groupUser);
-        labelAlltimeUL->setObjectName(QStringLiteral("labelAlltimeUL"));
-        labelAlltimeUL->setText(QStringLiteral("TextLabel"));
-
-        gridLayout_2->addWidget(labelAlltimeUL, 1, 1, 1, 1, Qt::AlignRight);
+        gridLayout_2->addWidget(labelAlltimeDLText, 1, 0, 1, 1);
 
         labelAlltimeDL = new QLabel(groupUser);
         labelAlltimeDL->setObjectName(QStringLiteral("labelAlltimeDL"));
         labelAlltimeDL->setText(QStringLiteral("TextLabel"));
 
-        gridLayout_2->addWidget(labelAlltimeDL, 0, 1, 1, 1, Qt::AlignRight);
-
-        labelAlltimeULText = new QLabel(groupUser);
-        labelAlltimeULText->setObjectName(QStringLiteral("labelAlltimeULText"));
-
-        gridLayout_2->addWidget(labelAlltimeULText, 1, 0, 1, 1);
+        gridLayout_2->addWidget(labelAlltimeDL, 1, 1, 1, 1, Qt::AlignRight);
 
         labelGlobalRatio = new QLabel(groupUser);
         labelGlobalRatio->setObjectName(QStringLiteral("labelGlobalRatio"));
         labelGlobalRatio->setText(QStringLiteral("TextLabel"));
 
-        gridLayout_2->addWidget(labelGlobalRatio, 3, 1, 1, 1, Qt::AlignRight);
+        gridLayout_2->addWidget(labelGlobalRatio, 2, 1, 1, 1, Qt::AlignRight);
 
         labelWasteText = new QLabel(groupUser);
         labelWasteText->setObjectName(QStringLiteral("labelWasteText"));
 
-        gridLayout_2->addWidget(labelWasteText, 2, 0, 1, 1);
+        gridLayout_2->addWidget(labelWasteText, 3, 0, 1, 1);
 
-        labelWaste = new QLabel(groupUser);
-        labelWaste->setObjectName(QStringLiteral("labelWaste"));
-        labelWaste->setText(QStringLiteral("TextLabel"));
+        labelAlltimeULText = new QLabel(groupUser);
+        labelAlltimeULText->setObjectName(QStringLiteral("labelAlltimeULText"));
 
-        gridLayout_2->addWidget(labelWaste, 2, 1, 1, 1, Qt::AlignRight);
+        gridLayout_2->addWidget(labelAlltimeULText, 0, 0, 1, 1);
+
+        labelAlltimeUL = new QLabel(groupUser);
+        labelAlltimeUL->setObjectName(QStringLiteral("labelAlltimeUL"));
+        labelAlltimeUL->setText(QStringLiteral("TextLabel"));
+
+        gridLayout_2->addWidget(labelAlltimeUL, 0, 1, 1, 1, Qt::AlignRight);
 
 
         verticalLayout->addWidget(groupUser);
@@ -137,24 +134,24 @@ public:
         labelCacheHitsText = new QLabel(groupCache);
         labelCacheHitsText->setObjectName(QStringLiteral("labelCacheHitsText"));
 
-        gridLayout->addWidget(labelCacheHitsText, 1, 0, 1, 1);
+        gridLayout->addWidget(labelCacheHitsText, 0, 0, 1, 1);
 
         labelCacheHits = new QLabel(groupCache);
         labelCacheHits->setObjectName(QStringLiteral("labelCacheHits"));
         labelCacheHits->setText(QStringLiteral("TextLabel"));
 
-        gridLayout->addWidget(labelCacheHits, 1, 1, 1, 1, Qt::AlignRight);
+        gridLayout->addWidget(labelCacheHits, 0, 1, 1, 1, Qt::AlignRight);
 
         labelTotalBuf = new QLabel(groupCache);
         labelTotalBuf->setObjectName(QStringLiteral("labelTotalBuf"));
         labelTotalBuf->setText(QStringLiteral("TextLabel"));
 
-        gridLayout->addWidget(labelTotalBuf, 2, 1, 1, 1, Qt::AlignRight);
+        gridLayout->addWidget(labelTotalBuf, 1, 1, 1, 1, Qt::AlignRight);
 
         labelTotalBufText = new QLabel(groupCache);
         labelTotalBufText->setObjectName(QStringLiteral("labelTotalBufText"));
 
-        gridLayout->addWidget(labelTotalBufText, 2, 0, 1, 1);
+        gridLayout->addWidget(labelTotalBufText, 1, 0, 1, 1);
 
 
         verticalLayout->addWidget(groupCache);
@@ -239,22 +236,22 @@ public:
 
     void retranslateUi(QDialog *StatsDialog)
     {
-        StatsDialog->setWindowTitle(QApplication::translate("StatsDialog", "Statistics", Q_NULLPTR));
-        groupUser->setTitle(QApplication::translate("StatsDialog", "User statistics", Q_NULLPTR));
-        labelPeersText->setText(QApplication::translate("StatsDialog", "Total peer connections:", Q_NULLPTR));
-        labelGlobalRatioText->setText(QApplication::translate("StatsDialog", "Global ratio:", Q_NULLPTR));
-        labelAlltimeDLText->setText(QApplication::translate("StatsDialog", "Alltime download:", Q_NULLPTR));
-        labelAlltimeULText->setText(QApplication::translate("StatsDialog", "Alltime upload:", Q_NULLPTR));
-        labelWasteText->setText(QApplication::translate("StatsDialog", "Total waste (this session):", Q_NULLPTR));
-        groupCache->setTitle(QApplication::translate("StatsDialog", "Cache statistics", Q_NULLPTR));
-        labelCacheHitsText->setText(QApplication::translate("StatsDialog", "Read cache hits:", Q_NULLPTR));
-        labelTotalBufText->setText(QApplication::translate("StatsDialog", "Total buffers size:", Q_NULLPTR));
-        groupPerf->setTitle(QApplication::translate("StatsDialog", "Performance statistics", Q_NULLPTR));
-        labelQueuedJobsText->setText(QApplication::translate("StatsDialog", "Queued I/O jobs:", Q_NULLPTR));
-        labelWriteStarveText->setText(QApplication::translate("StatsDialog", "Write cache overload:", Q_NULLPTR));
-        labelJobsTimeText->setText(QApplication::translate("StatsDialog", "Average time in queue:", Q_NULLPTR));
-        labelReadStarveText->setText(QApplication::translate("StatsDialog", "Read cache overload:", Q_NULLPTR));
-        labelQueuedBytesText->setText(QApplication::translate("StatsDialog", "Total queued size:", Q_NULLPTR));
+        StatsDialog->setWindowTitle(QApplication::translate("StatsDialog", "Statistics", nullptr));
+        groupUser->setTitle(QApplication::translate("StatsDialog", "User statistics", nullptr));
+        labelPeersText->setText(QApplication::translate("StatsDialog", "Connected peers:", nullptr));
+        labelGlobalRatioText->setText(QApplication::translate("StatsDialog", "All-time share ratio:", nullptr));
+        labelAlltimeDLText->setText(QApplication::translate("StatsDialog", "All-time download:", nullptr));
+        labelWasteText->setText(QApplication::translate("StatsDialog", "Session waste:", nullptr));
+        labelAlltimeULText->setText(QApplication::translate("StatsDialog", "All-time upload:", nullptr));
+        groupCache->setTitle(QApplication::translate("StatsDialog", "Cache statistics", nullptr));
+        labelCacheHitsText->setText(QApplication::translate("StatsDialog", "Read cache hits:", nullptr));
+        labelTotalBufText->setText(QApplication::translate("StatsDialog", "Total buffer size:", nullptr));
+        groupPerf->setTitle(QApplication::translate("StatsDialog", "Performance statistics", nullptr));
+        labelQueuedJobsText->setText(QApplication::translate("StatsDialog", "Queued I/O jobs:", nullptr));
+        labelWriteStarveText->setText(QApplication::translate("StatsDialog", "Write cache overload:", nullptr));
+        labelJobsTimeText->setText(QApplication::translate("StatsDialog", "Average time in queue:", nullptr));
+        labelReadStarveText->setText(QApplication::translate("StatsDialog", "Read cache overload:", nullptr));
+        labelQueuedBytesText->setText(QApplication::translate("StatsDialog", "Total queued size:", nullptr));
     } // retranslateUi
 
 };

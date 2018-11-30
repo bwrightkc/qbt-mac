@@ -28,15 +28,15 @@
 
 #include "ipsubnetwhitelistoptionsdialog.h"
 
-#include <QHostAddress>
 #include <QMessageBox>
-#include <QPair>
 #include <QSortFilterProxyModel>
 #include <QStringListModel>
 
+#include "base/global.h"
 #include "base/preferences.h"
 #include "base/utils/net.h"
 #include "ui_ipsubnetwhitelistoptionsdialog.h"
+#include "utils.h"
 
 IPSubnetWhitelistOptionsDialog::IPSubnetWhitelistOptionsDialog(QWidget *parent)
     : QDialog(parent)
@@ -46,7 +46,7 @@ IPSubnetWhitelistOptionsDialog::IPSubnetWhitelistOptionsDialog(QWidget *parent)
     m_ui->setupUi(this);
 
     QStringList authSubnetWhitelistStringList;
-    for (const Utils::Net::Subnet &subnet : Preferences::instance()->getWebUiAuthSubnetWhitelist())
+    for (const Utils::Net::Subnet &subnet : copyAsConst(Preferences::instance()->getWebUiAuthSubnetWhitelist()))
         authSubnetWhitelistStringList << Utils::Net::subnetToString(subnet);
     m_model = new QStringListModel(authSubnetWhitelistStringList, this);
 
@@ -57,6 +57,8 @@ IPSubnetWhitelistOptionsDialog::IPSubnetWhitelistOptionsDialog(QWidget *parent)
     m_ui->whitelistedIPSubnetList->setModel(m_sortFilter);
     m_ui->whitelistedIPSubnetList->sortByColumn(0, Qt::AscendingOrder);
     m_ui->buttonWhitelistIPSubnet->setEnabled(false);
+
+    Utils::Gui::resize(this);
 }
 
 IPSubnetWhitelistOptionsDialog::~IPSubnetWhitelistOptionsDialog()
@@ -68,12 +70,10 @@ void IPSubnetWhitelistOptionsDialog::on_buttonBox_accepted()
 {
     if (m_modified) {
         // save to session
-        QList<Utils::Net::Subnet> subnets;
+        QStringList subnets;
         // Operate on the m_sortFilter to grab the strings in sorted order
-        for (int i = 0; i < m_sortFilter->rowCount(); ++i) {
-            const QString subnet = m_sortFilter->index(i, 0).data().toString();
-            subnets.append(QHostAddress::parseSubnet(subnet));
-        }
+        for (int i = 0; i < m_sortFilter->rowCount(); ++i)
+            subnets.append(m_sortFilter->index(i, 0).data().toString());
         Preferences::instance()->setWebUiAuthSubnetWhitelist(subnets);
         QDialog::accept();
     }
@@ -99,7 +99,7 @@ void IPSubnetWhitelistOptionsDialog::on_buttonWhitelistIPSubnet_clicked()
 
 void IPSubnetWhitelistOptionsDialog::on_buttonDeleteIPSubnet_clicked()
 {
-    for (const auto &i : m_ui->whitelistedIPSubnetList->selectionModel()->selectedIndexes())
+    for (const auto &i : copyAsConst(m_ui->whitelistedIPSubnetList->selectionModel()->selectedIndexes()))
         m_sortFilter->removeRow(i.row());
 
     m_modified = true;

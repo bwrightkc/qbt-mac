@@ -26,9 +26,11 @@
  * exception statement from your version.
  */
 
- #include <QTreeView>
+#pragma once
 
-class CategoryFilterWidget: public QTreeView
+#include <QTreeView>
+
+class CategoryFilterWidget : public QTreeView
 {
     Q_OBJECT
     Q_DISABLE_COPY(CategoryFilterWidget)

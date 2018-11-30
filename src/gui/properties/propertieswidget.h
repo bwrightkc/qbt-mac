@@ -1,6 +1,6 @@
 /*
- * Bittorrent Client using Qt4 and libtorrent.
- * Copyright (C) 2006  Christophe Dumez
+ * Bittorrent Client using Qt and libtorrent.
+ * Copyright (C) 2006  Christophe Dumez <chris@qbittorrent.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -24,8 +24,6 @@
  * modify file(s), you may extend this exception to your version of the file(s),
  * but you are not obligated to do so. If you do not wish to do so, delete this
  * exception statement from your version.
- *
- * Contact : chris@qbittorrent.org
  */
 
 #ifndef PROPERTIESWIDGET_H
@@ -36,32 +34,30 @@
 
 #include "base/bittorrent/torrenthandle.h"
 
-class TransferListWidget;
-class TorrentContentFilterModel;
-class PropListDelegate;
-class torrent_file;
-class PeerListWidget;
-class TrackerList;
-class SpeedWidget;
-class MainWindow;
-class DownloadedPiecesBar;
-class PieceAvailabilityBar;
-class PropTabBar;
-class LineEdit;
-
-QT_BEGIN_NAMESPACE
 class QAction;
 class QPushButton;
 class QTimer;
 class QTreeView;
-QT_END_NAMESPACE
+
+class DownloadedPiecesBar;
+class LineEdit;
+class MainWindow;
+class PeerListWidget;
+class PieceAvailabilityBar;
+class PropListDelegate;
+class PropTabBar;
+class SpeedWidget;
+class torrent_file;
+class TorrentContentFilterModel;
+class TrackerListWidget;
+class TransferListWidget;
 
 namespace Ui
 {
     class PropertiesWidget;
 }
 
-class PropertiesWidget: public QWidget
+class PropertiesWidget : public QWidget
 {
     Q_OBJECT
     Q_DISABLE_COPY(PropertiesWidget)
@@ -73,13 +69,12 @@ public:
         VISIBLE
     };
 
-    PropertiesWidget(QWidget *parent, MainWindow *main_window, TransferListWidget *transferList);
+    PropertiesWidget(QWidget *parent, MainWindow *mainWindow, TransferListWidget *transferList);
     ~PropertiesWidget();
     BitTorrent::TorrentHandle *getCurrentTorrent() const;
-    TrackerList *getTrackerList() const { return trackerList; }
-    PeerListWidget *getPeerList() const { return peersList; }
+    TrackerListWidget *getTrackerList() const;
+    PeerListWidget *getPeerList() const;
     QTreeView *getFilesList() const;
-    SpeedWidget *getSpeedWidget() const { return speedWidget; }
 
 public slots:
     void setVisibility(bool visible);
@@ -93,7 +88,7 @@ public slots:
 
 protected:
     QPushButton *getButtonFromIndex(int index);
-    bool applyPriorities();
+    void applyPriorities();
 
 protected slots:
     void loadTorrentInfos(BitTorrent::TorrentHandle *const torrent);
@@ -111,34 +106,35 @@ protected slots:
     void renameSelectedFile();
     void openSelectedFile();
 
-private:
-    void openFile(const QModelIndex &index);
-    void openFolder(const QModelIndex &index, bool containing_folder);
-
-    Ui::PropertiesWidget *m_ui;
-    TransferListWidget *transferList;
-    MainWindow *main_window;
-    BitTorrent::TorrentHandle *m_torrent;
-    QTimer *refreshTimer;
-    SlideState state;
-    TorrentContentFilterModel *PropListModel;
-    PropListDelegate *PropDelegate;
-    PeerListWidget *peersList;
-    TrackerList *trackerList;
-    SpeedWidget *speedWidget;
-    QList<int> slideSizes;
-    DownloadedPiecesBar *downloaded_pieces;
-    PieceAvailabilityBar *pieces_availability;
-    PropTabBar *m_tabBar;
-    LineEdit *m_contentFilterLine;
-    QShortcut *editHotkeyFile;
-    QShortcut *editHotkeyWeb;
-    QShortcut *deleteHotkeyWeb;
-    QShortcut *openHotkeyFile;
-
 private slots:
+    void configure();
     void filterText(const QString &filter);
     void updateSavePath(BitTorrent::TorrentHandle *const torrent);
+
+private:
+    void openFile(const QModelIndex &index);
+    void openFolder(const QModelIndex &index, bool containingFolder);
+
+    Ui::PropertiesWidget *m_ui;
+    TransferListWidget *m_transferList;
+    MainWindow *m_mainWindow;
+    BitTorrent::TorrentHandle *m_torrent;
+    QTimer *m_refreshTimer;
+    SlideState m_state;
+    TorrentContentFilterModel *m_propListModel;
+    PropListDelegate *m_propListDelegate;
+    PeerListWidget *m_peerList;
+    TrackerListWidget *m_trackerList;
+    QWidget *m_speedWidget = nullptr;
+    QList<int> m_slideSizes;
+    DownloadedPiecesBar *m_downloadedPieces;
+    PieceAvailabilityBar *m_piecesAvailability;
+    PropTabBar *m_tabBar;
+    LineEdit *m_contentFilterLine;
+    QShortcut *m_editHotkeyFile;
+    QShortcut *m_editHotkeyWeb;
+    QShortcut *m_deleteHotkeyWeb;
+    QShortcut *m_openHotkeyFile;
 };
 
 #endif // PROPERTIESWIDGET_H

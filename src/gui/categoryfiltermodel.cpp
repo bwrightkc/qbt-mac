@@ -31,8 +31,8 @@
 #include <QHash>
 #include <QIcon>
 
-#include "base/bittorrent/torrenthandle.h"
 #include "base/bittorrent/session.h"
+#include "base/bittorrent/torrenthandle.h"
 #include "guiiconprovider.h"
 
 class CategoryModelItem
@@ -74,7 +74,7 @@ public:
         if (!m_parent || m_parent->name().isEmpty())
             return m_name;
 
-        return QString("%1/%2").arg(m_parent->fullName()).arg(m_name);
+        return QString("%1/%2").arg(m_parent->fullName(), m_name);
     }
 
     CategoryModelItem *parent() const
@@ -174,17 +174,15 @@ CategoryFilterModel::CategoryFilterModel(QObject *parent)
     : QAbstractItemModel(parent)
     , m_rootItem(new CategoryModelItem)
 {
-    auto session = BitTorrent::Session::instance();
+    using namespace BitTorrent;
+    auto session = Session::instance();
 
-    connect(session, SIGNAL(categoryAdded(QString)), SLOT(categoryAdded(QString)));
-    connect(session, SIGNAL(categoryRemoved(QString)), SLOT(categoryRemoved(QString)));
-    connect(session, SIGNAL(torrentCategoryChanged(BitTorrent::TorrentHandle *const, QString))
-            , SLOT(torrentCategoryChanged(BitTorrent::TorrentHandle *const, QString)));
-    connect(session, SIGNAL(subcategoriesSupportChanged()), SLOT(subcategoriesSupportChanged()));
-    connect(session, SIGNAL(torrentAdded(BitTorrent::TorrentHandle *const))
-            , SLOT(torrentAdded(BitTorrent::TorrentHandle *const)));
-    connect(session, SIGNAL(torrentAboutToBeRemoved(BitTorrent::TorrentHandle *const))
-            , SLOT(torrentAboutToBeRemoved(BitTorrent::TorrentHandle *const)));
+    connect(session, &Session::categoryAdded, this, &CategoryFilterModel::categoryAdded);
+    connect(session, &Session::categoryRemoved, this, &CategoryFilterModel::categoryRemoved);
+    connect(session, &Session::torrentCategoryChanged, this, &CategoryFilterModel::torrentCategoryChanged);
+    connect(session, &Session::subcategoriesSupportChanged, this, &CategoryFilterModel::subcategoriesSupportChanged);
+    connect(session, &Session::torrentAdded, this, &CategoryFilterModel::torrentAdded);
+    connect(session, &Session::torrentAboutToBeRemoved, this, &CategoryFilterModel::torrentAboutToBeRemoved);
 
     populate();
 }
@@ -230,7 +228,7 @@ QVariant CategoryFilterModel::data(const QModelIndex &index, int role) const
 
 Qt::ItemFlags CategoryFilterModel::flags(const QModelIndex &index) const
 {
-    if (!index.isValid()) return 0;
+    if (!index.isValid()) return Qt::NoItemFlags;
 
     return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
@@ -405,7 +403,8 @@ void CategoryFilterModel::populate()
                                     , [](Torrent *torrent) { return torrent->category().isEmpty(); })));
 
     using Torrent = BitTorrent::TorrentHandle;
-    foreach (const QString &category, session->categories().keys()) {
+    for (auto i = session->categories().cbegin(); i != session->categories().cend(); ++i) {
+        const QString &category = i.key();
         if (m_isSubcategoriesEnabled) {
             CategoryModelItem *parent = m_rootItem;
             foreach (const QString &subcat, session->expandCategory(category)) {

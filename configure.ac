@@ -1,4 +1,4 @@
-AC_INIT([qbittorrent], [v3.2.0alpha], [bugs.qbittorrent.org], [], [http://www.qbittorrent.org/])
+AC_INIT([qbittorrent], [v4.1.4], [bugs.qbittorrent.org], [], [https://www.qbittorrent.org/])
 AC_CONFIG_AUX_DIR([build-aux])
 AC_CONFIG_MACRO_DIR([m4])
 AC_PROG_CC
@@ -23,6 +23,12 @@ AC_ARG_ENABLE(debug,
                               [Enable debug build])],
               [],
               [enable_debug=no])
+
+AC_ARG_ENABLE(stacktrace,
+              [AS_HELP_STRING([--enable-stacktrace],
+                              [Enable stacktrace feature (default=auto)])],
+              [],
+              [enable_stacktrace=auto])
 
 AC_ARG_ENABLE(gui,
               [AS_HELP_STRING([--disable-gui],
@@ -79,6 +85,23 @@ AS_CASE(["x$enable_debug"],
                QBT_REMOVE_CONFIG="$QBT_REMOVE_CONFIG release"],
         [AC_MSG_RESULT([$enable_debug])
         AC_MSG_ERROR([Unknown option "$enable_debug". Use either "yes" or "no".])])
+
+AC_MSG_CHECKING([whether to enable the stacktrace feature])
+AS_CASE(["x$enable_stacktrace"],
+        ["xno"],
+              [AC_MSG_RESULT([no])
+              QBT_REMOVE_CONFIG="$QBT_REMOVE_CONFIG stacktrace"],
+        ["xyes"],
+               [AC_MSG_RESULT([yes])
+               QBT_ADD_CONFIG="$QBT_ADD_CONFIG stacktrace"],
+        ["xauto"],
+                [AC_COMPILE_IFELSE([AC_LANG_SOURCE([[#include <execinfo.h>]])],
+                [AC_MSG_RESULT([yes])
+                QBT_ADD_CONFIG="$QBT_ADD_CONFIG stacktrace"],
+                [AC_MSG_RESULT([no])
+                QBT_REMOVE_CONFIG="$QBT_REMOVE_CONFIG stacktrace"])],
+        [AC_MSG_RESULT([$enable_stacktrace])
+        AC_MSG_ERROR([Unknown option "$enable_stacktrace". Use either "yes" or "no".])])
 
 AC_MSG_CHECKING([whether to enable the GUI])
 AS_CASE(["x$enable_gui"],
@@ -145,6 +168,17 @@ AX_BOOST_BASE([1.35],
 CPPFLAGS="$BOOST_CPPFLAGS $CPPFLAGS"
 LDFLAGS="$BOOST_LDFLAGS $LDFLAGS"
 
+# add workaround for problematic boost version
+AC_LANG_PUSH(C++)
+# taken from ax_boost_base.m4
+m4_define([DETECT_BOOST_VERSION_PROGRAM],
+    [AC_LANG_PROGRAM([[#include <boost/version.hpp>]],
+                     [[(void) ((void)sizeof(char[1 - 2*!!((BOOST_VERSION) < ($1))]));]])])
+
+AC_COMPILE_IFELSE([DETECT_BOOST_VERSION_PROGRAM(106000)], [],
+    [QBT_ADD_DEFINES="$QBT_ADD_DEFINES BOOST_NO_CXX11_RVALUE_REFERENCES"])
+AC_LANG_POP([C++])
+
 AX_BOOST_SYSTEM()
 AC_MSG_NOTICE([Boost.System LIB: "$BOOST_SYSTEM_LIB"])
 LIBS="$BOOST_SYSTEM_LIB $LIBS"
@@ -190,7 +224,7 @@ extract() {
   new_line='
 '
   # Convert " -" to "\n" if not between quotes and remove possible leading white spaces
-  string=$(echo " $*" | $SED -e "s: -:\\${new_line}:g" -e 's:"\(.*\)\n\(.*\)":\"\1 -\2":g' -e "s:'\(.*\)\n\(.*\)':\'\1 -\2':g" -e 's/^[[:space:]]*//')
+  string=$(echo " $*" | $SED -e "s: -:\\${new_line}:g" -e 's:"\(.*\)\n\(.*\)":\"\1 -\2":g' -e "s:'\(.*\)\n\(.*\)':\'\1 -\2':g" -e 's/^[[[:space:]]]*//')
   SAVEIFS=$IFS
   IFS=$(printf "\n\b")
   for i in $string; do
@@ -204,9 +238,8 @@ extract() {
   IFS=$SAVEIFS
 }
 
-extract $CPPFLAGS
+extract "$CFLAGS $CPPFLAGS $CXXFLAGS"
 QBT_ADD_DEFINES="$QBT_ADD_DEFINES $QBT_CONF_DEFINES"
-QBT_CONF_EXTRA_CFLAGS="$QBT_CONF_EXTRA_CFLAGS $CXXFLAGS"
 
 # Substitute the values of these vars in conf.pri.in
 AC_SUBST(QBT_CONF_INCLUDES)

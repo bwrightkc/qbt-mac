@@ -26,12 +26,13 @@
  * exception statement from your version.
  */
 
+#include "resumedatasavingmanager.h"
+
 #include <QDebug>
 #include <QSaveFile>
 
 #include "base/logger.h"
 #include "base/utils/fs.h"
-#include "resumedatasavingmanager.h"
 
 ResumeDataSavingManager::ResumeDataSavingManager(const QString &resumeFolderPath)
     : m_resumeDataDir(resumeFolderPath)
@@ -49,7 +50,7 @@ void ResumeDataSavingManager::saveResumeData(QString infoHash, QByteArray data) 
         resumeFile.write(data);
         if (!resumeFile.commit()) {
             Logger::instance()->addMessage(QString("Couldn't save resume data in %1. Error: %2")
-                                           .arg(filepath).arg(resumeFile.errorString()), Log::WARNING);
+                                           .arg(filepath, resumeFile.errorString()), Log::WARNING);
         }
     }
 }

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'cookiesdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,7 @@
 #define UI_COOKIESDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QHBoxLayout>
@@ -63,8 +61,6 @@ public:
 
         buttonAdd = new QToolButton(CookiesDialog);
         buttonAdd->setObjectName(QStringLiteral("buttonAdd"));
-        buttonAdd->setText(QStringLiteral(""));
-        buttonAdd->setIconSize(QSize(20, 20));
 
         verticalLayout->addWidget(buttonAdd);
 
@@ -74,8 +70,6 @@ public:
 
         buttonDelete = new QToolButton(CookiesDialog);
         buttonDelete->setObjectName(QStringLiteral("buttonDelete"));
-        buttonDelete->setText(QStringLiteral(""));
-        buttonDelete->setIconSize(QSize(20, 20));
 
         verticalLayout->addWidget(buttonDelete);
 
@@ -108,7 +102,7 @@ public:
 
     void retranslateUi(QDialog *CookiesDialog)
     {
-        CookiesDialog->setWindowTitle(QApplication::translate("CookiesDialog", "Manage Cookies", Q_NULLPTR));
+        CookiesDialog->setWindowTitle(QApplication::translate("CookiesDialog", "Manage Cookies", nullptr));
     } // retranslateUi
 
 };

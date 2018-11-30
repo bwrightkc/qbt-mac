@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'torrentcreatorthread.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'torrentcreatorthread.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -87,24 +87,23 @@ void BitTorrent::TorrentCreatorThread::qt_static_metacall(QObject *_o, QMetaObje
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (TorrentCreatorThread::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TorrentCreatorThread::creationFailure)) {
+            using _t = void (TorrentCreatorThread::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TorrentCreatorThread::creationFailure)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (TorrentCreatorThread::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TorrentCreatorThread::creationSuccess)) {
+            using _t = void (TorrentCreatorThread::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TorrentCreatorThread::creationSuccess)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (TorrentCreatorThread::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TorrentCreatorThread::updateProgress)) {
+            using _t = void (TorrentCreatorThread::*)(int );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TorrentCreatorThread::updateProgress)) {
                 *result = 2;
                 return;
             }
@@ -112,7 +111,7 @@ void BitTorrent::TorrentCreatorThread::qt_static_metacall(QObject *_o, QMetaObje
     }
 }
 
-const QMetaObject BitTorrent::TorrentCreatorThread::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject BitTorrent::TorrentCreatorThread::staticMetaObject = {
     { &QThread::staticMetaObject, qt_meta_stringdata_BitTorrent__TorrentCreatorThread.data,
       qt_meta_data_BitTorrent__TorrentCreatorThread,  qt_static_metacall, nullptr, nullptr}
 };

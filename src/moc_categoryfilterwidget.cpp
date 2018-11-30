@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'categoryfilterwidget.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'categoryfilterwidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_CategoryFilterWidget_t {
-    QByteArrayData data[17];
-    char stringdata0[283];
+    QByteArrayData data[18];
+    char stringdata0[295];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,25 +39,26 @@ QT_MOC_LITERAL(4, 51, 29), // "actionResumeTorrentsTriggered"
 QT_MOC_LITERAL(5, 81, 28), // "actionPauseTorrentsTriggered"
 QT_MOC_LITERAL(6, 110, 29), // "actionDeleteTorrentsTriggered"
 QT_MOC_LITERAL(7, 140, 19), // "onCurrentRowChanged"
-QT_MOC_LITERAL(8, 160, 7), // "current"
-QT_MOC_LITERAL(9, 168, 8), // "previous"
-QT_MOC_LITERAL(10, 177, 8), // "showMenu"
-QT_MOC_LITERAL(11, 186, 18), // "callUpdateGeometry"
-QT_MOC_LITERAL(12, 205, 11), // "addCategory"
-QT_MOC_LITERAL(13, 217, 14), // "addSubcategory"
-QT_MOC_LITERAL(14, 232, 12), // "editCategory"
-QT_MOC_LITERAL(15, 245, 14), // "removeCategory"
-QT_MOC_LITERAL(16, 260, 22) // "removeUnusedCategories"
+QT_MOC_LITERAL(8, 160, 11), // "QModelIndex"
+QT_MOC_LITERAL(9, 172, 7), // "current"
+QT_MOC_LITERAL(10, 180, 8), // "previous"
+QT_MOC_LITERAL(11, 189, 8), // "showMenu"
+QT_MOC_LITERAL(12, 198, 18), // "callUpdateGeometry"
+QT_MOC_LITERAL(13, 217, 11), // "addCategory"
+QT_MOC_LITERAL(14, 229, 14), // "addSubcategory"
+QT_MOC_LITERAL(15, 244, 12), // "editCategory"
+QT_MOC_LITERAL(16, 257, 14), // "removeCategory"
+QT_MOC_LITERAL(17, 272, 22) // "removeUnusedCategories"
 
     },
     "CategoryFilterWidget\0categoryChanged\0"
     "\0categoryName\0actionResumeTorrentsTriggered\0"
     "actionPauseTorrentsTriggered\0"
     "actionDeleteTorrentsTriggered\0"
-    "onCurrentRowChanged\0current\0previous\0"
-    "showMenu\0callUpdateGeometry\0addCategory\0"
-    "addSubcategory\0editCategory\0removeCategory\0"
-    "removeUnusedCategories"
+    "onCurrentRowChanged\0QModelIndex\0current\0"
+    "previous\0showMenu\0callUpdateGeometry\0"
+    "addCategory\0addSubcategory\0editCategory\0"
+    "removeCategory\0removeUnusedCategories"
 };
 #undef QT_MOC_LITERAL
 
@@ -82,13 +83,13 @@ static const uint qt_meta_data_CategoryFilterWidget[] = {
 
  // slots: name, argc, parameters, tag, flags
        7,    2,   80,    2, 0x08 /* Private */,
-      10,    1,   85,    2, 0x08 /* Private */,
-      11,    0,   88,    2, 0x08 /* Private */,
-      12,    0,   89,    2, 0x08 /* Private */,
-      13,    0,   90,    2, 0x08 /* Private */,
-      14,    0,   91,    2, 0x08 /* Private */,
-      15,    0,   92,    2, 0x08 /* Private */,
-      16,    0,   93,    2, 0x08 /* Private */,
+      11,    1,   85,    2, 0x08 /* Private */,
+      12,    0,   88,    2, 0x08 /* Private */,
+      13,    0,   89,    2, 0x08 /* Private */,
+      14,    0,   90,    2, 0x08 /* Private */,
+      15,    0,   91,    2, 0x08 /* Private */,
+      16,    0,   92,    2, 0x08 /* Private */,
+      17,    0,   93,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -97,7 +98,7 @@ static const uint qt_meta_data_CategoryFilterWidget[] = {
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QModelIndex, QMetaType::QModelIndex,    8,    9,
+    QMetaType::Void, 0x80000000 | 8, 0x80000000 | 8,    9,   10,
     QMetaType::Void, QMetaType::QPoint,    2,
     QMetaType::Void,
     QMetaType::Void,
@@ -131,31 +132,30 @@ void CategoryFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (CategoryFilterWidget::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CategoryFilterWidget::categoryChanged)) {
+            using _t = void (CategoryFilterWidget::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CategoryFilterWidget::categoryChanged)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (CategoryFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CategoryFilterWidget::actionResumeTorrentsTriggered)) {
+            using _t = void (CategoryFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CategoryFilterWidget::actionResumeTorrentsTriggered)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (CategoryFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CategoryFilterWidget::actionPauseTorrentsTriggered)) {
+            using _t = void (CategoryFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CategoryFilterWidget::actionPauseTorrentsTriggered)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (CategoryFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&CategoryFilterWidget::actionDeleteTorrentsTriggered)) {
+            using _t = void (CategoryFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&CategoryFilterWidget::actionDeleteTorrentsTriggered)) {
                 *result = 3;
                 return;
             }
@@ -163,7 +163,7 @@ void CategoryFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
     }
 }
 
-const QMetaObject CategoryFilterWidget::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject CategoryFilterWidget::staticMetaObject = {
     { &QTreeView::staticMetaObject, qt_meta_stringdata_CategoryFilterWidget.data,
       qt_meta_data_CategoryFilterWidget,  qt_static_metacall, nullptr, nullptr}
 };

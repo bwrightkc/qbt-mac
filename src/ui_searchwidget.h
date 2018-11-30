@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'searchwidget.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,12 +10,9 @@
 #define UI_SEARCHWIDGET_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -32,7 +29,7 @@ class Ui_SearchWidget
 public:
     QVBoxLayout *verticalLayout_3;
     QHBoxLayout *searchBarLayout;
-    LineEdit *m_searchPattern;
+    LineEdit *lineEditSearchPattern;
     QComboBox *comboCategory;
     QComboBox *selectPlugin;
     QPushButton *searchButton;
@@ -59,10 +56,10 @@ public:
         verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
         searchBarLayout = new QHBoxLayout();
         searchBarLayout->setObjectName(QStringLiteral("searchBarLayout"));
-        m_searchPattern = new LineEdit(SearchWidget);
-        m_searchPattern->setObjectName(QStringLiteral("m_searchPattern"));
+        lineEditSearchPattern = new LineEdit(SearchWidget);
+        lineEditSearchPattern->setObjectName(QStringLiteral("lineEditSearchPattern"));
 
-        searchBarLayout->addWidget(m_searchPattern);
+        searchBarLayout->addWidget(lineEditSearchPattern);
 
         comboCategory = new QComboBox(SearchWidget);
         comboCategory->setObjectName(QStringLiteral("comboCategory"));
@@ -166,14 +163,14 @@ public:
 
     void retranslateUi(QWidget *SearchWidget)
     {
-        SearchWidget->setWindowTitle(QApplication::translate("SearchWidget", "Search", Q_NULLPTR));
-        searchButton->setText(QApplication::translate("SearchWidget", "Search", Q_NULLPTR));
+        SearchWidget->setWindowTitle(QApplication::translate("SearchWidget", "Search", nullptr));
+        searchButton->setText(QApplication::translate("SearchWidget", "Search", nullptr));
         label->setText(QApplication::translate("SearchWidget", "There aren't any search plugins installed.\n"
-"Click the \"Search plugins...\" button at the bottom right of the window to install some.", Q_NULLPTR));
-        downloadButton->setText(QApplication::translate("SearchWidget", "Download", Q_NULLPTR));
-        goToDescBtn->setText(QApplication::translate("SearchWidget", "Go to description page", Q_NULLPTR));
-        copyURLBtn->setText(QApplication::translate("SearchWidget", "Copy description page URL", Q_NULLPTR));
-        pluginsButton->setText(QApplication::translate("SearchWidget", "Search plugins...", Q_NULLPTR));
+"Click the \"Search plugins...\" button at the bottom right of the window to install some.", nullptr));
+        downloadButton->setText(QApplication::translate("SearchWidget", "Download", nullptr));
+        goToDescBtn->setText(QApplication::translate("SearchWidget", "Go to description page", nullptr));
+        copyURLBtn->setText(QApplication::translate("SearchWidget", "Copy description page URL", nullptr));
+        pluginsButton->setText(QApplication::translate("SearchWidget", "Search plugins...", nullptr));
     } // retranslateUi
 
 };

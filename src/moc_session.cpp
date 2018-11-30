@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'session.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -13,7 +13,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'session.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -90,14 +90,14 @@ static const uint qt_meta_data_BitTorrent__SessionSettingsEnums[] = {
        0        // eod
 };
 
-const QMetaObject BitTorrent::SessionSettingsEnums::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject BitTorrent::SessionSettingsEnums::staticMetaObject = {
     { nullptr, qt_meta_stringdata_BitTorrent__SessionSettingsEnums.data,
       qt_meta_data_BitTorrent__SessionSettingsEnums,  nullptr, nullptr, nullptr}
 };
 
 struct qt_meta_stringdata_BitTorrent__Session_t {
     QByteArrayData data[75];
-    char stringdata0[1221];
+    char stringdata0[1217];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -172,15 +172,15 @@ QT_MOC_LITERAL(62, 994, 5), // "final"
 QT_MOC_LITERAL(63, 1000, 20), // "handleIPFilterParsed"
 QT_MOC_LITERAL(64, 1021, 19), // "handleIPFilterError"
 QT_MOC_LITERAL(65, 1041, 22), // "handleDownloadFinished"
-QT_MOC_LITERAL(66, 1064, 8), // "filePath"
-QT_MOC_LITERAL(67, 1073, 20), // "handleDownloadFailed"
-QT_MOC_LITERAL(68, 1094, 24), // "handleRedirectedToMagnet"
-QT_MOC_LITERAL(69, 1119, 9), // "magnetUri"
-QT_MOC_LITERAL(70, 1129, 25), // "networkOnlineStateChanged"
-QT_MOC_LITERAL(71, 1155, 6), // "online"
-QT_MOC_LITERAL(72, 1162, 26), // "networkConfigurationChange"
-QT_MOC_LITERAL(73, 1189, 21), // "QNetworkConfiguration"
-QT_MOC_LITERAL(74, 1211, 9) // "configure"
+QT_MOC_LITERAL(66, 1064, 4), // "data"
+QT_MOC_LITERAL(67, 1069, 20), // "handleDownloadFailed"
+QT_MOC_LITERAL(68, 1090, 24), // "handleRedirectedToMagnet"
+QT_MOC_LITERAL(69, 1115, 9), // "magnetUri"
+QT_MOC_LITERAL(70, 1125, 25), // "networkOnlineStateChanged"
+QT_MOC_LITERAL(71, 1151, 6), // "online"
+QT_MOC_LITERAL(72, 1158, 26), // "networkConfigurationChange"
+QT_MOC_LITERAL(73, 1185, 21), // "QNetworkConfiguration"
+QT_MOC_LITERAL(74, 1207, 9) // "configure"
 
     },
     "BitTorrent::Session\0statsUpdated\0\0"
@@ -211,7 +211,7 @@ QT_MOC_LITERAL(74, 1211, 9) // "configure"
     "refresh\0processShareLimits\0"
     "generateResumeData\0final\0handleIPFilterParsed\0"
     "handleIPFilterError\0handleDownloadFinished\0"
-    "filePath\0handleDownloadFailed\0"
+    "data\0handleDownloadFailed\0"
     "handleRedirectedToMagnet\0magnetUri\0"
     "networkOnlineStateChanged\0online\0"
     "networkConfigurationChange\0"
@@ -337,7 +337,7 @@ static const uint qt_meta_data_BitTorrent__Session[] = {
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,   39,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QString, QMetaType::QString,   48,   66,
+    QMetaType::Void, QMetaType::QString, QMetaType::QByteArray,   48,   66,
     QMetaType::Void, QMetaType::QString, QMetaType::QString,   48,   49,
     QMetaType::Void, QMetaType::QString, QMetaType::QString,   48,   69,
     QMetaType::Void, QMetaType::Bool,   71,
@@ -400,7 +400,7 @@ void BitTorrent::Session::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         case 42: _t->generateResumeData(); break;
         case 43: _t->handleIPFilterParsed((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 44: _t->handleIPFilterError(); break;
-        case 45: _t->handleDownloadFinished((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
+        case 45: _t->handleDownloadFinished((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QByteArray(*)>(_a[2]))); break;
         case 46: _t->handleDownloadFailed((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 47: _t->handleRedirectedToMagnet((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< const QString(*)>(_a[2]))); break;
         case 48: _t->networkOnlineStateChanged((*reinterpret_cast< const bool(*)>(_a[1]))); break;
@@ -421,262 +421,261 @@ void BitTorrent::Session::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Session::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::statsUpdated)) {
+            using _t = void (Session::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::statsUpdated)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentsUpdated)) {
+            using _t = void (Session::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentsUpdated)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::addTorrentFailed)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::addTorrentFailed)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentAdded)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentAdded)) {
                 *result = 3;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentNew)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentNew)) {
                 *result = 4;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentAboutToBeRemoved)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentAboutToBeRemoved)) {
                 *result = 5;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentPaused)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentPaused)) {
                 *result = 6;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentResumed)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentResumed)) {
                 *result = 7;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentFinished)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentFinished)) {
                 *result = 8;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentFinishedChecking)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentFinishedChecking)) {
                 *result = 9;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentSavePathChanged)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentSavePathChanged)) {
                 *result = 10;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentCategoryChanged)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentCategoryChanged)) {
                 *result = 11;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentTagAdded)) {
+            using _t = void (Session::*)(TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentTagAdded)) {
                 *result = 12;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentTagRemoved)) {
+            using _t = void (Session::*)(TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentTagRemoved)) {
                 *result = 13;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentSavingModeChanged)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentSavingModeChanged)) {
                 *result = 14;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::allTorrentsFinished)) {
+            using _t = void (Session::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::allTorrentsFinished)) {
                 *result = 15;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const BitTorrent::TorrentInfo & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::metadataLoaded)) {
+            using _t = void (Session::*)(const BitTorrent::TorrentInfo & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::metadataLoaded)) {
                 *result = 16;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::torrentMetadataLoaded)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::torrentMetadataLoaded)) {
                 *result = 17;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::fullDiskError)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::fullDiskError)) {
                 *result = 18;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackerSuccess)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackerSuccess)) {
                 *result = 19;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackerWarning)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackerWarning)) {
                 *result = 20;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackerError)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackerError)) {
                 *result = 21;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackerAuthenticationRequired)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackerAuthenticationRequired)) {
                 *result = 22;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::recursiveTorrentDownloadPossible)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::recursiveTorrentDownloadPossible)) {
                 *result = 23;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(bool );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::speedLimitModeChanged)) {
+            using _t = void (Session::*)(bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::speedLimitModeChanged)) {
                 *result = 24;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(bool , int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::IPFilterParsed)) {
+            using _t = void (Session::*)(bool , int );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::IPFilterParsed)) {
                 *result = 25;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QList<BitTorrent::TrackerEntry> & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackersAdded)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QList<BitTorrent::TrackerEntry> & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackersAdded)) {
                 *result = 26;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , const QList<BitTorrent::TrackerEntry> & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackersRemoved)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , const QList<BitTorrent::TrackerEntry> & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackersRemoved)) {
                 *result = 27;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackersChanged)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackersChanged)) {
                 *result = 28;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(BitTorrent::TorrentHandle * const , bool );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::trackerlessStateChanged)) {
+            using _t = void (Session::*)(BitTorrent::TorrentHandle * const , bool );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::trackerlessStateChanged)) {
                 *result = 29;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::downloadFromUrlFailed)) {
+            using _t = void (Session::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::downloadFromUrlFailed)) {
                 *result = 30;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::downloadFromUrlFinished)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::downloadFromUrlFinished)) {
                 *result = 31;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::categoryAdded)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::categoryAdded)) {
                 *result = 32;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::categoryRemoved)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::categoryRemoved)) {
                 *result = 33;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::subcategoriesSupportChanged)) {
+            using _t = void (Session::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::subcategoriesSupportChanged)) {
                 *result = 34;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::tagAdded)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::tagAdded)) {
                 *result = 35;
                 return;
             }
         }
         {
-            typedef void (Session::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Session::tagRemoved)) {
+            using _t = void (Session::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Session::tagRemoved)) {
                 *result = 36;
                 return;
             }
@@ -684,7 +683,7 @@ void BitTorrent::Session::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
     }
 }
 
-const QMetaObject BitTorrent::Session::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject BitTorrent::Session::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_BitTorrent__Session.data,
       qt_meta_data_BitTorrent__Session,  qt_static_metacall, nullptr, nullptr}
 };

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'filterparserthread.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'filterparserthread.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -79,17 +79,16 @@ void FilterParserThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (FilterParserThread::*_t)(int );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&FilterParserThread::IPFilterParsed)) {
+            using _t = void (FilterParserThread::*)(int );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&FilterParserThread::IPFilterParsed)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (FilterParserThread::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&FilterParserThread::IPFilterError)) {
+            using _t = void (FilterParserThread::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&FilterParserThread::IPFilterError)) {
                 *result = 1;
                 return;
             }
@@ -97,7 +96,7 @@ void FilterParserThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
     }
 }
 
-const QMetaObject FilterParserThread::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject FilterParserThread::staticMetaObject = {
     { &QThread::staticMetaObject, qt_meta_stringdata_FilterParserThread.data,
       qt_meta_data_FilterParserThread,  qt_static_metacall, nullptr, nullptr}
 };

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'qtsingleapplication.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'qtsingleapplication.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -94,10 +94,9 @@ void QtSingleApplication::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (QtSingleApplication::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&QtSingleApplication::messageReceived)) {
+            using _t = void (QtSingleApplication::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&QtSingleApplication::messageReceived)) {
                 *result = 0;
                 return;
             }
@@ -105,7 +104,7 @@ void QtSingleApplication::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
     }
 }
 
-const QMetaObject QtSingleApplication::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject QtSingleApplication::staticMetaObject = {
     { &QApplication::staticMetaObject, qt_meta_stringdata_QtSingleApplication.data,
       qt_meta_data_QtSingleApplication,  qt_static_metacall, nullptr, nullptr}
 };

@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'transferlistfilterswidget.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -13,7 +13,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'transferlistfilterswidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -21,37 +21,37 @@
 QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
-struct qt_meta_stringdata_FiltersBase_t {
+struct qt_meta_stringdata_BaseFilterWidget_t {
     QByteArrayData data[10];
-    char stringdata0[132];
+    char stringdata0[137];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_FiltersBase_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_BaseFilterWidget_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_FiltersBase_t qt_meta_stringdata_FiltersBase = {
+static const qt_meta_stringdata_BaseFilterWidget_t qt_meta_stringdata_BaseFilterWidget = {
     {
-QT_MOC_LITERAL(0, 0, 11), // "FiltersBase"
-QT_MOC_LITERAL(1, 12, 12), // "toggleFilter"
-QT_MOC_LITERAL(2, 25, 0), // ""
-QT_MOC_LITERAL(3, 26, 7), // "checked"
-QT_MOC_LITERAL(4, 34, 8), // "showMenu"
-QT_MOC_LITERAL(5, 43, 11), // "applyFilter"
-QT_MOC_LITERAL(6, 55, 3), // "row"
-QT_MOC_LITERAL(7, 59, 16), // "handleNewTorrent"
-QT_MOC_LITERAL(8, 76, 31), // "BitTorrent::TorrentHandle*const"
-QT_MOC_LITERAL(9, 108, 23) // "torrentAboutToBeDeleted"
+QT_MOC_LITERAL(0, 0, 16), // "BaseFilterWidget"
+QT_MOC_LITERAL(1, 17, 12), // "toggleFilter"
+QT_MOC_LITERAL(2, 30, 0), // ""
+QT_MOC_LITERAL(3, 31, 7), // "checked"
+QT_MOC_LITERAL(4, 39, 8), // "showMenu"
+QT_MOC_LITERAL(5, 48, 11), // "applyFilter"
+QT_MOC_LITERAL(6, 60, 3), // "row"
+QT_MOC_LITERAL(7, 64, 16), // "handleNewTorrent"
+QT_MOC_LITERAL(8, 81, 31), // "BitTorrent::TorrentHandle*const"
+QT_MOC_LITERAL(9, 113, 23) // "torrentAboutToBeDeleted"
 
     },
-    "FiltersBase\0toggleFilter\0\0checked\0"
+    "BaseFilterWidget\0toggleFilter\0\0checked\0"
     "showMenu\0applyFilter\0row\0handleNewTorrent\0"
     "BitTorrent::TorrentHandle*const\0"
     "torrentAboutToBeDeleted"
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_FiltersBase[] = {
+static const uint qt_meta_data_BaseFilterWidget[] = {
 
  // content:
        7,       // revision
@@ -81,10 +81,10 @@ static const uint qt_meta_data_FiltersBase[] = {
        0        // eod
 };
 
-void FiltersBase::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void BaseFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        FiltersBase *_t = static_cast<FiltersBase *>(_o);
+        BaseFilterWidget *_t = static_cast<BaseFilterWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->toggleFilter((*reinterpret_cast< bool(*)>(_a[1]))); break;
@@ -97,26 +97,26 @@ void FiltersBase::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
     }
 }
 
-const QMetaObject FiltersBase::staticMetaObject = {
-    { &QListWidget::staticMetaObject, qt_meta_stringdata_FiltersBase.data,
-      qt_meta_data_FiltersBase,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject BaseFilterWidget::staticMetaObject = {
+    { &QListWidget::staticMetaObject, qt_meta_stringdata_BaseFilterWidget.data,
+      qt_meta_data_BaseFilterWidget,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *FiltersBase::metaObject() const
+const QMetaObject *BaseFilterWidget::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *FiltersBase::qt_metacast(const char *_clname)
+void *BaseFilterWidget::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_FiltersBase.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_BaseFilterWidget.stringdata0))
         return static_cast<void*>(this);
     return QListWidget::qt_metacast(_clname);
 }
 
-int FiltersBase::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int BaseFilterWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
     _id = QListWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
@@ -132,28 +132,28 @@ int FiltersBase::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     }
     return _id;
 }
-struct qt_meta_stringdata_StatusFiltersWidget_t {
+struct qt_meta_stringdata_StatusFilterWidget_t {
     QByteArrayData data[3];
-    char stringdata0[42];
+    char stringdata0[41];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
-    qptrdiff(offsetof(qt_meta_stringdata_StatusFiltersWidget_t, stringdata0) + ofs \
+    qptrdiff(offsetof(qt_meta_stringdata_StatusFilterWidget_t, stringdata0) + ofs \
         - idx * sizeof(QByteArrayData)) \
     )
-static const qt_meta_stringdata_StatusFiltersWidget_t qt_meta_stringdata_StatusFiltersWidget = {
+static const qt_meta_stringdata_StatusFilterWidget_t qt_meta_stringdata_StatusFilterWidget = {
     {
-QT_MOC_LITERAL(0, 0, 19), // "StatusFiltersWidget"
-QT_MOC_LITERAL(1, 20, 20), // "updateTorrentNumbers"
-QT_MOC_LITERAL(2, 41, 0) // ""
+QT_MOC_LITERAL(0, 0, 18), // "StatusFilterWidget"
+QT_MOC_LITERAL(1, 19, 20), // "updateTorrentNumbers"
+QT_MOC_LITERAL(2, 40, 0) // ""
 
     },
-    "StatusFiltersWidget\0updateTorrentNumbers\0"
+    "StatusFilterWidget\0updateTorrentNumbers\0"
     ""
 };
 #undef QT_MOC_LITERAL
 
-static const uint qt_meta_data_StatusFiltersWidget[] = {
+static const uint qt_meta_data_StatusFilterWidget[] = {
 
  // content:
        7,       // revision
@@ -175,10 +175,10 @@ static const uint qt_meta_data_StatusFiltersWidget[] = {
        0        // eod
 };
 
-void StatusFiltersWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+void StatusFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
     if (_c == QMetaObject::InvokeMetaMethod) {
-        StatusFiltersWidget *_t = static_cast<StatusFiltersWidget *>(_o);
+        StatusFilterWidget *_t = static_cast<StatusFilterWidget *>(_o);
         Q_UNUSED(_t)
         switch (_id) {
         case 0: _t->updateTorrentNumbers(); break;
@@ -188,28 +188,28 @@ void StatusFiltersWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
     Q_UNUSED(_a);
 }
 
-const QMetaObject StatusFiltersWidget::staticMetaObject = {
-    { &FiltersBase::staticMetaObject, qt_meta_stringdata_StatusFiltersWidget.data,
-      qt_meta_data_StatusFiltersWidget,  qt_static_metacall, nullptr, nullptr}
+QT_INIT_METAOBJECT const QMetaObject StatusFilterWidget::staticMetaObject = {
+    { &BaseFilterWidget::staticMetaObject, qt_meta_stringdata_StatusFilterWidget.data,
+      qt_meta_data_StatusFilterWidget,  qt_static_metacall, nullptr, nullptr}
 };
 
 
-const QMetaObject *StatusFiltersWidget::metaObject() const
+const QMetaObject *StatusFilterWidget::metaObject() const
 {
     return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
 }
 
-void *StatusFiltersWidget::qt_metacast(const char *_clname)
+void *StatusFilterWidget::qt_metacast(const char *_clname)
 {
     if (!_clname) return nullptr;
-    if (!strcmp(_clname, qt_meta_stringdata_StatusFiltersWidget.stringdata0))
+    if (!strcmp(_clname, qt_meta_stringdata_StatusFilterWidget.stringdata0))
         return static_cast<void*>(this);
-    return FiltersBase::qt_metacast(_clname);
+    return BaseFilterWidget::qt_metacast(_clname);
 }
 
-int StatusFiltersWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+int StatusFilterWidget::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = FiltersBase::qt_metacall(_c, _id, _a);
+    _id = BaseFilterWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
@@ -301,8 +301,8 @@ void TrackerFiltersList::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
     }
 }
 
-const QMetaObject TrackerFiltersList::staticMetaObject = {
-    { &FiltersBase::staticMetaObject, qt_meta_stringdata_TrackerFiltersList.data,
+QT_INIT_METAOBJECT const QMetaObject TrackerFiltersList::staticMetaObject = {
+    { &BaseFilterWidget::staticMetaObject, qt_meta_stringdata_TrackerFiltersList.data,
       qt_meta_data_TrackerFiltersList,  qt_static_metacall, nullptr, nullptr}
 };
 
@@ -317,12 +317,12 @@ void *TrackerFiltersList::qt_metacast(const char *_clname)
     if (!_clname) return nullptr;
     if (!strcmp(_clname, qt_meta_stringdata_TrackerFiltersList.stringdata0))
         return static_cast<void*>(this);
-    return FiltersBase::qt_metacast(_clname);
+    return BaseFilterWidget::qt_metacast(_clname);
 }
 
 int TrackerFiltersList::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = FiltersBase::qt_metacall(_c, _id, _a);
+    _id = BaseFilterWidget::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
@@ -444,24 +444,23 @@ void TransferListFiltersWidget::qt_static_metacall(QObject *_o, QMetaObject::Cal
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (TransferListFiltersWidget::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TransferListFiltersWidget::trackerSuccess)) {
+            using _t = void (TransferListFiltersWidget::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TransferListFiltersWidget::trackerSuccess)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (TransferListFiltersWidget::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TransferListFiltersWidget::trackerError)) {
+            using _t = void (TransferListFiltersWidget::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TransferListFiltersWidget::trackerError)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (TransferListFiltersWidget::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TransferListFiltersWidget::trackerWarning)) {
+            using _t = void (TransferListFiltersWidget::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TransferListFiltersWidget::trackerWarning)) {
                 *result = 2;
                 return;
             }
@@ -469,7 +468,7 @@ void TransferListFiltersWidget::qt_static_metacall(QObject *_o, QMetaObject::Cal
     }
 }
 
-const QMetaObject TransferListFiltersWidget::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject TransferListFiltersWidget::staticMetaObject = {
     { &QFrame::staticMetaObject, qt_meta_stringdata_TransferListFiltersWidget.data,
       qt_meta_data_TransferListFiltersWidget,  qt_static_metacall, nullptr, nullptr}
 };

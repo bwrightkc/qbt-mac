@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'rss_item.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'rss_item.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -134,45 +134,44 @@ void RSS::Item::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Item::*_t)(Item * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::pathChanged)) {
+            using _t = void (Item::*)(Item * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::pathChanged)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (Item::*_t)(Item * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::unreadCountChanged)) {
+            using _t = void (Item::*)(Item * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::unreadCountChanged)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (Item::*_t)(Item * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::aboutToBeDestroyed)) {
+            using _t = void (Item::*)(Item * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::aboutToBeDestroyed)) {
                 *result = 4;
                 return;
             }
         }
         {
-            typedef void (Item::*_t)(Article * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::newArticle)) {
+            using _t = void (Item::*)(Article * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::newArticle)) {
                 *result = 6;
                 return;
             }
         }
         {
-            typedef void (Item::*_t)(Article * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::articleRead)) {
+            using _t = void (Item::*)(Article * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::articleRead)) {
                 *result = 7;
                 return;
             }
         }
         {
-            typedef void (Item::*_t)(Article * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Item::articleAboutToBeRemoved)) {
+            using _t = void (Item::*)(Article * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Item::articleAboutToBeRemoved)) {
                 *result = 8;
                 return;
             }
@@ -180,7 +179,7 @@ void RSS::Item::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
     }
 }
 
-const QMetaObject RSS::Item::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject RSS::Item::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_RSS__Item.data,
       qt_meta_data_RSS__Item,  qt_static_metacall, nullptr, nullptr}
 };

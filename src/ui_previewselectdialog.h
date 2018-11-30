@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'previewselectdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,7 @@
 #define UI_PREVIEWSELECTDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QHeaderView>
@@ -64,8 +62,8 @@ public:
 
     void retranslateUi(QDialog *preview)
     {
-        preview->setWindowTitle(QApplication::translate("preview", "Preview selection", Q_NULLPTR));
-        label->setText(QApplication::translate("preview", "The following files support previewing, please select one of them:", Q_NULLPTR));
+        preview->setWindowTitle(QApplication::translate("preview", "Preview selection", nullptr));
+        label->setText(QApplication::translate("preview", "The following files support previewing, please select one of them:", nullptr));
     } // retranslateUi
 
 };

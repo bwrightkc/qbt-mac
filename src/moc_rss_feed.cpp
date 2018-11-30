@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'rss_feed.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'rss_feed.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -168,24 +168,23 @@ void RSS::Feed::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Feed::*_t)(Feed * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Feed::iconLoaded)) {
+            using _t = void (Feed::*)(Feed * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Feed::iconLoaded)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (Feed::*_t)(Feed * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Feed::titleChanged)) {
+            using _t = void (Feed::*)(Feed * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Feed::titleChanged)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (Feed::*_t)(Feed * );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Feed::stateChanged)) {
+            using _t = void (Feed::*)(Feed * );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Feed::stateChanged)) {
                 *result = 4;
                 return;
             }
@@ -193,7 +192,7 @@ void RSS::Feed::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, v
     }
 }
 
-const QMetaObject RSS::Feed::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject RSS::Feed::staticMetaObject = {
     { &Item::staticMetaObject, qt_meta_stringdata_RSS__Feed.data,
       qt_meta_data_RSS__Feed,  qt_static_metacall, nullptr, nullptr}
 };

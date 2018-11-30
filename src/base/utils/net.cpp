@@ -27,9 +27,9 @@
  */
 
 #include "net.h"
+
 #include <QHostAddress>
 #include <QString>
-#include <QStringList>
 
 namespace Utils
 {

@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'addnewtorrentdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -12,7 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
@@ -39,7 +38,7 @@ public:
     QAction *actionNormal;
     QAction *actionHigh;
     QAction *actionMaximum;
-    QAction *actionNot_downloaded;
+    QAction *actionNotDownloaded;
     QVBoxLayout *AddNewTorrentDialogLayout;
     QHBoxLayout *horizontalLayout;
     QLabel *labelTorrentManagementMode;
@@ -48,11 +47,11 @@ public:
     QGroupBox *groupBoxSavePath;
     QVBoxLayout *verticalLayout_2;
     FileSystemPathComboEdit *savePath;
-    QCheckBox *defaultSavePathCheckBox;
+    QCheckBox *checkBoxRememberLastSavePath;
     QCheckBox *doNotDeleteTorrentCheckBox;
-    QCheckBox *never_show_cb;
-    QToolButton *adv_button;
-    QGroupBox *settings_group;
+    QCheckBox *checkBoxNeverShow;
+    QToolButton *toolButtonAdvanced;
+    QGroupBox *groupBoxSettings;
     QGridLayout *gridLayout_3;
     QCheckBox *defaultCategoryCheckbox;
     QHBoxLayout *horizontalLayout_1;
@@ -62,15 +61,17 @@ public:
     QCheckBox *skipCheckingCheckBox;
     QSpacerItem *horizontalSpacer2;
     QCheckBox *createSubfolderCheckBox;
+    QCheckBox *sequentialCheckBox;
+    QCheckBox *firstLastCheckBox;
     QGroupBox *infoGroup;
     QGridLayout *gridLayout_2;
     QLabel *lblhash;
     QLabel *label_4;
     TorrentContentTreeView *contentTreeView;
-    QLabel *date_lbl;
+    QLabel *labelDate;
     QLabel *label_3;
     QLabel *label;
-    QLabel *size_lbl;
+    QLabel *labelSize;
     QLabel *label_2;
     QScrollArea *scrollArea;
     QWidget *scrollAreaWidgetContents_2;
@@ -92,8 +93,8 @@ public:
         actionHigh->setObjectName(QStringLiteral("actionHigh"));
         actionMaximum = new QAction(AddNewTorrentDialog);
         actionMaximum->setObjectName(QStringLiteral("actionMaximum"));
-        actionNot_downloaded = new QAction(AddNewTorrentDialog);
-        actionNot_downloaded->setObjectName(QStringLiteral("actionNot_downloaded"));
+        actionNotDownloaded = new QAction(AddNewTorrentDialog);
+        actionNotDownloaded->setObjectName(QStringLiteral("actionNotDownloaded"));
         AddNewTorrentDialogLayout = new QVBoxLayout(AddNewTorrentDialog);
         AddNewTorrentDialogLayout->setObjectName(QStringLiteral("AddNewTorrentDialogLayout"));
         horizontalLayout = new QHBoxLayout();
@@ -104,6 +105,8 @@ public:
         horizontalLayout->addWidget(labelTorrentManagementMode);
 
         comboTTM = new QComboBox(AddNewTorrentDialog);
+        comboTTM->addItem(QString());
+        comboTTM->addItem(QString());
         comboTTM->setObjectName(QStringLiteral("comboTTM"));
 
         horizontalLayout->addWidget(comboTTM);
@@ -124,10 +127,10 @@ public:
 
         verticalLayout_2->addWidget(savePath);
 
-        defaultSavePathCheckBox = new QCheckBox(groupBoxSavePath);
-        defaultSavePathCheckBox->setObjectName(QStringLiteral("defaultSavePathCheckBox"));
+        checkBoxRememberLastSavePath = new QCheckBox(groupBoxSavePath);
+        checkBoxRememberLastSavePath->setObjectName(QStringLiteral("checkBoxRememberLastSavePath"));
 
-        verticalLayout_2->addWidget(defaultSavePathCheckBox);
+        verticalLayout_2->addWidget(checkBoxRememberLastSavePath);
 
 
         AddNewTorrentDialogLayout->addWidget(groupBoxSavePath);
@@ -137,35 +140,35 @@ public:
 
         AddNewTorrentDialogLayout->addWidget(doNotDeleteTorrentCheckBox);
 
-        never_show_cb = new QCheckBox(AddNewTorrentDialog);
-        never_show_cb->setObjectName(QStringLiteral("never_show_cb"));
+        checkBoxNeverShow = new QCheckBox(AddNewTorrentDialog);
+        checkBoxNeverShow->setObjectName(QStringLiteral("checkBoxNeverShow"));
 
-        AddNewTorrentDialogLayout->addWidget(never_show_cb);
+        AddNewTorrentDialogLayout->addWidget(checkBoxNeverShow);
 
-        adv_button = new QToolButton(AddNewTorrentDialog);
-        adv_button->setObjectName(QStringLiteral("adv_button"));
-        adv_button->setText(QString::fromUtf8("\342\226\274"));
-        adv_button->setCheckable(true);
+        toolButtonAdvanced = new QToolButton(AddNewTorrentDialog);
+        toolButtonAdvanced->setObjectName(QStringLiteral("toolButtonAdvanced"));
+        toolButtonAdvanced->setText(QString::fromUtf8("\342\226\274"));
+        toolButtonAdvanced->setCheckable(true);
 
-        AddNewTorrentDialogLayout->addWidget(adv_button);
+        AddNewTorrentDialogLayout->addWidget(toolButtonAdvanced);
 
-        settings_group = new QGroupBox(AddNewTorrentDialog);
-        settings_group->setObjectName(QStringLiteral("settings_group"));
-        gridLayout_3 = new QGridLayout(settings_group);
+        groupBoxSettings = new QGroupBox(AddNewTorrentDialog);
+        groupBoxSettings->setObjectName(QStringLiteral("groupBoxSettings"));
+        gridLayout_3 = new QGridLayout(groupBoxSettings);
         gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        defaultCategoryCheckbox = new QCheckBox(settings_group);
+        defaultCategoryCheckbox = new QCheckBox(groupBoxSettings);
         defaultCategoryCheckbox->setObjectName(QStringLiteral("defaultCategoryCheckbox"));
 
         gridLayout_3->addWidget(defaultCategoryCheckbox, 1, 2, 1, 1);
 
         horizontalLayout_1 = new QHBoxLayout();
         horizontalLayout_1->setObjectName(QStringLiteral("horizontalLayout_1"));
-        label_5 = new QLabel(settings_group);
+        label_5 = new QLabel(groupBoxSettings);
         label_5->setObjectName(QStringLiteral("label_5"));
 
         horizontalLayout_1->addWidget(label_5);
 
-        categoryComboBox = new QComboBox(settings_group);
+        categoryComboBox = new QComboBox(groupBoxSettings);
         categoryComboBox->setObjectName(QStringLiteral("categoryComboBox"));
         QSizePolicy sizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
         sizePolicy.setHorizontalStretch(0);
@@ -180,13 +183,13 @@ public:
 
         gridLayout_3->addLayout(horizontalLayout_1, 0, 2, 1, 1);
 
-        startTorrentCheckBox = new QCheckBox(settings_group);
+        startTorrentCheckBox = new QCheckBox(groupBoxSettings);
         startTorrentCheckBox->setObjectName(QStringLiteral("startTorrentCheckBox"));
         startTorrentCheckBox->setChecked(true);
 
         gridLayout_3->addWidget(startTorrentCheckBox, 0, 0, 1, 1);
 
-        skipCheckingCheckBox = new QCheckBox(settings_group);
+        skipCheckingCheckBox = new QCheckBox(groupBoxSettings);
         skipCheckingCheckBox->setObjectName(QStringLiteral("skipCheckingCheckBox"));
 
         gridLayout_3->addWidget(skipCheckingCheckBox, 1, 0, 1, 1);
@@ -195,14 +198,24 @@ public:
 
         gridLayout_3->addItem(horizontalSpacer2, 0, 1, 1, 1);
 
-        createSubfolderCheckBox = new QCheckBox(settings_group);
+        createSubfolderCheckBox = new QCheckBox(groupBoxSettings);
         createSubfolderCheckBox->setObjectName(QStringLiteral("createSubfolderCheckBox"));
         createSubfolderCheckBox->setChecked(true);
 
         gridLayout_3->addWidget(createSubfolderCheckBox, 2, 0, 1, 1);
 
+        sequentialCheckBox = new QCheckBox(groupBoxSettings);
+        sequentialCheckBox->setObjectName(QStringLiteral("sequentialCheckBox"));
 
-        AddNewTorrentDialogLayout->addWidget(settings_group);
+        gridLayout_3->addWidget(sequentialCheckBox, 3, 0, 1, 1);
+
+        firstLastCheckBox = new QCheckBox(groupBoxSettings);
+        firstLastCheckBox->setObjectName(QStringLiteral("firstLastCheckBox"));
+
+        gridLayout_3->addWidget(firstLastCheckBox, 4, 0, 1, 1);
+
+
+        AddNewTorrentDialogLayout->addWidget(groupBoxSettings);
 
         infoGroup = new QGroupBox(AddNewTorrentDialog);
         infoGroup->setObjectName(QStringLiteral("infoGroup"));
@@ -228,10 +241,10 @@ public:
 
         gridLayout_2->addWidget(contentTreeView, 4, 0, 1, 2);
 
-        date_lbl = new QLabel(infoGroup);
-        date_lbl->setObjectName(QStringLiteral("date_lbl"));
+        labelDate = new QLabel(infoGroup);
+        labelDate->setObjectName(QStringLiteral("labelDate"));
 
-        gridLayout_2->addWidget(date_lbl, 1, 1, 1, 1);
+        gridLayout_2->addWidget(labelDate, 1, 1, 1, 1);
 
         label_3 = new QLabel(infoGroup);
         label_3->setObjectName(QStringLiteral("label_3"));
@@ -243,10 +256,10 @@ public:
 
         gridLayout_2->addWidget(label, 0, 0, 1, 1);
 
-        size_lbl = new QLabel(infoGroup);
-        size_lbl->setObjectName(QStringLiteral("size_lbl"));
+        labelSize = new QLabel(infoGroup);
+        labelSize->setObjectName(QStringLiteral("labelSize"));
 
-        gridLayout_2->addWidget(size_lbl, 0, 1, 1, 1);
+        gridLayout_2->addWidget(labelSize, 0, 1, 1, 1);
 
         label_2 = new QLabel(infoGroup);
         label_2->setObjectName(QStringLiteral("label_2"));
@@ -311,10 +324,10 @@ public:
 
         AddNewTorrentDialogLayout->addLayout(buttonsHLayout);
 
-        QWidget::setTabOrder(savePath, defaultSavePathCheckBox);
-        QWidget::setTabOrder(defaultSavePathCheckBox, never_show_cb);
-        QWidget::setTabOrder(never_show_cb, adv_button);
-        QWidget::setTabOrder(adv_button, startTorrentCheckBox);
+        QWidget::setTabOrder(savePath, checkBoxRememberLastSavePath);
+        QWidget::setTabOrder(checkBoxRememberLastSavePath, checkBoxNeverShow);
+        QWidget::setTabOrder(checkBoxNeverShow, toolButtonAdvanced);
+        QWidget::setTabOrder(toolButtonAdvanced, startTorrentCheckBox);
         QWidget::setTabOrder(startTorrentCheckBox, skipCheckingCheckBox);
         QWidget::setTabOrder(skipCheckingCheckBox, categoryComboBox);
         QWidget::setTabOrder(categoryComboBox, defaultCategoryCheckbox);
@@ -332,40 +345,40 @@ public:
 
     void retranslateUi(QDialog *AddNewTorrentDialog)
     {
-        actionNormal->setText(QApplication::translate("AddNewTorrentDialog", "Normal", Q_NULLPTR));
-        actionHigh->setText(QApplication::translate("AddNewTorrentDialog", "High", Q_NULLPTR));
-        actionMaximum->setText(QApplication::translate("AddNewTorrentDialog", "Maximum", Q_NULLPTR));
-        actionNot_downloaded->setText(QApplication::translate("AddNewTorrentDialog", "Do not download", Q_NULLPTR));
-        labelTorrentManagementMode->setText(QApplication::translate("AddNewTorrentDialog", "Torrent Management Mode:", Q_NULLPTR));
-        comboTTM->clear();
-        comboTTM->insertItems(0, QStringList()
-         << QApplication::translate("AddNewTorrentDialog", "Manual", Q_NULLPTR)
-         << QApplication::translate("AddNewTorrentDialog", "Automatic", Q_NULLPTR)
-        );
+        actionNormal->setText(QApplication::translate("AddNewTorrentDialog", "Normal", nullptr));
+        actionHigh->setText(QApplication::translate("AddNewTorrentDialog", "High", nullptr));
+        actionMaximum->setText(QApplication::translate("AddNewTorrentDialog", "Maximum", nullptr));
+        actionNotDownloaded->setText(QApplication::translate("AddNewTorrentDialog", "Do not download", nullptr));
+        labelTorrentManagementMode->setText(QApplication::translate("AddNewTorrentDialog", "Torrent Management Mode:", nullptr));
+        comboTTM->setItemText(0, QApplication::translate("AddNewTorrentDialog", "Manual", nullptr));
+        comboTTM->setItemText(1, QApplication::translate("AddNewTorrentDialog", "Automatic", nullptr));
+
 #ifndef QT_NO_TOOLTIP
-        comboTTM->setToolTip(QApplication::translate("AddNewTorrentDialog", "Automatic mode means that various torrent properties(eg save path) will be decided by the associated category", Q_NULLPTR));
+        comboTTM->setToolTip(QApplication::translate("AddNewTorrentDialog", "Automatic mode means that various torrent properties(eg save path) will be decided by the associated category", nullptr));
 #endif // QT_NO_TOOLTIP
-        groupBoxSavePath->setTitle(QApplication::translate("AddNewTorrentDialog", "Save at", Q_NULLPTR));
-        defaultSavePathCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Set as default save path", Q_NULLPTR));
+        groupBoxSavePath->setTitle(QApplication::translate("AddNewTorrentDialog", "Save at", nullptr));
+        checkBoxRememberLastSavePath->setText(QApplication::translate("AddNewTorrentDialog", "Remember last used save path", nullptr));
 #ifndef QT_NO_TOOLTIP
-        doNotDeleteTorrentCheckBox->setToolTip(QApplication::translate("AddNewTorrentDialog", "When checked, the .torrent file will not be deleted despite the settings at the \"Download\" page of the options dialog", Q_NULLPTR));
+        doNotDeleteTorrentCheckBox->setToolTip(QApplication::translate("AddNewTorrentDialog", "When checked, the .torrent file will not be deleted despite the settings at the \"Download\" page of the options dialog", nullptr));
 #endif // QT_NO_TOOLTIP
-        doNotDeleteTorrentCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Do not delete .torrent file", Q_NULLPTR));
-        never_show_cb->setText(QApplication::translate("AddNewTorrentDialog", "Never show again", Q_NULLPTR));
-        settings_group->setTitle(QApplication::translate("AddNewTorrentDialog", "Torrent settings", Q_NULLPTR));
-        defaultCategoryCheckbox->setText(QApplication::translate("AddNewTorrentDialog", "Set as default category", Q_NULLPTR));
-        label_5->setText(QApplication::translate("AddNewTorrentDialog", "Category:", Q_NULLPTR));
-        startTorrentCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Start torrent", Q_NULLPTR));
-        skipCheckingCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Skip hash check", Q_NULLPTR));
-        createSubfolderCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Create subfolder", Q_NULLPTR));
-        infoGroup->setTitle(QApplication::translate("AddNewTorrentDialog", "Torrent information", Q_NULLPTR));
+        doNotDeleteTorrentCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Do not delete .torrent file", nullptr));
+        checkBoxNeverShow->setText(QApplication::translate("AddNewTorrentDialog", "Never show again", nullptr));
+        groupBoxSettings->setTitle(QApplication::translate("AddNewTorrentDialog", "Torrent settings", nullptr));
+        defaultCategoryCheckbox->setText(QApplication::translate("AddNewTorrentDialog", "Set as default category", nullptr));
+        label_5->setText(QApplication::translate("AddNewTorrentDialog", "Category:", nullptr));
+        startTorrentCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Start torrent", nullptr));
+        skipCheckingCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Skip hash check", nullptr));
+        createSubfolderCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Create subfolder", nullptr));
+        sequentialCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Download in sequential order", nullptr));
+        firstLastCheckBox->setText(QApplication::translate("AddNewTorrentDialog", "Download first and last pieces first", nullptr));
+        infoGroup->setTitle(QApplication::translate("AddNewTorrentDialog", "Torrent information", nullptr));
         lblhash->setText(QString());
-        label_4->setText(QApplication::translate("AddNewTorrentDialog", "Hash:", Q_NULLPTR));
-        date_lbl->setText(QString());
-        label_3->setText(QApplication::translate("AddNewTorrentDialog", "Date:", Q_NULLPTR));
-        label->setText(QApplication::translate("AddNewTorrentDialog", "Size:", Q_NULLPTR));
-        size_lbl->setText(QString());
-        label_2->setText(QApplication::translate("AddNewTorrentDialog", "Comment:", Q_NULLPTR));
+        label_4->setText(QApplication::translate("AddNewTorrentDialog", "Hash:", nullptr));
+        labelDate->setText(QString());
+        label_3->setText(QApplication::translate("AddNewTorrentDialog", "Date:", nullptr));
+        label->setText(QApplication::translate("AddNewTorrentDialog", "Size:", nullptr));
+        labelSize->setText(QString());
+        label_2->setText(QApplication::translate("AddNewTorrentDialog", "Comment:", nullptr));
         commentLabel->setText(QString());
         Q_UNUSED(AddNewTorrentDialog);
     } // retranslateUi

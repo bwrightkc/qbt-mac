@@ -1,7 +1,7 @@
 /*
  * Bittorrent Client using Qt and libtorrent.
  * Copyright (C) 2014  Vladimir Golovnev <glassez@yandex.ru>
- * Copyright (C) 2006  Christophe Dumez
+ * Copyright (C) 2006  Christophe Dumez <chris@qbittorrent.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,9 +25,9 @@
  * modify file(s), you may extend this exception to your version of the file(s),
  * but you are not obligated to do so. If you do not wish to do so, delete this
  * exception statement from your version.
- *
- * Contact : chris@qbittorrent.org
  */
+
+#include <cstdlib>
 
 #include <QDebug>
 #include <QScopedPointer>
@@ -55,33 +55,28 @@ Q_IMPORT_PLUGIN(QICOPlugin)
 #endif
 #endif // DISABLE_GUI
 
+#include <signal.h>
+#ifdef STACKTRACE
 #ifdef Q_OS_UNIX
-#include <signal.h>
-#include <execinfo.h>
 #include "stacktrace.h"
-#endif // Q_OS_UNIX
-
-#ifdef STACKTRACE_WIN
-#include <signal.h>
+#else
 #include "stacktrace_win.h"
-#include "stacktrace_win_dlg.h"
-#endif //STACKTRACE_WIN
+#include "stacktracedialog.h"
+#endif // Q_OS_UNIX
+#endif //STACKTRACE
 
-#include <cstdlib>
-#include <iostream>
-
-#include "application.h"
+#include "base/preferences.h"
 #include "base/profile.h"
 #include "base/utils/misc.h"
-#include "base/preferences.h"
+#include "application.h"
 #include "cmdoptions.h"
-
 #include "upgrade.h"
 
 // Signal handlers
-#if defined(Q_OS_UNIX) || defined(STACKTRACE_WIN)
 void sigNormalHandler(int signum);
+#ifdef STACKTRACE
 void sigAbnormalHandler(int signum);
+#endif
 // sys_signame[] is only defined in BSD
 const char *sysSigName[] = {
 #if defined(Q_OS_WIN)
@@ -96,10 +91,9 @@ const char *sysSigName[] = {
     "SIGPWR", "SIGUNUSED"
 #endif
 };
-#endif
 
 #if !defined Q_OS_WIN && !defined Q_OS_HAIKU
-void reportToUser(const char* str);
+void reportToUser(const char *str);
 #endif
 
 void displayVersion();
@@ -108,10 +102,6 @@ void displayBadArgMessage(const QString &message);
 
 #if !defined(DISABLE_GUI)
 void showSplashScreen();
-
-#if defined(Q_OS_UNIX)
-void setupDpi();
-#endif  // Q_OS_UNIX
 #endif  // DISABLE_GUI
 
 // Main
@@ -124,10 +114,6 @@ int main(int argc, char *argv[])
     // On macOS 10.12 Sierra, Apple changed the behaviour of CFPreferencesSetValue() https://bugreports.qt.io/browse/QTBUG-56344
     // Due to this, we have to move from native plist to IniFormat
     macMigratePlists();
-#endif
-
-#if !defined(DISABLE_GUI) && defined(Q_OS_UNIX)
-    setupDpi();
 #endif
 
     try {
@@ -169,7 +155,7 @@ int main(int argc, char *argv[])
 
         // Set environment variable
         if (!qputenv("QBITTORRENT", QBT_VERSION))
-            std::cerr << "Couldn't set environment variable...\n";
+            fprintf(stderr, "Couldn't set environment variable...\n");
 
 #ifndef DISABLE_GUI
         if (!userAgreesWithLegalNotice())
@@ -212,6 +198,10 @@ int main(int argc, char *argv[])
         // 3. https://bugreports.qt.io/browse/QTBUG-46015
 
         qputenv("QT_BEARER_POLL_TIMEOUT", QByteArray::number(-1));
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+        // this is the default in Qt6
+        app->setAttribute(Qt::AA_DisableWindowContextHelpButton);
+#endif
 #endif
 
 #if defined(Q_OS_MAC)
@@ -236,7 +226,7 @@ int main(int argc, char *argv[])
 #ifdef DISABLE_GUI
         if (params.shouldDaemonize) {
             app.reset(); // Destroy current application
-            if ((daemon(1, 0) == 0)) {
+            if (daemon(1, 0) == 0) {
                 app.reset(new Application(appId, argc, argv));
                 if (app->isRunning()) {
                     // Another instance had time to start.
@@ -253,9 +243,9 @@ int main(int argc, char *argv[])
             showSplashScreen();
 #endif
 
-#if defined(Q_OS_UNIX) || defined(STACKTRACE_WIN)
         signal(SIGINT, sigNormalHandler);
         signal(SIGTERM, sigNormalHandler);
+#ifdef STACKTRACE
         signal(SIGABRT, sigAbnormalHandler);
         signal(SIGSEGV, sigAbnormalHandler);
 #endif
@@ -269,7 +259,7 @@ int main(int argc, char *argv[])
 }
 
 #if !defined Q_OS_WIN && !defined Q_OS_HAIKU
-void reportToUser(const char* str)
+void reportToUser(const char *str)
 {
     const size_t strLen = strlen(str);
     if (write(STDERR_FILENO, str, strLen) < static_cast<ssize_t>(strLen)) {
@@ -279,7 +269,6 @@ void reportToUser(const char* str)
 }
 #endif
 
-#if defined(Q_OS_UNIX) || defined(STACKTRACE_WIN)
 void sigNormalHandler(int signum)
 {
 #if !defined Q_OS_WIN && !defined Q_OS_HAIKU
@@ -293,6 +282,7 @@ void sigNormalHandler(int signum)
     qApp->exit();  // unsafe, but exit anyway
 }
 
+#ifdef STACKTRACE
 void sigAbnormalHandler(int signum)
 {
     const char *sigName = sysSigName[signum];
@@ -305,47 +295,41 @@ void sigAbnormalHandler(int signum)
     reportToUser(sigName);
     reportToUser("\n");
     print_stacktrace();  // unsafe
-#endif // !defined Q_OS_WIN && !defined Q_OS_HAIKU
-#ifdef STACKTRACE_WIN
-    StraceDlg dlg;  // unsafe
+#endif
+
+#if defined Q_OS_WIN
+    StacktraceDialog dlg;  // unsafe
     dlg.setStacktraceString(QLatin1String(sigName), straceWin::getBacktrace());
     dlg.exec();
-#endif // STACKTRACE_WIN
+#endif
+
     signal(signum, SIG_DFL);
     raise(signum);
 }
-#endif // defined(Q_OS_UNIX) || defined(STACKTRACE_WIN)
+#endif // STACKTRACE
 
 #if !defined(DISABLE_GUI)
 void showSplashScreen()
 {
-    QPixmap splash_img(":/icons/skin/splash.png");
-    QPainter painter(&splash_img);
+    QPixmap splashImg(":/icons/skin/splash.png");
+    QPainter painter(&splashImg);
     QString version = QBT_VERSION;
     painter.setPen(QPen(Qt::white));
     painter.setFont(QFont("Arial", 22, QFont::Black));
     painter.drawText(224 - painter.fontMetrics().width(version), 270, version);
-    QSplashScreen *splash = new QSplashScreen(splash_img);
+    QSplashScreen *splash = new QSplashScreen(splashImg);
     splash->show();
-    QTimer::singleShot(1500, splash, SLOT(deleteLater()));
+    QTimer::singleShot(1500, splash, &QObject::deleteLater);
     qApp->processEvents();
 }
-
-#if defined(Q_OS_UNIX)
-void setupDpi()
-{
-    if (qgetenv("QT_AUTO_SCREEN_SCALE_FACTOR").isEmpty())
-        qputenv("QT_AUTO_SCREEN_SCALE_FACTOR", "1");
-}
-#endif  // Q_OS_UNIX
 #endif  // DISABLE_GUI
 
 void displayVersion()
 {
-    std::cout << qPrintable(qApp->applicationName()) << " " << QBT_VERSION << std::endl;
+    printf("%s %s\n", qUtf8Printable(qApp->applicationName()), QBT_VERSION);
 }
 
-void displayBadArgMessage(const QString& message)
+void displayBadArgMessage(const QString &message)
 {
     QString help = QObject::tr("Run application with -h option to read about command line parameters.");
 #ifdef Q_OS_WIN
@@ -355,24 +339,28 @@ void displayBadArgMessage(const QString& message)
     msgBox.move(Utils::Misc::screenCenter(&msgBox));
     msgBox.exec();
 #else
-    std::cerr << qPrintable(QObject::tr("Bad command line: "));
-    std::cerr << qPrintable(message) << std::endl;
-    std::cerr << qPrintable(help) << std::endl;
+    const QString errMsg = QObject::tr("Bad command line: ") + '\n'
+        + message + '\n'
+        + help + '\n';
+    fprintf(stderr, "%s", qUtf8Printable(errMsg));
 #endif
 }
 
 bool userAgreesWithLegalNotice()
 {
-    Preferences* const pref = Preferences::instance();
+    Preferences *const pref = Preferences::instance();
     if (pref->getAcceptedLegal()) // Already accepted once
         return true;
 
 #ifdef DISABLE_GUI
-    std::cout << std::endl << "*** " << qPrintable(QObject::tr("Legal Notice")) << " ***" << std::endl;
-    std::cout << qPrintable(QObject::tr("qBittorrent is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility.\n\nNo further notices will be issued.")) << std::endl << std::endl;
-    std::cout << qPrintable(QObject::tr("Press %1 key to accept and continue...").arg("'y'")) << std::endl;
+    const QString eula = QString("\n*** %1 ***\n").arg(QObject::tr("Legal Notice"))
+        + QObject::tr("qBittorrent is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility.") + "\n\n"
+        + QObject::tr("No further notices will be issued.") + "\n\n"
+        + QObject::tr("Press %1 key to accept and continue...").arg("'y'") + '\n';
+    printf("%s", qUtf8Printable(eula));
+
     char ret = getchar(); // Read pressed key
-    if (ret == 'y' || ret == 'Y') {
+    if ((ret == 'y') || (ret == 'Y')) {
         // Save the answer
         pref->setAcceptedLegal(true);
         return true;
@@ -382,16 +370,16 @@ bool userAgreesWithLegalNotice()
     msgBox.setText(QObject::tr("qBittorrent is a file sharing program. When you run a torrent, its data will be made available to others by means of upload. Any content you share is your sole responsibility.\n\nNo further notices will be issued."));
     msgBox.setWindowTitle(QObject::tr("Legal notice"));
     msgBox.addButton(QObject::tr("Cancel"), QMessageBox::RejectRole);
-    QAbstractButton *agree_button = msgBox.addButton(QObject::tr("I Agree"), QMessageBox::AcceptRole);
+    QAbstractButton *agreeButton = msgBox.addButton(QObject::tr("I Agree"), QMessageBox::AcceptRole);
     msgBox.show(); // Need to be shown or to moveToCenter does not work
     msgBox.move(Utils::Misc::screenCenter(&msgBox));
     msgBox.exec();
-    if (msgBox.clickedButton() == agree_button) {
+    if (msgBox.clickedButton() == agreeButton) {
         // Save the answer
         pref->setAcceptedLegal(true);
         return true;
     }
-#endif
+#endif // DISABLE_GUI
 
     return false;
 }

@@ -1,7 +1,7 @@
 /*
- * Bittorrent Client using Qt4 and libtorrent.
- * Copyright (C) 2006  Christophe Dumez
- * Copyright (C) 2014  sledgehammer999
+ * Bittorrent Client using Qt and libtorrent.
+ * Copyright (C) 2014  sledgehammer999 <hammered999@gmail.com>
+ * Copyright (C) 2006  Christophe Dumez <chris@qbittorrent.org>
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -25,9 +25,6 @@
  * modify file(s), you may extend this exception to your version of the file(s),
  * but you are not obligated to do so. If you do not wish to do so, delete this
  * exception statement from your version.
- *
- * Contact : chris@qbittorrent.org
- * Contact : hammered999@gmail.com
  */
 
 #include "preferences.h"
@@ -35,7 +32,7 @@
 #include <QCryptographicHash>
 #include <QDir>
 #include <QLocale>
-#include <QPair>
+#include <QMutableListIterator>
 #include <QSettings>
 
 #ifndef DISABLE_GUI
@@ -46,7 +43,7 @@
 
 #ifdef Q_OS_WIN
 #include <shlobj.h>
-#include <winreg.h>
+#include <QRegularExpression>
 #endif
 
 #ifdef Q_OS_MAC
@@ -58,7 +55,7 @@
 #include "utils/fs.h"
 #include "utils/misc.h"
 
-Preferences *Preferences::m_instance = 0;
+Preferences *Preferences::m_instance = nullptr;
 
 Preferences::Preferences() = default;
 
@@ -77,7 +74,7 @@ void Preferences::freeInstance()
 {
     if (m_instance) {
         delete m_instance;
-        m_instance = 0;
+        m_instance = nullptr;
     }
 }
 
@@ -94,7 +91,8 @@ void Preferences::setValue(const QString &key, const QVariant &value)
 // General options
 QString Preferences::getLocale() const
 {
-    return value("Preferences/General/Locale", QLocale::system().name()).toString();
+    const QString localeName = value("Preferences/General/Locale").toString();
+    return (localeName.isEmpty() ? QLocale::system().name() : localeName);
 }
 
 void Preferences::setLocale(const QString &locale)
@@ -185,6 +183,16 @@ void Preferences::setMinimizeToTray(bool b)
     setValue("Preferences/General/MinimizeToTray", b);
 }
 
+bool Preferences::minimizeToTrayNotified() const
+{
+    return value("Preferences/General/MinimizeToTrayNotified", false).toBool();
+}
+
+void Preferences::setMinimizeToTrayNotified(bool b)
+{
+    setValue("Preferences/General/MinimizeToTrayNotified", b);
+}
+
 bool Preferences::closeToTray() const
 {
     return value("Preferences/General/CloseToTray", true).toBool();
@@ -193,6 +201,16 @@ bool Preferences::closeToTray() const
 void Preferences::setCloseToTray(bool b)
 {
     setValue("Preferences/General/CloseToTray", b);
+}
+
+bool Preferences::closeToTrayNotified() const
+{
+    return value("Preferences/General/CloseToTrayNotified", false).toBool();
+}
+
+void Preferences::setCloseToTrayNotified(bool b)
+{
+    setValue("Preferences/General/CloseToTrayNotified", b);
 }
 #endif
 
@@ -237,14 +255,24 @@ void Preferences::setSplashScreenDisabled(bool b)
 }
 
 // Preventing from system suspend while active torrents are presented.
-bool Preferences::preventFromSuspend() const
+bool Preferences::preventFromSuspendWhenDownloading() const
 {
-    return value("Preferences/General/PreventFromSuspend", false).toBool();
+    return value("Preferences/General/PreventFromSuspendWhenDownloading", false).toBool();
 }
 
-void Preferences::setPreventFromSuspend(bool b)
+void Preferences::setPreventFromSuspendWhenDownloading(bool b)
 {
-    setValue("Preferences/General/PreventFromSuspend", b);
+    setValue("Preferences/General/PreventFromSuspendWhenDownloading", b);
+}
+
+bool Preferences::preventFromSuspendWhenSeeding() const
+{
+    return value("Preferences/General/PreventFromSuspendWhenSeeding", false).toBool();
+}
+
+void Preferences::setPreventFromSuspendWhenSeeding(bool b)
+{
+    setValue("Preferences/General/PreventFromSuspendWhenSeeding", b);
 }
 
 #ifdef Q_OS_WIN
@@ -258,8 +286,8 @@ void Preferences::setWinStartup(bool b)
 {
     QSettings settings("HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Run", QSettings::NativeFormat);
     if (b) {
-        const QString bin_path = "\"" + Utils::Fs::toNativePath(qApp->applicationFilePath()) + "\"";
-        settings.setValue("qBittorrent", bin_path);
+        const QString binPath = '"' + Utils::Fs::toNativePath(qApp->applicationFilePath()) + '"';
+        settings.setValue("qBittorrent", binPath);
     }
     else {
         settings.remove("qBittorrent");
@@ -419,12 +447,12 @@ void Preferences::setSchedulerEndTime(const QTime &time)
     setValue("Preferences/Scheduler/end_time", time);
 }
 
-scheduler_days Preferences::getSchedulerDays() const
+SchedulerDays Preferences::getSchedulerDays() const
 {
-    return static_cast<scheduler_days>(value("Preferences/Scheduler/days", EVERY_DAY).toInt());
+    return static_cast<SchedulerDays>(value("Preferences/Scheduler/days", EVERY_DAY).toInt());
 }
 
-void Preferences::setSchedulerDays(scheduler_days days)
+void Preferences::setSchedulerDays(SchedulerDays days)
 {
     setValue("Preferences/Scheduler/days", static_cast<int>(days));
 }
@@ -487,18 +515,22 @@ QList<Utils::Net::Subnet> Preferences::getWebUiAuthSubnetWhitelist() const
     return subnets;
 }
 
-void Preferences::setWebUiAuthSubnetWhitelist(const QList<Utils::Net::Subnet> &subnets)
+void Preferences::setWebUiAuthSubnetWhitelist(QStringList subnets)
 {
-    QStringList subnetsStringList;
-    for (const Utils::Net::Subnet &subnet : subnets)
-        subnetsStringList.append(Utils::Net::subnetToString(subnet));
+    QMutableListIterator<QString> i(subnets);
+    while (i.hasNext()) {
+        bool ok = false;
+        const Utils::Net::Subnet subnet = Utils::Net::parseSubnet(i.next().trimmed(), &ok);
+        if (!ok)
+            i.remove();
+    }
 
-    setValue("Preferences/WebUI/AuthSubnetWhitelist", subnetsStringList);
+    setValue("Preferences/WebUI/AuthSubnetWhitelist", subnets);
 }
 
 QString Preferences::getServerDomains() const
 {
-    return value("Preferences/WebUI/ServerDomains", "*").toString();
+    return value("Preferences/WebUI/ServerDomains", QChar('*')).toString();
 }
 
 void Preferences::setServerDomains(const QString &str)
@@ -508,7 +540,7 @@ void Preferences::setServerDomains(const QString &str)
 
 QString Preferences::getWebUiAddress() const
 {
-    return value("Preferences/WebUI/Address", "*").toString().trimmed();
+    return value("Preferences/WebUI/Address", QChar('*')).toString().trimmed();
 }
 
 void Preferences::setWebUiAddress(const QString &addr)
@@ -552,26 +584,46 @@ void Preferences::setWebUiUsername(const QString &username)
 
 QString Preferences::getWebUiPassword() const
 {
-    QString pass_ha1 = value("Preferences/WebUI/Password_ha1").toString();
-    if (pass_ha1.isEmpty()) {
+    QString passHa1 = value("Preferences/WebUI/Password_ha1").toString();
+    if (passHa1.isEmpty()) {
         QCryptographicHash md5(QCryptographicHash::Md5);
         md5.addData("adminadmin");
-        pass_ha1 = md5.result().toHex();
+        passHa1 = md5.result().toHex();
     }
-    return pass_ha1;
+    return passHa1;
 }
 
-void Preferences::setWebUiPassword(const QString &new_password)
+void Preferences::setWebUiPassword(const QString &newPassword)
 {
     // Do not overwrite current password with its hash
-    if (new_password == getWebUiPassword())
+    if (newPassword == getWebUiPassword())
         return;
 
     // Encode to md5 and save
     QCryptographicHash md5(QCryptographicHash::Md5);
-    md5.addData(new_password.toLocal8Bit());
+    md5.addData(newPassword.toLocal8Bit());
 
     setValue("Preferences/WebUI/Password_ha1", md5.result().toHex());
+}
+
+bool Preferences::isWebUiClickjackingProtectionEnabled() const
+{
+    return value("Preferences/WebUI/ClickjackingProtection", true).toBool();
+}
+
+void Preferences::setWebUiClickjackingProtectionEnabled(bool enabled)
+{
+    setValue("Preferences/WebUI/ClickjackingProtection", enabled);
+}
+
+bool Preferences::isWebUiCSRFProtectionEnabled() const
+{
+    return value("Preferences/WebUI/CSRFProtection", true).toBool();
+}
+
+void Preferences::setWebUiCSRFProtectionEnabled(bool enabled)
+{
+    setValue("Preferences/WebUI/CSRFProtection", enabled);
 }
 
 bool Preferences::isWebUiHttpsEnabled() const
@@ -602,6 +654,26 @@ QByteArray Preferences::getWebUiHttpsKey() const
 void Preferences::setWebUiHttpsKey(const QByteArray &data)
 {
     setValue("Preferences/WebUI/HTTPS/Key", data);
+}
+
+bool Preferences::isAltWebUiEnabled() const
+{
+    return value("Preferences/WebUI/AlternativeUIEnabled", false).toBool();
+}
+
+void Preferences::setAltWebUiEnabled(bool enabled)
+{
+    setValue("Preferences/WebUI/AlternativeUIEnabled", enabled);
+}
+
+QString Preferences::getWebUiRootFolder() const
+{
+    return value("Preferences/WebUI/RootFolder").toString();
+}
+
+void Preferences::setWebUiRootFolder(const QString &path)
+{
+    setValue("Preferences/WebUI/RootFolder", path);
 }
 
 bool Preferences::isDynDNSEnabled() const
@@ -665,12 +737,12 @@ QString Preferences::getUILockPasswordMD5() const
     return value("Locking/password").toString();
 }
 
-void Preferences::setUILockPassword(const QString &clear_password)
+void Preferences::setUILockPassword(const QString &clearPassword)
 {
     QCryptographicHash md5(QCryptographicHash::Md5);
-    md5.addData(clear_password.toLocal8Bit());
-    QString md5_password = md5.result().toHex();
-    setValue("Locking/password", md5_password);
+    md5.addData(clearPassword.toLocal8Bit());
+    QString md5Password = md5.result().toHex();
+    setValue("Locking/password", md5Password);
 }
 
 bool Preferences::isUILocked() const
@@ -806,153 +878,6 @@ void Preferences::disableRecursiveDownload(bool disable)
 }
 
 #ifdef Q_OS_WIN
-namespace
-{
-    enum REG_SEARCH_TYPE
-    {
-        USER,
-        SYSTEM_32BIT,
-        SYSTEM_64BIT
-    };
-
-    QStringList getRegSubkeys(HKEY handle)
-    {
-        QStringList keys;
-
-        DWORD cSubKeys = 0;
-        DWORD cMaxSubKeyLen = 0;
-        LONG res = ::RegQueryInfoKeyW(handle, NULL, NULL, NULL, &cSubKeys, &cMaxSubKeyLen, NULL, NULL, NULL, NULL, NULL, NULL);
-
-        if (res == ERROR_SUCCESS) {
-            cMaxSubKeyLen++; // For null character
-            LPWSTR lpName = new WCHAR[cMaxSubKeyLen];
-            DWORD cName;
-
-            for (DWORD i = 0; i < cSubKeys; ++i) {
-                cName = cMaxSubKeyLen;
-                res = ::RegEnumKeyExW(handle, i, lpName, &cName, NULL, NULL, NULL, NULL);
-                if (res == ERROR_SUCCESS)
-                    keys.push_back(QString::fromWCharArray(lpName));
-            }
-
-            delete[] lpName;
-        }
-
-        return keys;
-    }
-
-    QString getRegValue(HKEY handle, const QString &name = QString())
-    {
-        QString result;
-
-        DWORD type = 0;
-        DWORD cbData = 0;
-        LPWSTR lpValueName = NULL;
-        if (!name.isEmpty()) {
-            lpValueName = new WCHAR[name.size() + 1];
-            name.toWCharArray(lpValueName);
-            lpValueName[name.size()] = 0;
-        }
-
-        // Discover the size of the value
-        ::RegQueryValueExW(handle, lpValueName, NULL, &type, NULL, &cbData);
-        DWORD cBuffer = (cbData / sizeof(WCHAR)) + 1;
-        LPWSTR lpData = new WCHAR[cBuffer];
-        LONG res = ::RegQueryValueExW(handle, lpValueName, NULL, &type, (LPBYTE)lpData, &cbData);
-        if (lpValueName)
-            delete[] lpValueName;
-
-        if (res == ERROR_SUCCESS) {
-            lpData[cBuffer - 1] = 0;
-            result = QString::fromWCharArray(lpData);
-        }
-        delete[] lpData;
-
-        return result;
-    }
-
-    QString pythonSearchReg(const REG_SEARCH_TYPE type)
-    {
-        HKEY hkRoot;
-        if (type == USER)
-            hkRoot = HKEY_CURRENT_USER;
-        else
-            hkRoot = HKEY_LOCAL_MACHINE;
-
-        REGSAM samDesired = KEY_READ;
-        if (type == SYSTEM_32BIT)
-            samDesired |= KEY_WOW64_32KEY;
-        else if (type == SYSTEM_64BIT)
-            samDesired |= KEY_WOW64_64KEY;
-
-        QString path;
-        LONG res = 0;
-        HKEY hkPythonCore;
-        res = ::RegOpenKeyExW(hkRoot, L"SOFTWARE\\Python\\PythonCore", 0, samDesired, &hkPythonCore);
-
-        if (res == ERROR_SUCCESS) {
-            QStringList versions = getRegSubkeys(hkPythonCore);
-            qDebug("Python versions nb: %d", versions.size());
-            versions.sort();
-
-            bool found = false;
-            while (!found && !versions.empty()) {
-                const QString version = versions.takeLast() + "\\InstallPath";
-                LPWSTR lpSubkey = new WCHAR[version.size() + 1];
-                version.toWCharArray(lpSubkey);
-                lpSubkey[version.size()] = 0;
-
-                HKEY hkInstallPath;
-                res = ::RegOpenKeyExW(hkPythonCore, lpSubkey, 0, samDesired, &hkInstallPath);
-                delete[] lpSubkey;
-
-                if (res == ERROR_SUCCESS) {
-                    qDebug("Detected possible Python v%s location", qUtf8Printable(version));
-                    path = getRegValue(hkInstallPath);
-                    ::RegCloseKey(hkInstallPath);
-
-                    if (!path.isEmpty() && QDir(path).exists("python.exe")) {
-                        qDebug("Found python.exe at %s", qUtf8Printable(path));
-                        found = true;
-                    }
-                }
-            }
-
-            if (!found)
-                path = QString();
-
-            ::RegCloseKey(hkPythonCore);
-        }
-
-        return path;
-    }
-}
-
-QString Preferences::getPythonPath()
-{
-    QString path = pythonSearchReg(USER);
-    if (!path.isEmpty())
-        return path;
-
-    path = pythonSearchReg(SYSTEM_32BIT);
-    if (!path.isEmpty())
-        return path;
-
-    path = pythonSearchReg(SYSTEM_64BIT);
-    if (!path.isEmpty())
-        return path;
-
-    // Fallback: Detect python from default locations
-    const QStringList dirs = QDir("C:/").entryList(QStringList("Python*"), QDir::Dirs, QDir::Name | QDir::Reversed);
-    foreach (const QString &dir, dirs) {
-        const QString path("C:/" + dir + "/");
-        if (QFile::exists(path + "python.exe"))
-            return path;
-    }
-
-    return QString();
-}
-
 bool Preferences::neverCheckFileAssoc() const
 {
     return value("Preferences/Win32/NeverCheckFileAssocation", false).toBool();
@@ -979,13 +904,14 @@ bool Preferences::isMagnetLinkAssocSet()
     QSettings settings("HKEY_CURRENT_USER\\Software\\Classes", QSettings::NativeFormat);
 
     // Check magnet link assoc
-    QRegExp exe_reg("\"([^\"]+)\".*");
-    QString shell_command = Utils::Fs::toNativePath(settings.value("magnet/shell/open/command/Default", "").toString());
-    if (exe_reg.indexIn(shell_command) < 0)
+    const QString shellCommand = Utils::Fs::toNativePath(settings.value("magnet/shell/open/command/Default", "").toString());
+
+    const QRegularExpressionMatch exeRegMatch = QRegularExpression("\"([^\"]+)\".*").match(shellCommand);
+    if (!exeRegMatch.hasMatch())
         return false;
-    QString assoc_exe = exe_reg.cap(1);
-    qDebug("exe: %s", qUtf8Printable(assoc_exe));
-    if (assoc_exe.compare(Utils::Fs::toNativePath(qApp->applicationFilePath()), Qt::CaseInsensitive) != 0)
+
+    const QString assocExe = exeRegMatch.captured(1);
+    if (assocExe.compare(Utils::Fs::toNativePath(qApp->applicationFilePath()), Qt::CaseInsensitive) != 0)
         return false;
 
     return true;
@@ -997,9 +923,9 @@ void Preferences::setTorrentFileAssoc(bool set)
 
     // .Torrent association
     if (set) {
-        QString old_progid = settings.value(".torrent/Default").toString();
-        if (!old_progid.isEmpty() && (old_progid != "qBittorrent"))
-            settings.setValue(".torrent/OpenWithProgids/" + old_progid, "");
+        QString oldProgId = settings.value(".torrent/Default").toString();
+        if (!oldProgId.isEmpty() && (oldProgId != "qBittorrent"))
+            settings.setValue(".torrent/OpenWithProgids/" + oldProgId, "");
         settings.setValue(".torrent/Default", "qBittorrent");
     }
     else if (isTorrentFileAssocSet()) {
@@ -1015,15 +941,15 @@ void Preferences::setMagnetLinkAssoc(bool set)
 
     // Magnet association
     if (set) {
-        const QString command_str = "\"" + qApp->applicationFilePath() + "\" \"%1\"";
-        const QString icon_str = "\"" + qApp->applicationFilePath() + "\",1";
+        const QString commandStr = '"' + qApp->applicationFilePath() + "\" \"%1\"";
+        const QString iconStr = '"' + qApp->applicationFilePath() + "\",1";
 
         settings.setValue("magnet/Default", "URL:Magnet link");
         settings.setValue("magnet/Content Type", "application/x-magnet");
         settings.setValue("magnet/URL Protocol", "");
-        settings.setValue("magnet/DefaultIcon/Default", Utils::Fs::toNativePath(icon_str));
+        settings.setValue("magnet/DefaultIcon/Default", Utils::Fs::toNativePath(iconStr));
         settings.setValue("magnet/shell/Default", "open");
-        settings.setValue("magnet/shell/open/command/Default", Utils::Fs::toNativePath(command_str));
+        settings.setValue("magnet/shell/open/command/Default", Utils::Fs::toNativePath(commandStr));
     }
     else if (isMagnetLinkAssocSet()) {
         settings.remove("magnet");
@@ -1216,9 +1142,9 @@ void Preferences::setMainLastDir(const QString &path)
     setValue("MainWindowLastDir", path);
 }
 
-QSize Preferences::getPrefSize(const QSize &defaultSize) const
+QSize Preferences::getPrefSize() const
 {
-    return value("Preferences/State/size", defaultSize).toSize();
+    return value("Preferences/State/size").toSize();
 }
 
 void Preferences::setPrefSize(const QSize &size)
@@ -1296,9 +1222,9 @@ void Preferences::setPropTrackerListState(const QByteArray &state)
     setValue("TorrentProperties/Trackers/qt5/TrackerListState", state);
 }
 
-QSize Preferences::getRssGeometrySize(const QSize &defaultSize) const
+QSize Preferences::getRssGeometrySize() const
 {
-    return value("RssFeedDownloader/geometrySize", defaultSize).toSize();
+    return value("RssFeedDownloader/geometrySize").toSize();
 }
 
 void Preferences::setRssGeometrySize(const QSize &geometry)
@@ -1354,6 +1280,16 @@ QByteArray Preferences::getSearchTabHeaderState() const
 void Preferences::setSearchTabHeaderState(const QByteArray &state)
 {
     setValue("SearchTab/qt5/HeaderState", state);
+}
+
+bool Preferences::getRegexAsFilteringPatternForSearchJob() const
+{
+    return value("SearchTab/UseRegexAsFilteringPattern", false).toBool();
+}
+
+void Preferences::setRegexAsFilteringPatternForSearchJob(const bool checked)
+{
+    setValue("SearchTab/UseRegexAsFilteringPattern", checked);
 }
 
 QStringList Preferences::getSearchEngDisabled() const
@@ -1446,6 +1382,16 @@ void Preferences::setTransHeaderState(const QByteArray &state)
     setValue("TransferList/qt5/HeaderState", state);
 }
 
+bool Preferences::getRegexAsFilteringPatternForTransferList() const
+{
+    return value("TransferList/UseRegexAsFilteringPattern", false).toBool();
+}
+
+void Preferences::setRegexAsFilteringPatternForTransferList(const bool checked)
+{
+    setValue("TransferList/UseRegexAsFilteringPattern", checked);
+}
+
 // From old RssSettings class
 bool Preferences::isRSSWidgetEnabled() const
 {
@@ -1486,6 +1432,16 @@ void Preferences::setNetworkCookies(const QList<QNetworkCookie> &cookies)
     setValue("Network/Cookies", rawCookies);
 }
 
+bool Preferences::isSpeedWidgetEnabled() const
+{
+    return value("SpeedWidget/Enabled", true).toBool();
+}
+
+void Preferences::setSpeedWidgetEnabled(bool enabled)
+{
+    setValue("SpeedWidget/Enabled", enabled);
+}
+
 int Preferences::getSpeedWidgetPeriod() const
 {
     return value("SpeedWidget/period", 1).toInt();
@@ -1509,6 +1465,8 @@ void Preferences::setSpeedWidgetGraphEnable(int id, const bool enable)
 
 void Preferences::upgrade()
 {
+    SettingsStorage *settingsStorage = SettingsStorage::instance();
+
     QStringList labels = value("TransferListFilters/customLabels").toStringList();
     if (!labels.isEmpty()) {
         QVariantMap categories = value("BitTorrent/Session/Categories").toMap();
@@ -1517,10 +1475,17 @@ void Preferences::upgrade()
                 categories[label] = "";
         }
         setValue("BitTorrent/Session/Categories", categories);
-        SettingsStorage::instance()->removeValue("TransferListFilters/customLabels");
+        settingsStorage->removeValue("TransferListFilters/customLabels");
     }
 
-    SettingsStorage::instance()->removeValue("Preferences/Downloads/AppendLabel");
+    settingsStorage->removeValue("Preferences/Downloads/AppendLabel");
+
+    // Inhibit sleep based on running downloads/available seeds rather than network activity.
+    if (value("Preferences/General/PreventFromSuspend", false).toBool()) {
+        setPreventFromSuspendWhenDownloading(true);
+        setPreventFromSuspendWhenSeeding(true);
+    }
+    settingsStorage->removeValue("Preferences/General/PreventFromSuspend");
 }
 
 void Preferences::apply()

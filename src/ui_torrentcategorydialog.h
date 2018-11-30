@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'torrentcategorydialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,13 +10,10 @@
 #define UI_TORRENTCATEGORYDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QGridLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QSpacerItem>
@@ -100,9 +97,9 @@ public:
 
     void retranslateUi(QDialog *TorrentCategoryDialog)
     {
-        TorrentCategoryDialog->setWindowTitle(QApplication::translate("TorrentCategoryDialog", "Torrent Category Properties", Q_NULLPTR));
-        labelCategoryName->setText(QApplication::translate("TorrentCategoryDialog", "Name:", Q_NULLPTR));
-        labelSavePath->setText(QApplication::translate("TorrentCategoryDialog", "Save path:", Q_NULLPTR));
+        TorrentCategoryDialog->setWindowTitle(QApplication::translate("TorrentCategoryDialog", "Torrent Category Properties", nullptr));
+        labelCategoryName->setText(QApplication::translate("TorrentCategoryDialog", "Name:", nullptr));
+        labelSavePath->setText(QApplication::translate("TorrentCategoryDialog", "Save path:", nullptr));
     } // retranslateUi
 
 };

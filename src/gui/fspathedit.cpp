@@ -30,6 +30,7 @@
 
 #include <QAction>
 #include <QApplication>
+#include <QCoreApplication>
 #include <QFileDialog>
 #include <QHBoxLayout>
 #include <QStyle>
@@ -47,7 +48,7 @@ namespace
 
         QString tr() const
         {
-            return QObject::tr(source, comment);
+            return QCoreApplication::translate("FileSystemPathEdit", source, comment);
         }
     };
 
@@ -154,7 +155,9 @@ void FileSystemPathEdit::FileSystemPathEditPrivate::modeChanged()
     switch (m_mode) {
     case FileSystemPathEdit::Mode::FileOpen:
     case FileSystemPathEdit::Mode::FileSave:
-        pixmap = QStyle::SP_DialogOpenButton;
+#ifdef Q_OS_WIN
+        pixmap = QStyle::SP_DirOpenIcon;
+#endif
         showDirsOnly = false;
         break;
     case FileSystemPathEdit::Mode::DirectoryOpen:
@@ -186,7 +189,7 @@ FileSystemPathEdit::FileSystemPathEdit(Private::FileEditorWithCompletion *editor
     layout->addWidget(editor->widget());
     layout->addWidget(d->m_browseBtn);
 
-    connect(d->m_browseAction, &QAction::triggered, [this]() {this->d_func()->browseActionTriggered();});
+    connect(d->m_browseAction, &QAction::triggered, this, [this]() { this->d_func()->browseActionTriggered(); });
 }
 
 FileSystemPathEdit::~FileSystemPathEdit() = default;

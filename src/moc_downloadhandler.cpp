@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'downloadhandler.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'downloadhandler.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -107,31 +107,30 @@ void Net::DownloadHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (DownloadHandler::*_t)(const QString & , const QByteArray & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DownloadHandler::downloadFinished)) {
+            using _t = void (DownloadHandler::*)(const QString & , const QByteArray & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&DownloadHandler::downloadFinished)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (DownloadHandler::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DownloadHandler::downloadFinished)) {
+            using _t = void (DownloadHandler::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&DownloadHandler::downloadFinished)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (DownloadHandler::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DownloadHandler::downloadFailed)) {
+            using _t = void (DownloadHandler::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&DownloadHandler::downloadFailed)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (DownloadHandler::*_t)(const QString & , const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&DownloadHandler::redirectedToMagnet)) {
+            using _t = void (DownloadHandler::*)(const QString & , const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&DownloadHandler::redirectedToMagnet)) {
                 *result = 3;
                 return;
             }
@@ -139,7 +138,7 @@ void Net::DownloadHandler::qt_static_metacall(QObject *_o, QMetaObject::Call _c,
     }
 }
 
-const QMetaObject Net::DownloadHandler::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Net::DownloadHandler::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_Net__DownloadHandler.data,
       qt_meta_data_Net__DownloadHandler,  qt_static_metacall, nullptr, nullptr}
 };

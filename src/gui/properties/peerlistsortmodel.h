@@ -30,7 +30,6 @@
 #define PEERLISTSORTMODEL_H
 
 #include <QSortFilterProxyModel>
-#include <QStringList>
 
 #include "peerlistdelegate.h"
 
@@ -50,13 +49,15 @@ protected:
         switch (sortColumn()) {
         case PeerListDelegate::IP:
         case PeerListDelegate::CLIENT: {
-                QString vL = left.data().toString();
-                QString vR = right.data().toString();
-                return Utils::String::naturalCompareCaseInsensitive(vL, vR);
+                const QString strL = left.data().toString();
+                const QString strR = right.data().toString();
+                const int result = Utils::String::naturalCompare(strL, strR, Qt::CaseInsensitive);
+                return (result < 0);
             }
+            break;
+        default:
+            return QSortFilterProxyModel::lessThan(left, right);
         };
-
-        return QSortFilterProxyModel::lessThan(left, right);
     }
 };
 

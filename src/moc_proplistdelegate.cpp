@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'proplistdelegate.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'proplistdelegate.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_PropListDelegate_t {
-    QByteArrayData data[12];
-    char stringdata0[149];
+    QByteArrayData data[13];
+    char stringdata0[161];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,17 +39,18 @@ QT_MOC_LITERAL(4, 52, 8), // "QWidget*"
 QT_MOC_LITERAL(5, 61, 6), // "editor"
 QT_MOC_LITERAL(6, 68, 19), // "QAbstractItemModel*"
 QT_MOC_LITERAL(7, 88, 5), // "model"
-QT_MOC_LITERAL(8, 94, 5), // "index"
-QT_MOC_LITERAL(9, 100, 20), // "updateEditorGeometry"
-QT_MOC_LITERAL(10, 121, 20), // "QStyleOptionViewItem"
-QT_MOC_LITERAL(11, 142, 6) // "option"
+QT_MOC_LITERAL(8, 94, 11), // "QModelIndex"
+QT_MOC_LITERAL(9, 106, 5), // "index"
+QT_MOC_LITERAL(10, 112, 20), // "updateEditorGeometry"
+QT_MOC_LITERAL(11, 133, 20), // "QStyleOptionViewItem"
+QT_MOC_LITERAL(12, 154, 6) // "option"
 
     },
     "PropListDelegate\0filteredFilesChanged\0"
     "\0setModelData\0QWidget*\0editor\0"
-    "QAbstractItemModel*\0model\0index\0"
-    "updateEditorGeometry\0QStyleOptionViewItem\0"
-    "option"
+    "QAbstractItemModel*\0model\0QModelIndex\0"
+    "index\0updateEditorGeometry\0"
+    "QStyleOptionViewItem\0option"
 };
 #undef QT_MOC_LITERAL
 
@@ -71,14 +72,14 @@ static const uint qt_meta_data_PropListDelegate[] = {
 
  // slots: name, argc, parameters, tag, flags
        3,    3,   30,    2, 0x0a /* Public */,
-       9,    3,   37,    2, 0x0a /* Public */,
+      10,    3,   37,    2, 0x0a /* Public */,
 
  // signals: parameters
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 6, QMetaType::QModelIndex,    5,    7,    8,
-    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 10, QMetaType::QModelIndex,    5,   11,    2,
+    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 6, 0x80000000 | 8,    5,    7,    9,
+    QMetaType::Void, 0x80000000 | 4, 0x80000000 | 11, 0x80000000 | 8,    5,   12,    2,
 
        0        // eod
 };
@@ -116,10 +117,9 @@ void PropListDelegate::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (PropListDelegate::*_t)() const;
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&PropListDelegate::filteredFilesChanged)) {
+            using _t = void (PropListDelegate::*)() const;
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&PropListDelegate::filteredFilesChanged)) {
                 *result = 0;
                 return;
             }
@@ -127,7 +127,7 @@ void PropListDelegate::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int
     }
 }
 
-const QMetaObject PropListDelegate::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject PropListDelegate::staticMetaObject = {
     { &QItemDelegate::staticMetaObject, qt_meta_stringdata_PropListDelegate.data,
       qt_meta_data_PropListDelegate,  qt_static_metacall, nullptr, nullptr}
 };

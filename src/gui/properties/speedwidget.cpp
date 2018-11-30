@@ -33,15 +33,14 @@
 #include <QLabel>
 #include <QMenu>
 #include <QSignalMapper>
-#include <QThread>
 #include <QTimer>
 
 #include <libtorrent/session_status.hpp>
 
-#include "propertieswidget.h"
 #include "base/bittorrent/session.h"
 #include "base/bittorrent/sessionstatus.h"
 #include "base/preferences.h"
+#include "propertieswidget.h"
 
 ComboBoxMenuButton::ComboBoxMenuButton(QWidget *parent, QMenu *menu)
     : QComboBox(parent)
@@ -61,6 +60,7 @@ SpeedWidget::SpeedWidget(PropertiesWidget *parent)
 {
     m_layout = new QVBoxLayout(this);
     m_layout->setContentsMargins(0, 0, 0, 0);
+    m_layout->setSpacing(3);
 
     m_hlayout = new QHBoxLayout();
     m_hlayout->setContentsMargins(0, 0, 0, 0);
@@ -136,7 +136,7 @@ void SpeedWidget::update()
     const BitTorrent::SessionStatus &btStatus = BitTorrent::Session::instance()->status();
 
     SpeedPlotView::PointData point;
-    point.x = QDateTime::currentDateTime().toTime_t();
+    point.x = QDateTime::currentMSecsSinceEpoch() / 1000;
     point.y[SpeedPlotView::UP] = btStatus.uploadRate;
     point.y[SpeedPlotView::DOWN] = btStatus.downloadRate;
     point.y[SpeedPlotView::PAYLOAD_UP] = btStatus.payloadUploadRate;

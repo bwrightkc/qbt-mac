@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'preferences.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'preferences.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -101,10 +101,9 @@ void Preferences::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (Preferences::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&Preferences::changed)) {
+            using _t = void (Preferences::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&Preferences::changed)) {
                 *result = 0;
                 return;
             }
@@ -112,7 +111,7 @@ void Preferences::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
     }
 }
 
-const QMetaObject Preferences::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Preferences::staticMetaObject = {
     { &QObject::staticMetaObject, qt_meta_stringdata_Preferences.data,
       qt_meta_data_Preferences,  qt_static_metacall, nullptr, nullptr}
 };

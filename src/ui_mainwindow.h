@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -12,8 +12,6 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QMainWindow>
 #include <QtWidgets/QMenu>
 #include <QtWidgets/QMenuBar>
@@ -70,6 +68,7 @@ public:
     QAction *actionInformationMessages;
     QAction *actionWarningMessages;
     QAction *actionCriticalMessages;
+    QAction *actionCloseWindow;
     QWidget *centralWidget;
     QVBoxLayout *centralWidgetLayout;
     QMenuBar *menubar;
@@ -199,6 +198,8 @@ public:
         actionCriticalMessages = new QAction(MainWindow);
         actionCriticalMessages->setObjectName(QStringLiteral("actionCriticalMessages"));
         actionCriticalMessages->setCheckable(true);
+        actionCloseWindow = new QAction(MainWindow);
+        actionCloseWindow->setObjectName(QStringLiteral("actionCloseWindow"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QStringLiteral("centralWidget"));
         centralWidgetLayout = new QVBoxLayout(centralWidget);
@@ -267,6 +268,7 @@ public:
         menuAutoShutdownOnDownloadsCompletion->addAction(actionAutoShutdown);
         menuFile->addAction(actionOpen);
         menuFile->addAction(actionDownloadFromURL);
+        menuFile->addAction(actionCloseWindow);
         menuFile->addSeparator();
         menuFile->addAction(actionExit);
         menuView->addSeparator();
@@ -308,76 +310,77 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        actionOpen->setText(QApplication::translate("MainWindow", "&Add Torrent File...", Q_NULLPTR));
-        actionOpen->setIconText(QApplication::translate("MainWindow", "Open", Q_NULLPTR));
-        actionExit->setText(QApplication::translate("MainWindow", "E&xit", Q_NULLPTR));
-        actionOptions->setText(QApplication::translate("MainWindow", "&Options...", Q_NULLPTR));
-        actionAbout->setText(QApplication::translate("MainWindow", "&About", Q_NULLPTR));
-        actionStart->setText(QApplication::translate("MainWindow", "&Resume", Q_NULLPTR));
-        actionPause->setText(QApplication::translate("MainWindow", "&Pause", Q_NULLPTR));
-        actionStartAll->setText(QApplication::translate("MainWindow", "R&esume All", Q_NULLPTR));
-        actionPauseAll->setText(QApplication::translate("MainWindow", "P&ause All", Q_NULLPTR));
-        actionDelete->setText(QApplication::translate("MainWindow", "&Delete", Q_NULLPTR));
-        actionDownloadFromURL->setText(QApplication::translate("MainWindow", "Add Torrent &Link...", Q_NULLPTR));
-        actionDownloadFromURL->setIconText(QApplication::translate("MainWindow", "Open URL", Q_NULLPTR));
-        actionCreateTorrent->setText(QApplication::translate("MainWindow", "Torrent &Creator", Q_NULLPTR));
-        actionSetUploadLimit->setText(QApplication::translate("MainWindow", "Set Upload Limit...", Q_NULLPTR));
-        actionSetDownloadLimit->setText(QApplication::translate("MainWindow", "Set Download Limit...", Q_NULLPTR));
-        actionDocumentation->setText(QApplication::translate("MainWindow", "&Documentation", Q_NULLPTR));
-        actionSetGlobalDownloadLimit->setText(QApplication::translate("MainWindow", "Set Global Download Limit...", Q_NULLPTR));
-        actionSetGlobalUploadLimit->setText(QApplication::translate("MainWindow", "Set Global Upload Limit...", Q_NULLPTR));
-        actionBottomPriority->setText(QApplication::translate("MainWindow", "Minimum Priority", Q_NULLPTR));
-        actionTopPriority->setText(QApplication::translate("MainWindow", "Top Priority", Q_NULLPTR));
-        actionDecreasePriority->setText(QApplication::translate("MainWindow", "Decrease Priority", Q_NULLPTR));
-        actionIncreasePriority->setText(QApplication::translate("MainWindow", "Increase Priority", Q_NULLPTR));
-        actionUseAlternativeSpeedLimits->setText(QApplication::translate("MainWindow", "Alternative Speed Limits", Q_NULLPTR));
+        actionOpen->setText(QApplication::translate("MainWindow", "&Add Torrent File...", nullptr));
+        actionOpen->setIconText(QApplication::translate("MainWindow", "Open", nullptr));
+        actionExit->setText(QApplication::translate("MainWindow", "E&xit", nullptr));
+        actionOptions->setText(QApplication::translate("MainWindow", "&Options...", nullptr));
+        actionAbout->setText(QApplication::translate("MainWindow", "&About", nullptr));
+        actionStart->setText(QApplication::translate("MainWindow", "&Resume", nullptr));
+        actionPause->setText(QApplication::translate("MainWindow", "&Pause", nullptr));
+        actionStartAll->setText(QApplication::translate("MainWindow", "R&esume All", nullptr));
+        actionPauseAll->setText(QApplication::translate("MainWindow", "P&ause All", nullptr));
+        actionDelete->setText(QApplication::translate("MainWindow", "&Delete", nullptr));
+        actionDownloadFromURL->setText(QApplication::translate("MainWindow", "Add Torrent &Link...", nullptr));
+        actionDownloadFromURL->setIconText(QApplication::translate("MainWindow", "Open URL", nullptr));
+        actionCreateTorrent->setText(QApplication::translate("MainWindow", "Torrent &Creator", nullptr));
+        actionSetUploadLimit->setText(QApplication::translate("MainWindow", "Set Upload Limit...", nullptr));
+        actionSetDownloadLimit->setText(QApplication::translate("MainWindow", "Set Download Limit...", nullptr));
+        actionDocumentation->setText(QApplication::translate("MainWindow", "&Documentation", nullptr));
+        actionSetGlobalDownloadLimit->setText(QApplication::translate("MainWindow", "Set Global Download Limit...", nullptr));
+        actionSetGlobalUploadLimit->setText(QApplication::translate("MainWindow", "Set Global Upload Limit...", nullptr));
+        actionBottomPriority->setText(QApplication::translate("MainWindow", "Minimum Priority", nullptr));
+        actionTopPriority->setText(QApplication::translate("MainWindow", "Top Priority", nullptr));
+        actionDecreasePriority->setText(QApplication::translate("MainWindow", "Decrease Priority", nullptr));
+        actionIncreasePriority->setText(QApplication::translate("MainWindow", "Increase Priority", nullptr));
+        actionUseAlternativeSpeedLimits->setText(QApplication::translate("MainWindow", "Alternative Speed Limits", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionUseAlternativeSpeedLimits->setToolTip(QApplication::translate("MainWindow", "Alternative Speed Limits", Q_NULLPTR));
+        actionUseAlternativeSpeedLimits->setToolTip(QApplication::translate("MainWindow", "Alternative Speed Limits", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionTopToolBar->setText(QApplication::translate("MainWindow", "&Top Toolbar", Q_NULLPTR));
+        actionTopToolBar->setText(QApplication::translate("MainWindow", "&Top Toolbar", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionTopToolBar->setToolTip(QApplication::translate("MainWindow", "Display Top Toolbar", Q_NULLPTR));
+        actionTopToolBar->setToolTip(QApplication::translate("MainWindow", "Display Top Toolbar", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionShowStatusbar->setText(QApplication::translate("MainWindow", "Status &Bar", Q_NULLPTR));
-        actionSpeedInTitleBar->setText(QApplication::translate("MainWindow", "S&peed in Title Bar", Q_NULLPTR));
+        actionShowStatusbar->setText(QApplication::translate("MainWindow", "Status &Bar", nullptr));
+        actionSpeedInTitleBar->setText(QApplication::translate("MainWindow", "S&peed in Title Bar", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionSpeedInTitleBar->setToolTip(QApplication::translate("MainWindow", "Show Transfer Speed in Title Bar", Q_NULLPTR));
+        actionSpeedInTitleBar->setToolTip(QApplication::translate("MainWindow", "Show Transfer Speed in Title Bar", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionRSSReader->setText(QApplication::translate("MainWindow", "&RSS Reader", Q_NULLPTR));
-        actionSearchWidget->setText(QApplication::translate("MainWindow", "Search &Engine", Q_NULLPTR));
-        actionLock->setText(QApplication::translate("MainWindow", "L&ock qBittorrent", Q_NULLPTR));
-        actionLock->setIconText(QApplication::translate("MainWindow", "Lock", Q_NULLPTR));
-        actionDonateMoney->setText(QApplication::translate("MainWindow", "Do&nate!", Q_NULLPTR));
+        actionRSSReader->setText(QApplication::translate("MainWindow", "&RSS Reader", nullptr));
+        actionSearchWidget->setText(QApplication::translate("MainWindow", "Search &Engine", nullptr));
+        actionLock->setText(QApplication::translate("MainWindow", "L&ock qBittorrent", nullptr));
+        actionLock->setIconText(QApplication::translate("MainWindow", "Lock", nullptr));
+        actionDonateMoney->setText(QApplication::translate("MainWindow", "Do&nate!", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionDonateMoney->setToolTip(QApplication::translate("MainWindow", "If you like qBittorrent, please donate!", Q_NULLPTR));
+        actionDonateMoney->setToolTip(QApplication::translate("MainWindow", "If you like qBittorrent, please donate!", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionAutoExit->setText(QApplication::translate("MainWindow", "&Exit qBittorrent", Q_NULLPTR));
-        actionAutoSuspend->setText(QApplication::translate("MainWindow", "&Suspend System", Q_NULLPTR));
-        actionAutoHibernate->setText(QApplication::translate("MainWindow", "&Hibernate System", Q_NULLPTR));
-        actionAutoShutdown->setText(QApplication::translate("MainWindow", "S&hutdown System", Q_NULLPTR));
-        actionAutoShutdownDisabled->setText(QApplication::translate("MainWindow", "&Disabled", Q_NULLPTR));
-        actionToggleVisibility->setText(QApplication::translate("MainWindow", "Show", Q_NULLPTR));
-        actionStatistics->setText(QApplication::translate("MainWindow", "&Statistics", Q_NULLPTR));
-        actionCheckForUpdates->setText(QApplication::translate("MainWindow", "Check for Updates", Q_NULLPTR));
+        actionAutoExit->setText(QApplication::translate("MainWindow", "&Exit qBittorrent", nullptr));
+        actionAutoSuspend->setText(QApplication::translate("MainWindow", "&Suspend System", nullptr));
+        actionAutoHibernate->setText(QApplication::translate("MainWindow", "&Hibernate System", nullptr));
+        actionAutoShutdown->setText(QApplication::translate("MainWindow", "S&hutdown System", nullptr));
+        actionAutoShutdownDisabled->setText(QApplication::translate("MainWindow", "&Disabled", nullptr));
+        actionToggleVisibility->setText(QApplication::translate("MainWindow", "Show", nullptr));
+        actionStatistics->setText(QApplication::translate("MainWindow", "&Statistics", nullptr));
+        actionCheckForUpdates->setText(QApplication::translate("MainWindow", "Check for Updates", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionCheckForUpdates->setToolTip(QApplication::translate("MainWindow", "Check for Program Updates", Q_NULLPTR));
+        actionCheckForUpdates->setToolTip(QApplication::translate("MainWindow", "Check for Program Updates", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionManageCookies->setText(QApplication::translate("MainWindow", "Manage Cookies...", Q_NULLPTR));
+        actionManageCookies->setText(QApplication::translate("MainWindow", "Manage Cookies...", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionManageCookies->setToolTip(QApplication::translate("MainWindow", "Manage stored network cookies", Q_NULLPTR));
+        actionManageCookies->setToolTip(QApplication::translate("MainWindow", "Manage stored network cookies", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionExecutionLogs->setText(QApplication::translate("MainWindow", "Show", Q_NULLPTR));
-        actionNormalMessages->setText(QApplication::translate("MainWindow", "Normal Messages", Q_NULLPTR));
-        actionInformationMessages->setText(QApplication::translate("MainWindow", "Information Messages", Q_NULLPTR));
-        actionWarningMessages->setText(QApplication::translate("MainWindow", "Warning Messages", Q_NULLPTR));
-        actionCriticalMessages->setText(QApplication::translate("MainWindow", "Critical Messages", Q_NULLPTR));
-        menuEdit->setTitle(QApplication::translate("MainWindow", "&Edit", Q_NULLPTR));
-        menuHelp->setTitle(QApplication::translate("MainWindow", "&Help", Q_NULLPTR));
-        menuOptions->setTitle(QApplication::translate("MainWindow", "&Tools", Q_NULLPTR));
-        menuAutoShutdownOnDownloadsCompletion->setTitle(QApplication::translate("MainWindow", "On Downloads &Done", Q_NULLPTR));
-        menuFile->setTitle(QApplication::translate("MainWindow", "&File", Q_NULLPTR));
-        menuView->setTitle(QApplication::translate("MainWindow", "&View", Q_NULLPTR));
-        menuLog->setTitle(QApplication::translate("MainWindow", "&Log", Q_NULLPTR));
+        actionExecutionLogs->setText(QApplication::translate("MainWindow", "Show", nullptr));
+        actionNormalMessages->setText(QApplication::translate("MainWindow", "Normal Messages", nullptr));
+        actionInformationMessages->setText(QApplication::translate("MainWindow", "Information Messages", nullptr));
+        actionWarningMessages->setText(QApplication::translate("MainWindow", "Warning Messages", nullptr));
+        actionCriticalMessages->setText(QApplication::translate("MainWindow", "Critical Messages", nullptr));
+        actionCloseWindow->setText(QApplication::translate("MainWindow", "Close Window", nullptr));
+        menuEdit->setTitle(QApplication::translate("MainWindow", "&Edit", nullptr));
+        menuHelp->setTitle(QApplication::translate("MainWindow", "&Help", nullptr));
+        menuOptions->setTitle(QApplication::translate("MainWindow", "&Tools", nullptr));
+        menuAutoShutdownOnDownloadsCompletion->setTitle(QApplication::translate("MainWindow", "On Downloads &Done", nullptr));
+        menuFile->setTitle(QApplication::translate("MainWindow", "&File", nullptr));
+        menuView->setTitle(QApplication::translate("MainWindow", "&View", nullptr));
+        menuLog->setTitle(QApplication::translate("MainWindow", "&Log", nullptr));
         Q_UNUSED(MainWindow);
     } // retranslateUi
 

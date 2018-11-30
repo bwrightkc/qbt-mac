@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'ipsubnetwhitelistoptionsdialog.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,7 @@
 #define UI_IPSUBNETWHITELISTOPTIONSDIALOG_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QDialog>
 #include <QtWidgets/QDialogButtonBox>
 #include <QtWidgets/QFrame>
@@ -30,10 +28,11 @@ class Ui_IPSubnetWhitelistOptionsDialog
 public:
     QVBoxLayout *verticalLayout;
     QFrame *whitelistedIPSubnetBox;
-    QVBoxLayout *verticalLayout_21;
+    QVBoxLayout *verticalLayout_31;
     QTreeView *whitelistedIPSubnetList;
-    QHBoxLayout *horizontalLayout_18;
+    QHBoxLayout *horizontalLayout;
     QLineEdit *txtIPSubnet;
+    QHBoxLayout *horizontalLayout_12;
     QPushButton *buttonWhitelistIPSubnet;
     QPushButton *buttonDeleteIPSubnet;
     QDialogButtonBox *buttonBox;
@@ -50,8 +49,8 @@ public:
         whitelistedIPSubnetBox->setAutoFillBackground(true);
         whitelistedIPSubnetBox->setFrameShape(QFrame::Panel);
         whitelistedIPSubnetBox->setFrameShadow(QFrame::Raised);
-        verticalLayout_21 = new QVBoxLayout(whitelistedIPSubnetBox);
-        verticalLayout_21->setObjectName(QStringLiteral("verticalLayout_21"));
+        verticalLayout_31 = new QVBoxLayout(whitelistedIPSubnetBox);
+        verticalLayout_31->setObjectName(QStringLiteral("verticalLayout_31"));
         whitelistedIPSubnetList = new QTreeView(whitelistedIPSubnetBox);
         whitelistedIPSubnetList->setObjectName(QStringLiteral("whitelistedIPSubnetList"));
         whitelistedIPSubnetList->setRootIsDecorated(false);
@@ -60,27 +59,32 @@ public:
         whitelistedIPSubnetList->setSortingEnabled(true);
         whitelistedIPSubnetList->header()->setVisible(false);
 
-        verticalLayout_21->addWidget(whitelistedIPSubnetList);
+        verticalLayout_31->addWidget(whitelistedIPSubnetList);
 
-        horizontalLayout_18 = new QHBoxLayout();
-        horizontalLayout_18->setObjectName(QStringLiteral("horizontalLayout_18"));
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
         txtIPSubnet = new QLineEdit(whitelistedIPSubnetBox);
         txtIPSubnet->setObjectName(QStringLiteral("txtIPSubnet"));
 
-        horizontalLayout_18->addWidget(txtIPSubnet);
+        horizontalLayout->addWidget(txtIPSubnet);
 
+
+        verticalLayout_31->addLayout(horizontalLayout);
+
+        horizontalLayout_12 = new QHBoxLayout();
+        horizontalLayout_12->setObjectName(QStringLiteral("horizontalLayout_12"));
         buttonWhitelistIPSubnet = new QPushButton(whitelistedIPSubnetBox);
         buttonWhitelistIPSubnet->setObjectName(QStringLiteral("buttonWhitelistIPSubnet"));
 
-        horizontalLayout_18->addWidget(buttonWhitelistIPSubnet);
+        horizontalLayout_12->addWidget(buttonWhitelistIPSubnet);
 
         buttonDeleteIPSubnet = new QPushButton(whitelistedIPSubnetBox);
         buttonDeleteIPSubnet->setObjectName(QStringLiteral("buttonDeleteIPSubnet"));
 
-        horizontalLayout_18->addWidget(buttonDeleteIPSubnet);
+        horizontalLayout_12->addWidget(buttonDeleteIPSubnet);
 
 
-        verticalLayout_21->addLayout(horizontalLayout_18);
+        verticalLayout_31->addLayout(horizontalLayout_12);
 
 
         verticalLayout->addWidget(whitelistedIPSubnetBox);
@@ -103,10 +107,10 @@ public:
 
     void retranslateUi(QDialog *IPSubnetWhitelistOptionsDialog)
     {
-        IPSubnetWhitelistOptionsDialog->setWindowTitle(QApplication::translate("IPSubnetWhitelistOptionsDialog", "List of whitelisted IP subnets", Q_NULLPTR));
-        txtIPSubnet->setPlaceholderText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Example: 172.17.32.0/24, fdff:ffff:c8::/40", Q_NULLPTR));
-        buttonWhitelistIPSubnet->setText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Add subnet", Q_NULLPTR));
-        buttonDeleteIPSubnet->setText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Delete", Q_NULLPTR));
+        IPSubnetWhitelistOptionsDialog->setWindowTitle(QApplication::translate("IPSubnetWhitelistOptionsDialog", "List of whitelisted IP subnets", nullptr));
+        txtIPSubnet->setPlaceholderText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Example: 172.17.32.0/24, fdff:ffff:c8::/40", nullptr));
+        buttonWhitelistIPSubnet->setText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Add subnet", nullptr));
+        buttonDeleteIPSubnet->setText(QApplication::translate("IPSubnetWhitelistOptionsDialog", "Delete", nullptr));
     } // retranslateUi
 
 };

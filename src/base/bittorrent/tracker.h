@@ -31,6 +31,7 @@
 #define BITTORRENT_TRACKER_H
 
 #include <QHash>
+#include <QObject>
 
 #include "base/http/irequesthandler.h"
 #include "base/http/responsebuilder.h"
@@ -51,7 +52,7 @@ namespace BitTorrent
     struct Peer
     {
         QString ip;
-        QString peerId;
+        QByteArray peerId;
         int port;
 
         bool operator!=(const Peer &other) const;
@@ -62,7 +63,7 @@ namespace BitTorrent
 
     struct TrackerAnnounceRequest
     {
-        QString infoHash;
+        QByteArray infoHash;
         QString event;
         int numwant;
         Peer peer;
@@ -71,11 +72,11 @@ namespace BitTorrent
     };
 
     typedef QHash<QString, Peer> PeerList;
-    typedef QHash<QString, PeerList> TorrentList;
+    typedef QHash<QByteArray, PeerList> TorrentList;
 
     /* Basic Bittorrent tracker implementation in Qt */
     /* Following http://wiki.theory.org/BitTorrent_Tracker_Protocol */
-    class Tracker : public Http::ResponseBuilder, public Http::IRequestHandler
+    class Tracker : public QObject, public Http::IRequestHandler, private Http::ResponseBuilder
     {
         Q_OBJECT
         Q_DISABLE_COPY(Tracker)
@@ -89,6 +90,8 @@ namespace BitTorrent
 
     private:
         void respondToAnnounceRequest();
+        void registerPeer(const TrackerAnnounceRequest &annonceReq);
+        void unregisterPeer(const TrackerAnnounceRequest &annonceReq);
         void replyWithPeerList(const TrackerAnnounceRequest &annonceReq);
 
         Http::Server *m_server;

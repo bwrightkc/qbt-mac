@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'automatedrssdownloader.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,9 +10,7 @@
 #define UI_AUTOMATEDRSSDOWNLOADER_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
 #include <QtWidgets/QDialog>
@@ -58,17 +56,18 @@ public:
     QLabel *label_5;
     QLabel *lblEFilter;
     QLabel *lblEFilterStat;
-    QLabel *lbl_mustnot_stat;
+    QLabel *labelMustNotStat;
     QLineEdit *lineContains;
-    QLabel *lbl_must_stat;
-    QLabel *lbl_epfilter_stat;
+    QLabel *labelMustStat;
+    QLabel *labelEpFilterStat;
     QLineEdit *lineNotContains;
     QLineEdit *lineEFilter;
+    QCheckBox *checkSmart;
     QFrame *line;
     QHBoxLayout *horizontalLayout_3;
     QLabel *label_7;
     QComboBox *comboCategory;
-    QCheckBox *saveDiffDir_check;
+    QCheckBox *checkBoxSaveDiffDir;
     QHBoxLayout *horizontalLayout_5;
     QLabel *label_6;
     QLineEdit *lineSavePath;
@@ -96,7 +95,7 @@ public:
     {
         if (AutomatedRssDownloader->objectName().isEmpty())
             AutomatedRssDownloader->setObjectName(QStringLiteral("AutomatedRssDownloader"));
-        AutomatedRssDownloader->resize(816, 523);
+        AutomatedRssDownloader->resize(818, 571);
         verticalLayout_5 = new QVBoxLayout(AutomatedRssDownloader);
         verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
         labelWarn = new QLabel(AutomatedRssDownloader);
@@ -192,28 +191,28 @@ public:
 
         gridLayout->addWidget(lblEFilterStat, 2, 2, 1, 1);
 
-        lbl_mustnot_stat = new QLabel(ruleDefBox);
-        lbl_mustnot_stat->setObjectName(QStringLiteral("lbl_mustnot_stat"));
-        lbl_mustnot_stat->setMaximumSize(QSize(18, 18));
+        labelMustNotStat = new QLabel(ruleDefBox);
+        labelMustNotStat->setObjectName(QStringLiteral("labelMustNotStat"));
+        labelMustNotStat->setMaximumSize(QSize(18, 18));
 
-        gridLayout->addWidget(lbl_mustnot_stat, 1, 2, 1, 1);
+        gridLayout->addWidget(labelMustNotStat, 1, 2, 1, 1);
 
         lineContains = new QLineEdit(ruleDefBox);
         lineContains->setObjectName(QStringLiteral("lineContains"));
 
         gridLayout->addWidget(lineContains, 0, 1, 1, 1);
 
-        lbl_must_stat = new QLabel(ruleDefBox);
-        lbl_must_stat->setObjectName(QStringLiteral("lbl_must_stat"));
-        lbl_must_stat->setMaximumSize(QSize(18, 18));
+        labelMustStat = new QLabel(ruleDefBox);
+        labelMustStat->setObjectName(QStringLiteral("labelMustStat"));
+        labelMustStat->setMaximumSize(QSize(18, 18));
 
-        gridLayout->addWidget(lbl_must_stat, 0, 2, 1, 1);
+        gridLayout->addWidget(labelMustStat, 0, 2, 1, 1);
 
-        lbl_epfilter_stat = new QLabel(ruleDefBox);
-        lbl_epfilter_stat->setObjectName(QStringLiteral("lbl_epfilter_stat"));
-        lbl_epfilter_stat->setMaximumSize(QSize(18, 18));
+        labelEpFilterStat = new QLabel(ruleDefBox);
+        labelEpFilterStat->setObjectName(QStringLiteral("labelEpFilterStat"));
+        labelEpFilterStat->setMaximumSize(QSize(18, 18));
 
-        gridLayout->addWidget(lbl_epfilter_stat, 2, 2, 1, 1);
+        gridLayout->addWidget(labelEpFilterStat, 2, 2, 1, 1);
 
         lineNotContains = new QLineEdit(ruleDefBox);
         lineNotContains->setObjectName(QStringLiteral("lineNotContains"));
@@ -227,6 +226,11 @@ public:
 
 
         verticalLayout_6->addLayout(gridLayout);
+
+        checkSmart = new QCheckBox(ruleDefBox);
+        checkSmart->setObjectName(QStringLiteral("checkSmart"));
+
+        verticalLayout_6->addWidget(checkSmart);
 
         line = new QFrame(ruleDefBox);
         line->setObjectName(QStringLiteral("line"));
@@ -256,10 +260,10 @@ public:
 
         verticalLayout_6->addLayout(horizontalLayout_3);
 
-        saveDiffDir_check = new QCheckBox(ruleDefBox);
-        saveDiffDir_check->setObjectName(QStringLiteral("saveDiffDir_check"));
+        checkBoxSaveDiffDir = new QCheckBox(ruleDefBox);
+        checkBoxSaveDiffDir->setObjectName(QStringLiteral("checkBoxSaveDiffDir"));
 
-        verticalLayout_6->addWidget(saveDiffDir_check);
+        verticalLayout_6->addWidget(checkBoxSaveDiffDir);
 
         horizontalLayout_5 = new QHBoxLayout();
         horizontalLayout_5->setObjectName(QStringLiteral("horizontalLayout_5"));
@@ -320,6 +324,9 @@ public:
         horizontalLayout_9->addWidget(lblAddPaused);
 
         comboAddPaused = new QComboBox(ruleDefBox);
+        comboAddPaused->addItem(QString());
+        comboAddPaused->addItem(QString());
+        comboAddPaused->addItem(QString());
         comboAddPaused->setObjectName(QStringLiteral("comboAddPaused"));
 
         horizontalLayout_9->addWidget(comboAddPaused);
@@ -378,18 +385,19 @@ public:
         horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
         importBtn = new QPushButton(AutomatedRssDownloader);
         importBtn->setObjectName(QStringLiteral("importBtn"));
-        importBtn->setEnabled(false);
+        importBtn->setEnabled(true);
 
         horizontalLayout_4->addWidget(importBtn);
 
         exportBtn = new QPushButton(AutomatedRssDownloader);
         exportBtn->setObjectName(QStringLiteral("exportBtn"));
-        exportBtn->setEnabled(false);
+        exportBtn->setEnabled(true);
 
         horizontalLayout_4->addWidget(exportBtn);
 
         buttonBox = new QDialogButtonBox(AutomatedRssDownloader);
         buttonBox->setObjectName(QStringLiteral("buttonBox"));
+        buttonBox->setFocusPolicy(Qt::StrongFocus);
         buttonBox->setStandardButtons(QDialogButtonBox::Close);
 
         horizontalLayout_4->addWidget(buttonBox);
@@ -397,44 +405,64 @@ public:
 
         verticalLayout_5->addLayout(horizontalLayout_4);
 
+        QWidget::setTabOrder(removeRuleBtn, addRuleBtn);
+        QWidget::setTabOrder(addRuleBtn, listRules);
+        QWidget::setTabOrder(listRules, checkRegex);
+        QWidget::setTabOrder(checkRegex, checkSmart);
+        QWidget::setTabOrder(checkSmart, lineContains);
+        QWidget::setTabOrder(lineContains, lineNotContains);
+        QWidget::setTabOrder(lineNotContains, lineEFilter);
+        QWidget::setTabOrder(lineEFilter, comboCategory);
+        QWidget::setTabOrder(comboCategory, checkBoxSaveDiffDir);
+        QWidget::setTabOrder(checkBoxSaveDiffDir, lineSavePath);
+        QWidget::setTabOrder(lineSavePath, browseSP);
+        QWidget::setTabOrder(browseSP, spinIgnorePeriod);
+        QWidget::setTabOrder(spinIgnorePeriod, comboAddPaused);
+        QWidget::setTabOrder(comboAddPaused, listFeeds);
+        QWidget::setTabOrder(listFeeds, treeMatchingArticles);
+        QWidget::setTabOrder(treeMatchingArticles, importBtn);
+        QWidget::setTabOrder(importBtn, exportBtn);
 
         retranslateUi(AutomatedRssDownloader);
         QObject::connect(buttonBox, SIGNAL(accepted()), AutomatedRssDownloader, SLOT(accept()));
         QObject::connect(buttonBox, SIGNAL(rejected()), AutomatedRssDownloader, SLOT(reject()));
-        QObject::connect(saveDiffDir_check, SIGNAL(toggled(bool)), label_6, SLOT(setEnabled(bool)));
-        QObject::connect(saveDiffDir_check, SIGNAL(toggled(bool)), lineSavePath, SLOT(setEnabled(bool)));
-        QObject::connect(saveDiffDir_check, SIGNAL(toggled(bool)), browseSP, SLOT(setEnabled(bool)));
+        QObject::connect(checkBoxSaveDiffDir, SIGNAL(toggled(bool)), label_6, SLOT(setEnabled(bool)));
+        QObject::connect(checkBoxSaveDiffDir, SIGNAL(toggled(bool)), lineSavePath, SLOT(setEnabled(bool)));
+        QObject::connect(checkBoxSaveDiffDir, SIGNAL(toggled(bool)), browseSP, SLOT(setEnabled(bool)));
 
         QMetaObject::connectSlotsByName(AutomatedRssDownloader);
     } // setupUi
 
     void retranslateUi(QDialog *AutomatedRssDownloader)
     {
-        AutomatedRssDownloader->setWindowTitle(QApplication::translate("AutomatedRssDownloader", "RSS Downloader", Q_NULLPTR));
-        labelWarn->setText(QApplication::translate("AutomatedRssDownloader", "Auto downloading of RSS torrents is disabled now! You can enable it in application settings.", Q_NULLPTR));
-        label->setText(QApplication::translate("AutomatedRssDownloader", "Download Rules", Q_NULLPTR));
-        ruleDefBox->setTitle(QApplication::translate("AutomatedRssDownloader", "Rule Definition", Q_NULLPTR));
-        checkRegex->setText(QApplication::translate("AutomatedRssDownloader", "Use Regular Expressions", Q_NULLPTR));
-        label_4->setText(QApplication::translate("AutomatedRssDownloader", "Must Contain:", Q_NULLPTR));
-        label_5->setText(QApplication::translate("AutomatedRssDownloader", "Must Not Contain:", Q_NULLPTR));
-        lblEFilter->setText(QApplication::translate("AutomatedRssDownloader", "Episode Filter:", Q_NULLPTR));
-        label_7->setText(QApplication::translate("AutomatedRssDownloader", "Assign Category:", Q_NULLPTR));
-        saveDiffDir_check->setText(QApplication::translate("AutomatedRssDownloader", "Save to a Different Directory", Q_NULLPTR));
-        label_6->setText(QApplication::translate("AutomatedRssDownloader", "Save to:", Q_NULLPTR));
+        AutomatedRssDownloader->setWindowTitle(QApplication::translate("AutomatedRssDownloader", "RSS Downloader", nullptr));
+        labelWarn->setText(QApplication::translate("AutomatedRssDownloader", "Auto downloading of RSS torrents is disabled now! You can enable it in application settings.", nullptr));
+        label->setText(QApplication::translate("AutomatedRssDownloader", "Download Rules", nullptr));
+        ruleDefBox->setTitle(QApplication::translate("AutomatedRssDownloader", "Rule Definition", nullptr));
+        checkRegex->setText(QApplication::translate("AutomatedRssDownloader", "Use Regular Expressions", nullptr));
+        label_4->setText(QApplication::translate("AutomatedRssDownloader", "Must Contain:", nullptr));
+        label_5->setText(QApplication::translate("AutomatedRssDownloader", "Must Not Contain:", nullptr));
+        lblEFilter->setText(QApplication::translate("AutomatedRssDownloader", "Episode Filter:", nullptr));
+#ifndef QT_NO_TOOLTIP
+        checkSmart->setToolTip(QApplication::translate("AutomatedRssDownloader", "Smart Episode Filter will check the episode number to prevent downloading of duplicates.\n"
+"Supports the formats: S01E01, 1x1, 2017.01.01 and 01.01.2017 (Date formats also support - as a separator)", nullptr));
+#endif // QT_NO_TOOLTIP
+        checkSmart->setText(QApplication::translate("AutomatedRssDownloader", "Use Smart Episode Filter", nullptr));
+        label_7->setText(QApplication::translate("AutomatedRssDownloader", "Assign Category:", nullptr));
+        checkBoxSaveDiffDir->setText(QApplication::translate("AutomatedRssDownloader", "Save to a Different Directory", nullptr));
+        label_6->setText(QApplication::translate("AutomatedRssDownloader", "Save to:", nullptr));
         lblIgnoreDays->setText(QApplication::translate("AutomatedRssDownloader", "Ignore Subsequent Matches for (0 to Disable)", "... X days"));
-        spinIgnorePeriod->setSpecialValueText(QApplication::translate("AutomatedRssDownloader", "Disabled", Q_NULLPTR));
-        spinIgnorePeriod->setSuffix(QApplication::translate("AutomatedRssDownloader", " days", Q_NULLPTR));
-        lblAddPaused->setText(QApplication::translate("AutomatedRssDownloader", "Add Paused:", Q_NULLPTR));
-        comboAddPaused->clear();
-        comboAddPaused->insertItems(0, QStringList()
-         << QApplication::translate("AutomatedRssDownloader", "Use global settings", Q_NULLPTR)
-         << QApplication::translate("AutomatedRssDownloader", "Always", Q_NULLPTR)
-         << QApplication::translate("AutomatedRssDownloader", "Never", Q_NULLPTR)
-        );
-        lblListFeeds->setText(QApplication::translate("AutomatedRssDownloader", "Apply Rule to Feeds:", Q_NULLPTR));
-        label_3->setText(QApplication::translate("AutomatedRssDownloader", "Matching RSS Articles", Q_NULLPTR));
-        importBtn->setText(QApplication::translate("AutomatedRssDownloader", "&Import...", Q_NULLPTR));
-        exportBtn->setText(QApplication::translate("AutomatedRssDownloader", "&Export...", Q_NULLPTR));
+        spinIgnorePeriod->setSpecialValueText(QApplication::translate("AutomatedRssDownloader", "Disabled", nullptr));
+        spinIgnorePeriod->setSuffix(QApplication::translate("AutomatedRssDownloader", " days", nullptr));
+        lblAddPaused->setText(QApplication::translate("AutomatedRssDownloader", "Add Paused:", nullptr));
+        comboAddPaused->setItemText(0, QApplication::translate("AutomatedRssDownloader", "Use global settings", nullptr));
+        comboAddPaused->setItemText(1, QApplication::translate("AutomatedRssDownloader", "Always", nullptr));
+        comboAddPaused->setItemText(2, QApplication::translate("AutomatedRssDownloader", "Never", nullptr));
+
+        lblListFeeds->setText(QApplication::translate("AutomatedRssDownloader", "Apply Rule to Feeds:", nullptr));
+        label_3->setText(QApplication::translate("AutomatedRssDownloader", "Matching RSS Articles", nullptr));
+        importBtn->setText(QApplication::translate("AutomatedRssDownloader", "&Import...", nullptr));
+        exportBtn->setText(QApplication::translate("AutomatedRssDownloader", "&Export...", nullptr));
     } // retranslateUi
 
 };

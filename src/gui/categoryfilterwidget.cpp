@@ -30,16 +30,15 @@
 
 #include <QAction>
 #include <QHeaderView>
-#include <QLayout>
 #include <QMenu>
-#include <QMessageBox>
 
 #include "base/bittorrent/session.h"
-#include "base/utils/misc.h"
+#include "base/global.h"
 #include "categoryfiltermodel.h"
 #include "categoryfilterproxymodel.h"
 #include "guiiconprovider.h"
 #include "torrentcategorydialog.h"
+#include "utils.h"
 
 namespace
 {
@@ -70,7 +69,7 @@ CategoryFilterWidget::CategoryFilterWidget(QWidget *parent)
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
     setUniformRowHeights(true);
     setHeaderHidden(true);
-    setIconSize(Utils::Misc::smallIconSize());
+    setIconSize(Utils::Gui::smallIconSize());
 #ifdef Q_OS_MAC
     setAttribute(Qt::WA_MacShowFocusRect, false);
 #endif
@@ -232,8 +231,9 @@ void CategoryFilterWidget::removeCategory()
 void CategoryFilterWidget::removeUnusedCategories()
 {
     auto session = BitTorrent::Session::instance();
-    foreach (const QString &category, session->categories().keys())
+    for (const QString &category : copyAsConst(session->categories().keys())) {
         if (model()->data(static_cast<CategoryFilterProxyModel *>(model())->index(category), Qt::UserRole) == 0)
             session->removeCategory(category);
+    }
     updateGeometry();
 }

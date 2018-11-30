@@ -36,6 +36,7 @@
 #include <QDragMoveEvent>
 #include <QMenu>
 #include <QMessageBox>
+#include <QRegularExpression>
 #include <QStandardItemModel>
 #include <QString>
 
@@ -93,9 +94,9 @@ RSSWidget::RSSWidget(QWidget *parent)
     loadFoldersOpenState();
     m_feedListWidget->setCurrentItem(m_feedListWidget->stickyUnreadItem());
 
-    m_editHotkey = new QShortcut(Qt::Key_F2, m_feedListWidget, 0, 0, Qt::WidgetShortcut);
+    m_editHotkey = new QShortcut(Qt::Key_F2, m_feedListWidget, nullptr, nullptr, Qt::WidgetShortcut);
     connect(m_editHotkey, &QShortcut::activated, this, &RSSWidget::renameSelectedRSSItem);
-    m_deleteHotkey = new QShortcut(QKeySequence::Delete, m_feedListWidget, 0, 0, Qt::WidgetShortcut);
+    m_deleteHotkey = new QShortcut(QKeySequence::Delete, m_feedListWidget, nullptr, nullptr, Qt::WidgetShortcut);
     connect(m_deleteHotkey, &QShortcut::activated, this, &RSSWidget::deleteSelectedItems);
 
     // Feeds list actions
@@ -307,7 +308,7 @@ void RSSWidget::loadFoldersOpenState()
     const QStringList openedFolders = Preferences::instance()->getRssOpenFolders();
     foreach (const QString &varPath, openedFolders) {
         QTreeWidgetItem *parent = nullptr;
-        foreach (const QString &name, varPath.split("\\")) {
+        foreach (const QString &name, varPath.split('\\')) {
             int nbChildren = (parent ? parent->childCount() : m_feedListWidget->topLevelItemCount());
             for (int i = 0; i < nbChildren; ++i) {
                 QTreeWidgetItem *child = (parent ? parent->child(i) : m_feedListWidget->topLevelItem(i));
@@ -388,7 +389,7 @@ void RSSWidget::renameSelectedRSSItem()
 
         QString error;
         if (!RSS::Session::instance()->moveItem(rssItem, RSS::Item::joinPath(parentPath, newName), &error)) {
-            QMessageBox::warning(0, tr("Rename failed"), error);
+            QMessageBox::warning(nullptr, tr("Rename failed"), error);
             ok = false;
         }
     } while (!ok);
@@ -413,7 +414,7 @@ void RSSWidget::copySelectedFeedsURL()
         if (auto feed = qobject_cast<RSS::Feed *>(m_feedListWidget->getRSSItem(item)))
             URLs << feed->url();
     }
-    qApp->clipboard()->setText(URLs.join("\n"));
+    qApp->clipboard()->setText(URLs.join('\n'));
 }
 
 void RSSWidget::handleCurrentFeedItemChanged(QTreeWidgetItem *currentItem)
@@ -461,10 +462,10 @@ void RSSWidget::handleCurrentArticleItemChanged(QListWidgetItem *currentItem, QL
     }
     else {
         QString description = article->description();
-        QRegExp rx;
+        QRegularExpression rx;
         // If description is plain text, replace BBCode tags with HTML and wrap everything in <pre></pre> so it looks nice
-        rx.setMinimal(true);
-        rx.setCaseSensitivity(Qt::CaseInsensitive);
+        rx.setPatternOptions(QRegularExpression::InvertedGreedinessOption
+            | QRegularExpression::CaseInsensitiveOption);
 
         rx.setPattern("\\[img\\](.+)\\[/img\\]");
         description = description.replace(rx, "<img src=\"\\1\">");

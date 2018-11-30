@@ -45,17 +45,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QToolButton" name="buttonAdd">
-         <property name="text">
-          <string notr="true"/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QToolButton" name="buttonAdd"/>
        </item>
        <item>
         <spacer name="verticalSpacer">
@@ -74,17 +64,7 @@
         </spacer>
        </item>
        <item>
-        <widget class="QToolButton" name="buttonDelete">
-         <property name="text">
-          <string notr="true"/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>20</width>
-           <height>20</height>
-          </size>
-         </property>
-        </widget>
+        <widget class="QToolButton" name="buttonDelete"/>
        </item>
        <item>
         <spacer name="verticalSpacer_3">

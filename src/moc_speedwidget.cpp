@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'speedwidget.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'speedwidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -62,7 +62,7 @@ void ComboBoxMenuButton::qt_static_metacall(QObject *_o, QMetaObject::Call _c, i
     Q_UNUSED(_a);
 }
 
-const QMetaObject ComboBoxMenuButton::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject ComboBoxMenuButton::staticMetaObject = {
     { &QComboBox::staticMetaObject, qt_meta_stringdata_ComboBoxMenuButton.data,
       qt_meta_data_ComboBoxMenuButton,  qt_static_metacall, nullptr, nullptr}
 };
@@ -151,7 +151,7 @@ void SpeedWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
     }
 }
 
-const QMetaObject SpeedWidget::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject SpeedWidget::staticMetaObject = {
     { &QWidget::staticMetaObject, qt_meta_stringdata_SpeedWidget.data,
       qt_meta_data_SpeedWidget,  qt_static_metacall, nullptr, nullptr}
 };

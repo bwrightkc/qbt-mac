@@ -51,7 +51,7 @@ namespace RSS
     class Feed;
 }
 
-class AutomatedRssDownloader: public QDialog
+class AutomatedRssDownloader : public QDialog
 {
     Q_OBJECT
 
@@ -71,6 +71,7 @@ private slots:
     void displayRulesListMenu();
     void renameSelectedRule();
     void updateRuleDefinitionBox();
+    void clearSelectedRuleDownloadedEpisodeList();
     void updateFieldsToolTips(bool regex);
     void updateMustLineValidity();
     void updateMustNotLineValidity();
@@ -95,6 +96,9 @@ private:
     void loadFeedList();
     void updateFeedList();
     void addFeedArticlesToTree(RSS::Feed *feed, const QStringList &articles);
+
+    const QString m_formatFilterJSON;
+    const QString m_formatFilterLegacy;
 
     Ui::AutomatedRssDownloader *m_ui;
     QListWidgetItem *m_currentRuleItem;

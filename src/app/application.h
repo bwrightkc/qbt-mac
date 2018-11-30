@@ -40,15 +40,13 @@ typedef QtSingleApplication BaseApplication;
 class MainWindow;
 
 #ifdef Q_OS_WIN
-QT_BEGIN_NAMESPACE
 class QSessionManager;
-QT_END_NAMESPACE
 #endif // Q_OS_WIN
 
 #else
 #include "qtsinglecoreapplication.h"
 typedef QtSingleCoreApplication BaseApplication;
-#endif
+#endif // DISABLE_GUI
 
 #include "base/utils/misc.h"
 #include "cmdoptions.h"
@@ -101,7 +99,7 @@ public:
     bool isFileLoggerDeleteOld() const;
     void setFileLoggerDeleteOld(bool value);
     int fileLoggerMaxSize() const;
-    void setFileLoggerMaxSize(const int value);
+    void setFileLoggerMaxSize(const int bytes);
     int fileLoggerAge() const;
     void setFileLoggerAge(const int value);
     int fileLoggerAgeType() const;
@@ -110,9 +108,9 @@ public:
 protected:
 #ifndef DISABLE_GUI
 #ifdef Q_OS_MAC
-    bool event(QEvent *);
+    bool event(QEvent *) override;
 #endif
-    bool notify(QObject* receiver, QEvent* event);
+    bool notify(QObject *receiver, QEvent *event) override;
 #endif
 
 private slots:
@@ -146,7 +144,7 @@ private:
 
     void initializeTranslation();
     void processParams(const QStringList &params);
-    void runExternalProgram(BitTorrent::TorrentHandle *const torrent) const;
+    void runExternalProgram(const BitTorrent::TorrentHandle *torrent) const;
     void sendNotificationEmail(const BitTorrent::TorrentHandle *torrent);
     void validateCommandLineParameters();
 };

@@ -1,43 +1,41 @@
-project(qbt_executable)
-include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-set(QBT_APP_HEADERS
+add_executable(qBittorrent
 application.h
 cmdoptions.h
 filelogger.h
-)
-
-set(QBT_APP_SOURCES
+upgrade.h
 application.cpp
 cmdoptions.cpp
 filelogger.cpp
 main.cpp
 )
 
+target_include_directories(qBittorrent PRIVATE ${CMAKE_CURRENT_BINARY_DIR})
+target_link_libraries(qBittorrent
+    PRIVATE
+        qbt_base
+)
+
+set_target_properties(qBittorrent
+    PROPERTIES
+        AUTOUIC True
+        AUTORCC True
+        MACOSX_BUNDLE True
+)
+
 # translations
+include(QbtTranslations)
+
 file(GLOB QBT_TS_FILES ../lang/*.ts)
-get_filename_component(QBT_QM_FILES_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}/../lang" ABSOLUTE)
-set_source_files_properties(${QBT_TS_FILES} PROPERTIES OUTPUT_LOCATION "${QBT_QM_FILES_BINARY_DIR}")
+qbt_add_translations(qBittorrent QRC_FILE "../lang/lang.qrc" TS_FILES ${QBT_TS_FILES})
 
-find_package(Qt5 COMPONENTS LinguistTools REQUIRED)
-qt5_add_translation(QBT_QM_FILES ${QBT_TS_FILES})
-
-get_filename_component(_lang_qrc_src "${CMAKE_CURRENT_SOURCE_DIR}/../lang.qrc" ABSOLUTE)
-get_filename_component(_lang_qrc_dst "${CMAKE_CURRENT_BINARY_DIR}/../lang.qrc" ABSOLUTE)
-get_filename_component(_lang_qrc_dst_dir "${CMAKE_CURRENT_BINARY_DIR}/../" ABSOLUTE)
-
-message(STATUS "copying ${_lang_qrc_src} -> ${_lang_qrc_dst}")
-file(COPY ${_lang_qrc_src} DESTINATION ${_lang_qrc_dst_dir})
-
-set_source_files_properties("${_lang_qrc_dst}" PROPERTIES GENERATED True)
-foreach(qm_file ${QBT_QM_FILES})
-    set_source_files_properties("${_lang_qrc_dst}" PROPERTIES OBJECT_DEPENDS ${qm_file})
-endforeach()
+if (WEBUI)
+    file(GLOB QBT_WEBUI_TS_FILES ../webui/www/translations/*.ts)
+    qbt_add_translations(qBittorrent QRC_FILE "../webui/www/translations/webui_translations.qrc" TS_FILES ${QBT_WEBUI_TS_FILES})
+endif()
 
 set(QBT_APP_RESOURCES
-../icons.qrc
-../searchengine.qrc
-"${_lang_qrc_dst}"
+../icons/icons.qrc
+../searchengine/searchengine.qrc
 )
 
 # With AUTORCC rcc is ran by cmake before language files are generated,
@@ -46,51 +44,41 @@ qt5_add_resources(QBT_APP_RESOURCE_SOURCE ${QBT_APP_RESOURCES})
 
 if (WIN32)
     if (MINGW)
-        list (APPEND QBT_APP_SOURCES ../qbittorrent_mingw.rc)
+        target_sources(qBittorrent PRIVATE ../qbittorrent_mingw.rc)
     else (MINGW)
-        list (APPEND QBT_APP_SOURCES ../qbittorrent.rc)
+        target_sources(qBittorrent PRIVATE ../qbittorrent.rc)
     endif (MINGW)
-    list(APPEND QBT_APP_SOURCES ../qbittorrent.exe.manifest)
+    target_sources(qBittorrent PRIVATE ../qbittorrent.exe.manifest)
 endif (WIN32)
 
-if (UNIX)
-    list(APPEND QBT_APP_HEADERS stacktrace.h)
-endif (UNIX)
+if (STACKTRACE)
+    if (UNIX)
+        target_sources(qBittorrent PRIVATE stacktrace.h)
+    else (UNIX)
+        target_sources(qBittorrent PRIVATE stacktrace_win.h)
+        if (Qt5Widgets_FOUND)
+            target_sources(qBittorrent PRIVATE stacktracedialog.h)
+        endif (Qt5Widgets_FOUND)
+    endif (UNIX)
+endif (STACKTRACE)
 
-if (STACKTRACE_WIN)
-    list(APPEND QBT_APP_HEADERS stacktrace_win.h)
-    if (GUI)
-        list(APPEND QBT_APP_HEADERS stacktrace_win_dlg.h)
-    endif (GUI)
-endif (STACKTRACE_WIN)
 
-# usesystemqtsingleapplication {
-#     nogui {
-#         CONFIG += qtsinglecoreapplication
-#     } else {
-#         CONFIG += qtsingleapplication
-#     }
-# } else {
-#     nogui {
-#         include(qtsingleapplication/qtsinglecoreapplication.pri)
-#     } else {
-#         include(qtsingleapplication/qtsingleapplication.pri)
-#     }
-# }
-
-# upgrade code
-list(APPEND QBT_APP_HEADERS upgrade.h)
-list(APPEND QBT_TARGET_LIBRARIES qbt_base)
-
-if (GUI)
-    list(APPEND QBT_TARGET_LIBRARIES qbt_searchengine qbt_gui)
-    include_directories(../gui
-        ${CMAKE_CURRENT_BINARY_DIR}/../gui
+if (Qt5Widgets_FOUND)
+    target_link_libraries(qBittorrent PRIVATE qbt_searchengine qbt_gui)
+    set_target_properties(qBittorrent
+        PROPERTIES
+            OUTPUT_NAME qbittorrent
+            WIN32_EXECUTABLE True
     )
-endif (GUI)
+else(Qt5Widgets_FOUND)
+    set_target_properties(qBittorrent
+        PROPERTIES
+            OUTPUT_NAME qbittorrent-nox
+    )
+endif (Qt5Widgets_FOUND)
 
 if (WEBUI)
-    list(APPEND QBT_TARGET_LIBRARIES qbt_webui)
+    target_link_libraries(qBittorrent PRIVATE qbt_webui)
 endif (WEBUI)
 
 # we have to include resources into the bundle
@@ -142,30 +130,11 @@ if (APPLE)
         PROPERTIES MACOSX_PACKAGE_LOCATION translations)
 endif (APPLE)
 
-add_executable(qBittorrent ${QBT_APP_HEADERS} ${QBT_APP_SOURCES} ${QBT_QM_FILES} ${QBT_APP_RESOURCE_SOURCE})
-if (GUI)
-    set_target_properties(qBittorrent
-        PROPERTIES
-            OUTPUT_NAME qbittorrent
-            WIN32_EXECUTABLE True
-    )
-else (GUI)
-    set_target_properties(qBittorrent
-        PROPERTIES
-            OUTPUT_NAME qbittorrent-nox
-    )
-endif (GUI)
-
-set_target_properties(qBittorrent
-    PROPERTIES
-        AUTOUIC True
-        AUTORCC True
-        MACOSX_BUNDLE True
-)
+target_sources(qBittorrent PRIVATE ${QBT_QM_FILES} ${QBT_APP_RESOURCE_SOURCE})
 
 get_target_property(QBT_EXECUTABLE_NAME qBittorrent OUTPUT_NAME)
 
-target_link_libraries(qBittorrent ${QBT_TARGET_LIBRARIES} QtSingleApplication::QtSingleApplication)
+target_link_libraries(qBittorrent PRIVATE ${QBT_TARGET_LIBRARIES} QtSingleApplication::QtSingleApplication)
 
 if (APPLE)
     set(qbt_BUNDLE_NAME ${QBT_EXECUTABLE_NAME})
@@ -186,6 +155,7 @@ install(TARGETS qBittorrent
     BUNDLE  DESTINATION .
     COMPONENT runtime)
 
-if (GUI AND APPLE)
+if (Qt5Widgets_FOUND AND APPLE)
+    find_package(Qt5Svg REQUIRED)
     include(bundle)
-endif (GUI AND APPLE)
+endif (Qt5Widgets_FOUND AND APPLE)

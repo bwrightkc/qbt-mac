@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'tracker.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'tracker.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -62,8 +62,8 @@ void BitTorrent::Tracker::qt_static_metacall(QObject *_o, QMetaObject::Call _c, 
     Q_UNUSED(_a);
 }
 
-const QMetaObject BitTorrent::Tracker::staticMetaObject = {
-    { &Http::ResponseBuilder::staticMetaObject, qt_meta_stringdata_BitTorrent__Tracker.data,
+QT_INIT_METAOBJECT const QMetaObject BitTorrent::Tracker::staticMetaObject = {
+    { &QObject::staticMetaObject, qt_meta_stringdata_BitTorrent__Tracker.data,
       qt_meta_data_BitTorrent__Tracker,  qt_static_metacall, nullptr, nullptr}
 };
 
@@ -80,12 +80,12 @@ void *BitTorrent::Tracker::qt_metacast(const char *_clname)
         return static_cast<void*>(this);
     if (!strcmp(_clname, "Http::IRequestHandler"))
         return static_cast< Http::IRequestHandler*>(this);
-    return Http::ResponseBuilder::qt_metacast(_clname);
+    return QObject::qt_metacast(_clname);
 }
 
 int BitTorrent::Tracker::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 {
-    _id = Http::ResponseBuilder::qt_metacall(_c, _id, _a);
+    _id = QObject::qt_metacall(_c, _id, _a);
     return _id;
 }
 QT_WARNING_POP

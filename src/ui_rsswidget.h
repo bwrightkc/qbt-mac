@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'rsswidget.ui'
 **
-** Created by: Qt User Interface Compiler version 5.9.2
+** Created by: Qt User Interface Compiler version 5.11.2
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -12,9 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHBoxLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
@@ -166,41 +164,41 @@ public:
 
     void retranslateUi(QWidget *RSSWidget)
     {
-        RSSWidget->setWindowTitle(QApplication::translate("RSSWidget", "Search", Q_NULLPTR));
-        actionDelete->setText(QApplication::translate("RSSWidget", "Delete", Q_NULLPTR));
+        RSSWidget->setWindowTitle(QApplication::translate("RSSWidget", "Search", nullptr));
+        actionDelete->setText(QApplication::translate("RSSWidget", "Delete", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionDelete->setToolTip(QApplication::translate("RSSWidget", "Delete", Q_NULLPTR));
+        actionDelete->setToolTip(QApplication::translate("RSSWidget", "Delete", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionRename->setText(QApplication::translate("RSSWidget", "Rename...", Q_NULLPTR));
+        actionRename->setText(QApplication::translate("RSSWidget", "Rename...", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionRename->setToolTip(QApplication::translate("RSSWidget", "Rename", Q_NULLPTR));
+        actionRename->setToolTip(QApplication::translate("RSSWidget", "Rename", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionUpdate->setText(QApplication::translate("RSSWidget", "Update", Q_NULLPTR));
+        actionUpdate->setText(QApplication::translate("RSSWidget", "Update", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionUpdate->setToolTip(QApplication::translate("RSSWidget", "Update", Q_NULLPTR));
+        actionUpdate->setToolTip(QApplication::translate("RSSWidget", "Update", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionNewSubscription->setText(QApplication::translate("RSSWidget", "New subscription...", Q_NULLPTR));
-        actionUpdateAllFeeds->setText(QApplication::translate("RSSWidget", "Update all feeds", Q_NULLPTR));
+        actionNewSubscription->setText(QApplication::translate("RSSWidget", "New subscription...", nullptr));
+        actionUpdateAllFeeds->setText(QApplication::translate("RSSWidget", "Update all feeds", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionUpdateAllFeeds->setToolTip(QApplication::translate("RSSWidget", "Update all feeds", Q_NULLPTR));
+        actionUpdateAllFeeds->setToolTip(QApplication::translate("RSSWidget", "Update all feeds", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionMarkItemsRead->setText(QApplication::translate("RSSWidget", "Mark items read", Q_NULLPTR));
+        actionMarkItemsRead->setText(QApplication::translate("RSSWidget", "Mark items read", nullptr));
 #ifndef QT_NO_TOOLTIP
-        actionMarkItemsRead->setToolTip(QApplication::translate("RSSWidget", "Mark items read", Q_NULLPTR));
+        actionMarkItemsRead->setToolTip(QApplication::translate("RSSWidget", "Mark items read", nullptr));
 #endif // QT_NO_TOOLTIP
-        actionDownloadTorrent->setText(QApplication::translate("RSSWidget", "Download torrent", Q_NULLPTR));
-        actionOpenNewsURL->setText(QApplication::translate("RSSWidget", "Open news URL", Q_NULLPTR));
-        actionCopyFeedURL->setText(QApplication::translate("RSSWidget", "Copy feed URL", Q_NULLPTR));
-        actionNewFolder->setText(QApplication::translate("RSSWidget", "New folder...", Q_NULLPTR));
-        labelWarn->setText(QApplication::translate("RSSWidget", "Fetching of RSS feeds is disabled now! You can enable it in application settings.", Q_NULLPTR));
-        newFeedButton->setText(QApplication::translate("RSSWidget", "New subscription", Q_NULLPTR));
-        markReadButton->setText(QApplication::translate("RSSWidget", "Mark items read", Q_NULLPTR));
+        actionDownloadTorrent->setText(QApplication::translate("RSSWidget", "Download torrent", nullptr));
+        actionOpenNewsURL->setText(QApplication::translate("RSSWidget", "Open news URL", nullptr));
+        actionCopyFeedURL->setText(QApplication::translate("RSSWidget", "Copy feed URL", nullptr));
+        actionNewFolder->setText(QApplication::translate("RSSWidget", "New folder...", nullptr));
+        labelWarn->setText(QApplication::translate("RSSWidget", "Fetching of RSS feeds is disabled now! You can enable it in application settings.", nullptr));
+        newFeedButton->setText(QApplication::translate("RSSWidget", "New subscription", nullptr));
+        markReadButton->setText(QApplication::translate("RSSWidget", "Mark items read", nullptr));
 #ifndef QT_NO_TOOLTIP
-        updateAllButton->setToolTip(QApplication::translate("RSSWidget", "Refresh RSS streams", Q_NULLPTR));
+        updateAllButton->setToolTip(QApplication::translate("RSSWidget", "Refresh RSS streams", nullptr));
 #endif // QT_NO_TOOLTIP
-        updateAllButton->setText(QApplication::translate("RSSWidget", "Update all", Q_NULLPTR));
-        rssDownloaderBtn->setText(QApplication::translate("RSSWidget", "RSS Downloader...", Q_NULLPTR));
-        news_lbl->setText(QApplication::translate("RSSWidget", "Torrents: (double-click to download)", Q_NULLPTR));
+        updateAllButton->setText(QApplication::translate("RSSWidget", "Update all", nullptr));
+        rssDownloaderBtn->setText(QApplication::translate("RSSWidget", "RSS Downloader...", nullptr));
+        news_lbl->setText(QApplication::translate("RSSWidget", "Torrents: (double-click to download)", nullptr));
     } // retranslateUi
 
 };

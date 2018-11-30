@@ -28,11 +28,14 @@
 
 #pragma once
 
+#include <stdexcept>
+
 #include <QBasicTimer>
 #include <QHash>
 #include <QList>
 #include <QObject>
 #include <QPointer>
+#include <QRegularExpression>
 #include <QSharedPointer>
 
 class QThread;
@@ -49,7 +52,14 @@ namespace RSS
 
     class AutoDownloadRule;
 
-    class AutoDownloader final: public QObject
+    class ParsingError : public std::runtime_error
+    {
+    public:
+        explicit ParsingError(const QString &message);
+        QString message() const;
+    };
+
+    class AutoDownloader final : public QObject
     {
         Q_OBJECT
         Q_DISABLE_COPY(AutoDownloader)
@@ -60,10 +70,23 @@ namespace RSS
         ~AutoDownloader() override;
 
     public:
+        enum class RulesFileFormat
+        {
+            Legacy,
+            JSON
+        };
+
         static AutoDownloader *instance();
 
         bool isProcessingEnabled() const;
         void setProcessingEnabled(bool enabled);
+
+        QStringList smartEpisodeFilters() const;
+        void setSmartEpisodeFilters(const QStringList &filters);
+        QRegularExpression smartEpisodeRegex() const;
+
+        bool downloadRepacks() const;
+        void setDownloadRepacks(bool downloadRepacks);
 
         bool hasRule(const QString &ruleName) const;
         AutoDownloadRule ruleByName(const QString &ruleName) const;
@@ -72,6 +95,9 @@ namespace RSS
         void insertRule(const AutoDownloadRule &rule);
         bool renameRule(const QString &ruleName, const QString &newRuleName);
         void removeRule(const QString &ruleName);
+
+        QByteArray exportRules(RulesFileFormat format = RulesFileFormat::JSON) const;
+        void importRules(const QByteArray &data, RulesFileFormat format = RulesFileFormat::JSON);
 
     signals:
         void processingStateChanged(bool enabled);
@@ -98,6 +124,10 @@ namespace RSS
         void loadRulesLegacy();
         void store();
         void storeDeferred();
+        QByteArray exportRulesToJSONFormat() const;
+        void importRulesFromJSONFormat(const QByteArray &data);
+        QByteArray exportRulesToLegacyFormat() const;
+        void importRulesFromLegacyFormat(const QByteArray &data);
 
         static QPointer<AutoDownloader> m_instance;
 
@@ -110,5 +140,6 @@ namespace RSS
         QHash<QString, QSharedPointer<ProcessingJob>> m_waitingJobs;
         bool m_dirty = false;
         QBasicTimer m_savingTimer;
+        QRegularExpression m_smartEpisodeRegex;
     };
 }

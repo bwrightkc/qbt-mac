@@ -30,24 +30,26 @@
 #ifndef BITTORRENT_SESSION_H
 #define BITTORRENT_SESSION_H
 
-#include <vector>
 #include <libtorrent/version.hpp>
 
-#if LIBTORRENT_VERSION_NUM >= 10100
-#include <QElapsedTimer>
-#endif
+#include <vector>
+
 #include <QFile>
 #include <QHash>
+#include <QList>
 #include <QMap>
-#if LIBTORRENT_VERSION_NUM < 10100
-#include <QMutex>
-#endif
 #include <QNetworkConfigurationManager>
 #include <QPointer>
 #include <QSet>
 #include <QStringList>
 #include <QVector>
 #include <QWaitCondition>
+
+#if LIBTORRENT_VERSION_NUM < 10100
+#include <QMutex>
+#else
+#include <QElapsedTimer>
+#endif
 
 #include "base/settingvalue.h"
 #include "base/tristatebool.h"
@@ -111,7 +113,6 @@ class QTimer;
 class QStringList;
 class QString;
 class QUrl;
-template<typename T> class QList;
 
 class FilterParserThread;
 class BandwidthScheduler;
@@ -137,7 +138,7 @@ namespace BitTorrent
     class Tracker;
     class MagnetUri;
     class TrackerEntry;
-    struct AddTorrentData;
+    struct CreateTorrentParams;
 
     struct TorrentStatusReport
     {
@@ -374,6 +375,8 @@ namespace BitTorrent
         void setAnnounceToAllTrackers(bool val);
         bool announceToAllTiers() const;
         void setAnnounceToAllTiers(bool val);
+        int asyncIOThreads() const;
+        void setAsyncIOThreads(int num);
         int diskCacheSize() const;
         void setDiskCacheSize(int size);
         int diskCacheTTL() const;
@@ -382,6 +385,8 @@ namespace BitTorrent
         void setUseOSCache(bool use);
         bool isGuidedReadCacheEnabled() const;
         void setGuidedReadCacheEnabled(bool enabled);
+        bool isCoalesceReadWriteEnabled() const;
+        void setCoalesceReadWriteEnabled(bool enabled);
         bool isSuggestModeEnabled() const;
         void setSuggestMode(bool mode);
         int sendBufferWatermark() const;
@@ -396,6 +401,12 @@ namespace BitTorrent
         void setQueueingSystemEnabled(bool enabled);
         bool ignoreSlowTorrentsForQueueing() const;
         void setIgnoreSlowTorrentsForQueueing(bool ignore);
+        int downloadRateForSlowTorrents() const;
+        void setDownloadRateForSlowTorrents(int rateInKibiBytes);
+        int uploadRateForSlowTorrents() const;
+        void setUploadRateForSlowTorrents(int rateInKibiBytes);
+        int slowTorrentsInactivityTimer() const;
+        void setSlowTorrentsInactivityTimer(int timeInSeconds);
         int outgoingPortsMin() const;
         void setOutgoingPortsMin(int min);
         int outgoingPortsMax() const;
@@ -443,6 +454,7 @@ namespace BitTorrent
         TorrentStatusReport torrentStatusReport() const;
         bool hasActiveTorrents() const;
         bool hasUnfinishedTorrents() const;
+        bool hasRunningSeed() const;
         const SessionStatus &status() const;
         const CacheStatus &cacheStatus() const;
         quint64 getAlltimeDL() const;
@@ -469,6 +481,8 @@ namespace BitTorrent
 
         // TorrentHandle interface
         void handleTorrentShareLimitChanged(TorrentHandle *const torrent);
+        void handleTorrentsPrioritiesChanged();
+        void handleTorrentNameChanged(TorrentHandle *const torrent);
         void handleTorrentSavePathChanged(TorrentHandle *const torrent);
         void handleTorrentCategoryChanged(TorrentHandle *const torrent, const QString &oldCategory);
         void handleTorrentTagAdded(TorrentHandle *const torrent, const QString &tag);
@@ -538,7 +552,7 @@ namespace BitTorrent
         void generateResumeData(bool final = false);
         void handleIPFilterParsed(int ruleCount);
         void handleIPFilterError();
-        void handleDownloadFinished(const QString &url, const QString &filePath);
+        void handleDownloadFinished(const QString &url, const QByteArray &data);
         void handleDownloadFailed(const QString &url, const QString &reason);
         void handleRedirectedToMagnet(const QString &url, const QString &magnetUri);
 
@@ -554,7 +568,7 @@ namespace BitTorrent
             bool requestedFileDeletion;
         };
 
-        explicit Session(QObject *parent = 0);
+        explicit Session(QObject *parent = nullptr);
         ~Session();
 
         bool hasPerTorrentRatioLimit() const;
@@ -586,14 +600,14 @@ namespace BitTorrent
         void enableIPFilter();
         void disableIPFilter();
 
-        bool addTorrent_impl(AddTorrentData addData, const MagnetUri &magnetUri,
+        bool addTorrent_impl(CreateTorrentParams params, const MagnetUri &magnetUri,
                              TorrentInfo torrentInfo = TorrentInfo(),
                              const QByteArray &fastresumeData = QByteArray());
         bool findIncompleteFiles(TorrentInfo &torrentInfo, QString &savePath) const;
 
         void updateSeedingLimitTimer();
         void exportTorrentFile(TorrentHandle *const torrent, TorrentExportFolder folder = TorrentExportFolder::Regular);
-        void saveTorrentResumeData(TorrentHandle *const torrent, bool finalSave = false);
+        void saveTorrentResumeData(TorrentHandle *const torrent);
 
         void handleAlert(libtorrent::alert *a);
         void dispatchTorrentAlert(libtorrent::alert *a);
@@ -642,10 +656,12 @@ namespace BitTorrent
         CachedSettingValue<QString> m_IPFilterFile;
         CachedSettingValue<bool> m_announceToAllTrackers;
         CachedSettingValue<bool> m_announceToAllTiers;
+        CachedSettingValue<int> m_asyncIOThreads;
         CachedSettingValue<int> m_diskCacheSize;
         CachedSettingValue<int> m_diskCacheTTL;
         CachedSettingValue<bool> m_useOSCache;
         CachedSettingValue<bool> m_guidedReadCacheEnabled;
+        CachedSettingValue<bool> m_coalesceReadWriteEnabled;
         CachedSettingValue<bool> m_isSuggestMode;
         CachedSettingValue<int> m_sendBufferWatermark;
         CachedSettingValue<int> m_sendBufferLowWatermark;
@@ -656,6 +672,9 @@ namespace BitTorrent
         CachedSettingValue<int> m_maxActiveUploads;
         CachedSettingValue<int> m_maxActiveTorrents;
         CachedSettingValue<bool> m_ignoreSlowTorrentsForQueueing;
+        CachedSettingValue<int> m_downloadRateForSlowTorrents;
+        CachedSettingValue<int> m_uploadRateForSlowTorrents;
+        CachedSettingValue<int> m_slowTorrentsInactivityTimer;
         CachedSettingValue<int> m_outgoingPortsMin;
         CachedSettingValue<int> m_outgoingPortsMax;
         CachedSettingValue<bool> m_ignoreLimitsOnLAN;
@@ -741,12 +760,16 @@ namespace BitTorrent
 
         QHash<InfoHash, TorrentInfo> m_loadedMetadata;
         QHash<InfoHash, TorrentHandle *> m_torrents;
-        QHash<InfoHash, AddTorrentData> m_addingTorrents;
+        QHash<InfoHash, CreateTorrentParams> m_addingTorrents;
         QHash<QString, AddTorrentParams> m_downloadedTorrents;
         QHash<InfoHash, RemovingTorrentData> m_removingTorrents;
         TorrentStatusReport m_torrentStatusReport;
         QStringMap m_categories;
         QSet<QString> m_tags;
+
+        // I/O errored torrents
+        QSet<InfoHash> m_recentErroredTorrents;
+        QTimer *m_recentErroredTorrentsTimer;
 
 #if LIBTORRENT_VERSION_NUM < 10100
         QMutex m_alertsMutex;

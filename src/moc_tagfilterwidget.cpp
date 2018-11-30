@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'tagfilterwidget.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'tagfilterwidget.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -21,8 +21,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_TagFilterWidget_t {
-    QByteArrayData data[15];
-    char stringdata0[220];
+    QByteArrayData data[16];
+    char stringdata0[232];
 };
 #define QT_MOC_LITERAL(idx, ofs, len) \
     Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
@@ -39,22 +39,23 @@ QT_MOC_LITERAL(4, 32, 29), // "actionResumeTorrentsTriggered"
 QT_MOC_LITERAL(5, 62, 28), // "actionPauseTorrentsTriggered"
 QT_MOC_LITERAL(6, 91, 29), // "actionDeleteTorrentsTriggered"
 QT_MOC_LITERAL(7, 121, 19), // "onCurrentRowChanged"
-QT_MOC_LITERAL(8, 141, 7), // "current"
-QT_MOC_LITERAL(9, 149, 8), // "previous"
-QT_MOC_LITERAL(10, 158, 8), // "showMenu"
-QT_MOC_LITERAL(11, 167, 18), // "callUpdateGeometry"
-QT_MOC_LITERAL(12, 186, 6), // "addTag"
-QT_MOC_LITERAL(13, 193, 9), // "removeTag"
-QT_MOC_LITERAL(14, 203, 16) // "removeUnusedTags"
+QT_MOC_LITERAL(8, 141, 11), // "QModelIndex"
+QT_MOC_LITERAL(9, 153, 7), // "current"
+QT_MOC_LITERAL(10, 161, 8), // "previous"
+QT_MOC_LITERAL(11, 170, 8), // "showMenu"
+QT_MOC_LITERAL(12, 179, 18), // "callUpdateGeometry"
+QT_MOC_LITERAL(13, 198, 6), // "addTag"
+QT_MOC_LITERAL(14, 205, 9), // "removeTag"
+QT_MOC_LITERAL(15, 215, 16) // "removeUnusedTags"
 
     },
     "TagFilterWidget\0tagChanged\0\0tag\0"
     "actionResumeTorrentsTriggered\0"
     "actionPauseTorrentsTriggered\0"
     "actionDeleteTorrentsTriggered\0"
-    "onCurrentRowChanged\0current\0previous\0"
-    "showMenu\0callUpdateGeometry\0addTag\0"
-    "removeTag\0removeUnusedTags"
+    "onCurrentRowChanged\0QModelIndex\0current\0"
+    "previous\0showMenu\0callUpdateGeometry\0"
+    "addTag\0removeTag\0removeUnusedTags"
 };
 #undef QT_MOC_LITERAL
 
@@ -79,11 +80,11 @@ static const uint qt_meta_data_TagFilterWidget[] = {
 
  // slots: name, argc, parameters, tag, flags
        7,    2,   70,    2, 0x08 /* Private */,
-      10,    1,   75,    2, 0x08 /* Private */,
-      11,    0,   78,    2, 0x08 /* Private */,
-      12,    0,   79,    2, 0x08 /* Private */,
-      13,    0,   80,    2, 0x08 /* Private */,
-      14,    0,   81,    2, 0x08 /* Private */,
+      11,    1,   75,    2, 0x08 /* Private */,
+      12,    0,   78,    2, 0x08 /* Private */,
+      13,    0,   79,    2, 0x08 /* Private */,
+      14,    0,   80,    2, 0x08 /* Private */,
+      15,    0,   81,    2, 0x08 /* Private */,
 
  // signals: parameters
     QMetaType::Void, QMetaType::QString,    3,
@@ -92,7 +93,7 @@ static const uint qt_meta_data_TagFilterWidget[] = {
     QMetaType::Void,
 
  // slots: parameters
-    QMetaType::Void, QMetaType::QModelIndex, QMetaType::QModelIndex,    8,    9,
+    QMetaType::Void, 0x80000000 | 8, 0x80000000 | 8,    9,   10,
     QMetaType::Void, QMetaType::QPoint,    2,
     QMetaType::Void,
     QMetaType::Void,
@@ -122,31 +123,30 @@ void TagFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
         }
     } else if (_c == QMetaObject::IndexOfMethod) {
         int *result = reinterpret_cast<int *>(_a[0]);
-        void **func = reinterpret_cast<void **>(_a[1]);
         {
-            typedef void (TagFilterWidget::*_t)(const QString & );
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TagFilterWidget::tagChanged)) {
+            using _t = void (TagFilterWidget::*)(const QString & );
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TagFilterWidget::tagChanged)) {
                 *result = 0;
                 return;
             }
         }
         {
-            typedef void (TagFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TagFilterWidget::actionResumeTorrentsTriggered)) {
+            using _t = void (TagFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TagFilterWidget::actionResumeTorrentsTriggered)) {
                 *result = 1;
                 return;
             }
         }
         {
-            typedef void (TagFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TagFilterWidget::actionPauseTorrentsTriggered)) {
+            using _t = void (TagFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TagFilterWidget::actionPauseTorrentsTriggered)) {
                 *result = 2;
                 return;
             }
         }
         {
-            typedef void (TagFilterWidget::*_t)();
-            if (*reinterpret_cast<_t *>(func) == static_cast<_t>(&TagFilterWidget::actionDeleteTorrentsTriggered)) {
+            using _t = void (TagFilterWidget::*)();
+            if (*reinterpret_cast<_t *>(_a[1]) == static_cast<_t>(&TagFilterWidget::actionDeleteTorrentsTriggered)) {
                 *result = 3;
                 return;
             }
@@ -154,7 +154,7 @@ void TagFilterWidget::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int 
     }
 }
 
-const QMetaObject TagFilterWidget::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject TagFilterWidget::staticMetaObject = {
     { &QTreeView::staticMetaObject, qt_meta_stringdata_TagFilterWidget.data,
       qt_meta_data_TagFilterWidget,  qt_static_metacall, nullptr, nullptr}
 };

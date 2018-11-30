@@ -1,7 +1,7 @@
 /****************************************************************************
 ** Meta object code from reading C++ file 'fspathedit_p.h'
 **
-** Created by: The Qt Meta Object Compiler version 67 (Qt 5.9.2)
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.11.2)
 **
 ** WARNING! All changes made in this file will be lost!
 *****************************************************************************/
@@ -12,7 +12,7 @@
 #if !defined(Q_MOC_OUTPUT_REVISION)
 #error "The header file 'fspathedit_p.h' doesn't include <QObject>."
 #elif Q_MOC_OUTPUT_REVISION != 67
-#error "This file was generated using the moc from 5.9.2. It"
+#error "This file was generated using the moc from 5.11.2. It"
 #error "cannot be used with the include files from this version of Qt."
 #error "(The moc has changed too much.)"
 #endif
@@ -62,7 +62,7 @@ void Private::FileSystemPathValidator::qt_static_metacall(QObject *_o, QMetaObje
     Q_UNUSED(_a);
 }
 
-const QMetaObject Private::FileSystemPathValidator::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Private::FileSystemPathValidator::staticMetaObject = {
     { &QValidator::staticMetaObject, qt_meta_stringdata_Private__FileSystemPathValidator.data,
       qt_meta_data_Private__FileSystemPathValidator,  qt_static_metacall, nullptr, nullptr}
 };
@@ -128,7 +128,7 @@ void Private::FileLineEdit::qt_static_metacall(QObject *_o, QMetaObject::Call _c
     Q_UNUSED(_a);
 }
 
-const QMetaObject Private::FileLineEdit::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Private::FileLineEdit::staticMetaObject = {
     { &QLineEdit::staticMetaObject, qt_meta_stringdata_Private__FileLineEdit.data,
       qt_meta_data_Private__FileLineEdit,  qt_static_metacall, nullptr, nullptr}
 };
@@ -196,7 +196,7 @@ void Private::FileComboEdit::qt_static_metacall(QObject *_o, QMetaObject::Call _
     Q_UNUSED(_a);
 }
 
-const QMetaObject Private::FileComboEdit::staticMetaObject = {
+QT_INIT_METAOBJECT const QMetaObject Private::FileComboEdit::staticMetaObject = {
     { &QComboBox::staticMetaObject, qt_meta_stringdata_Private__FileComboEdit.data,
       qt_meta_data_Private__FileComboEdit,  qt_static_metacall, nullptr, nullptr}
 };

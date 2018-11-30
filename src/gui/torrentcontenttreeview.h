@@ -31,13 +31,13 @@
 
 #include <QTreeView>
 
-class TorrentContentTreeView: public QTreeView
+class TorrentContentTreeView : public QTreeView
 {
     Q_OBJECT
 
 public:
-    explicit TorrentContentTreeView(QWidget *parent = 0);
-    void keyPressEvent(QKeyEvent *event);
+    explicit TorrentContentTreeView(QWidget *parent = nullptr);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private:
     QModelIndex currentNameCell();

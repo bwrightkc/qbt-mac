@@ -40,6 +40,7 @@
 #include <QWheelEvent>
 
 #include "base/bittorrent/peerinfo.h"
+#include "base/bittorrent/session.h"
 #include "base/bittorrent/torrenthandle.h"
 #include "base/logger.h"
 #include "base/net/geoipmanager.h"
@@ -49,9 +50,9 @@
 #include "guiiconprovider.h"
 #include "peerlistdelegate.h"
 #include "peerlistsortmodel.h"
-#include "peersadditiondlg.h"
+#include "peersadditiondialog.h"
 #include "propertieswidget.h"
-#include "speedlimitdlg.h"
+#include "speedlimitdialog.h"
 
 PeerListWidget::PeerListWidget(PropertiesWidget *parent)
     : QTreeView(parent)
@@ -102,7 +103,7 @@ PeerListWidget::PeerListWidget(PropertiesWidget *parent)
         hideColumn(PeerListDelegate::COUNTRY);
     // Ensure that at least one column is visible at all times
     bool atLeastOne = false;
-    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; i++) {
+    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; ++i) {
         if (!isColumnHidden(i)) {
             atLeastOne = true;
             break;
@@ -113,12 +114,12 @@ PeerListWidget::PeerListWidget(PropertiesWidget *parent)
     // To also mitigate the above issue, we have to resize each column when
     // its size is 0, because explicitly 'showing' the column isn't enough
     // in the above scenario.
-    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; i++)
+    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; ++i)
         if ((columnWidth(i) <= 0) && !isColumnHidden(i))
             resizeColumnToContents(i);
     // Context menu
     setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showPeerListMenu(QPoint)));
+    connect(this, &QWidget::customContextMenuRequested, this, &PeerListWidget::showPeerListMenu);
     // List delegate
     m_listDelegate = new PeerListDelegate(this);
     setItemDelegate(m_listDelegate);
@@ -128,10 +129,14 @@ PeerListWidget::PeerListWidget(PropertiesWidget *parent)
     updatePeerHostNameResolutionState();
     // SIGNAL/SLOT
     header()->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(header(), SIGNAL(customContextMenuRequested(const QPoint&)), this, SLOT(displayToggleColumnsMenu(const QPoint&)));
-    connect(header(), SIGNAL(sectionClicked(int)), SLOT(handleSortColumnChanged(int)));
+    connect(header(), &QWidget::customContextMenuRequested, this, &PeerListWidget::displayToggleColumnsMenu);
+    connect(header(), &QHeaderView::sectionClicked, this, &PeerListWidget::handleSortColumnChanged);
+    connect(header(), &QHeaderView::sectionMoved, this, &PeerListWidget::saveSettings);
+    connect(header(), &QHeaderView::sectionResized, this, &PeerListWidget::saveSettings);
+    connect(header(), &QHeaderView::sortIndicatorChanged, this, &PeerListWidget::saveSettings);
     handleSortColumnChanged(header()->sortIndicatorSection());
-    m_copyHotkey = new QShortcut(QKeySequence::Copy, this, SLOT(copySelectedPeers()), 0, Qt::WidgetShortcut);
+    m_copyHotkey = new QShortcut(QKeySequence::Copy, this, nullptr, nullptr, Qt::WidgetShortcut);
+    connect(m_copyHotkey, &QShortcut::activated, this, &PeerListWidget::copySelectedPeers);
 
     // This hack fixes reordering of first column with Qt5.
     // https://github.com/qtproject/qtbase/commit/e0fc088c0c8bc61dbcaf5928b24986cd61a22777
@@ -164,9 +169,9 @@ void PeerListWidget::displayToggleColumnsMenu(const QPoint &)
         actions.append(myAct);
     }
     int visibleCols = 0;
-    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; i++) {
+    for (unsigned int i = 0; i < PeerListDelegate::IP_HIDDEN; ++i) {
         if (!isColumnHidden(i))
-            visibleCols++;
+            ++visibleCols;
 
         if (visibleCols > 1)
             break;
@@ -180,10 +185,9 @@ void PeerListWidget::displayToggleColumnsMenu(const QPoint &)
         Q_ASSERT(visibleCols > 0);
         if (!isColumnHidden(col) && (visibleCols == 1))
             return;
-        qDebug("Toggling column %d visibility", col);
         setColumnHidden(col, !isColumnHidden(col));
         if (!isColumnHidden(col) && (columnWidth(col) <= 5))
-            setColumnWidth(col, 100);
+            resizeColumnToContents(col);
         saveSettings();
     }
 }
@@ -193,7 +197,7 @@ void PeerListWidget::updatePeerHostNameResolutionState()
     if (Preferences::instance()->resolvePeerHostNames()) {
         if (!m_resolver) {
             m_resolver = new Net::ReverseResolution(this);
-            connect(m_resolver, SIGNAL(ipResolved(QString,QString)), SLOT(handleResolved(QString,QString)));
+            connect(m_resolver.data(), &Net::ReverseResolution::ipResolved, this, &PeerListWidget::handleResolved);
             loadPeers(m_properties->getCurrentTorrent(), true);
         }
     }
@@ -226,13 +230,13 @@ void PeerListWidget::showPeerListMenu(const QPoint &)
     if (!torrent) return;
 
     // Add Peer Action
-    QAction *addPeerAct = 0;
+    QAction *addPeerAct = nullptr;
     if (!torrent->isQueued() && !torrent->isChecking()) {
         addPeerAct = menu.addAction(GuiIconProvider::instance()->getIcon("user-group-new"), tr("Add a new peer..."));
         emptyMenu = false;
     }
-    QAction *banAct = 0;
-    QAction *copyPeerAct = 0;
+    QAction *banAct = nullptr;
+    QAction *copyPeerAct = nullptr;
     if (!selectionModel()->selectedRows().isEmpty()) {
         copyPeerAct = menu.addAction(GuiIconProvider::instance()->getIcon("edit-copy"), tr("Copy IP:port"));
         menu.addSeparator();
@@ -241,15 +245,16 @@ void PeerListWidget::showPeerListMenu(const QPoint &)
     }
     if (emptyMenu) return;
     QAction *act = menu.exec(QCursor::pos());
-    if (act == 0) return;
+    if (!act) return;
+
     if (act == addPeerAct) {
-        QList<BitTorrent::PeerAddress> peersList = PeersAdditionDlg::askForPeers(this);
+        QList<BitTorrent::PeerAddress> peersList = PeersAdditionDialog::askForPeers(this);
         int peerCount = 0;
         foreach (const BitTorrent::PeerAddress &addr, peersList) {
             if (torrent->connectPeer(addr)) {
                 qDebug("Adding peer %s...", qUtf8Printable(addr.ip.toString()));
                 Logger::instance()->addMessage(tr("Manually adding peer '%1'...").arg(addr.ip.toString()));
-                peerCount++;
+                ++peerCount;
             }
             else {
                 Logger::instance()->addMessage(tr("The peer '%1' could not be added to this torrent.").arg(addr.ip.toString()), Log::WARNING);
@@ -277,8 +282,7 @@ void PeerListWidget::banSelectedPeers()
     int ret = QMessageBox::question(this, tr("Ban peer permanently"), tr("Are you sure you want to ban permanently the selected peers?"),
                                     tr("&Yes"), tr("&No"),
                                     QString(), 0, 1);
-    if (ret)
-        return;
+    if (ret) return;
 
     QModelIndexList selectedIndexes = selectionModel()->selectedRows();
     foreach (const QModelIndex &index, selectedIndexes) {
@@ -300,12 +304,12 @@ void PeerListWidget::copySelectedPeers()
         int row = m_proxyModel->mapToSource(index).row();
         QString ip = m_listModel->data(m_listModel->index(row, PeerListDelegate::IP_HIDDEN)).toString();
         QString myport = m_listModel->data(m_listModel->index(row, PeerListDelegate::PORT)).toString();
-        if (ip.indexOf(".") == -1) // IPv6
-            selectedPeers << "[" + ip + "]:" + myport;
+        if (ip.indexOf('.') == -1) // IPv6
+            selectedPeers << '[' + ip + "]:" + myport;
         else // IPv4
-            selectedPeers << ip + ":" + myport;
+            selectedPeers << ip + ':' + myport;
     }
-    QApplication::clipboard()->setText(selectedPeers.join("\n"));
+    QApplication::clipboard()->setText(selectedPeers.join('\n'));
 }
 
 void PeerListWidget::clear()
@@ -336,7 +340,7 @@ void PeerListWidget::loadPeers(BitTorrent::TorrentHandle *const torrent, bool fo
     if (!torrent) return;
 
     QList<BitTorrent::PeerInfo> peers = torrent->peers();
-    QSet<QString> oldeersSet = m_peerItems.keys().toSet();
+    QSet<QString> oldPeersSet = m_peerItems.keys().toSet();
 
     foreach (const BitTorrent::PeerInfo &peer, peers) {
         BitTorrent::PeerAddress addr = peer.address();
@@ -346,7 +350,7 @@ void PeerListWidget::loadPeers(BitTorrent::TorrentHandle *const torrent, bool fo
         if (m_peerItems.contains(peerIp)) {
             // Update existing peer
             updatePeer(peerIp, torrent, peer);
-            oldeersSet.remove(peerIp);
+            oldPeersSet.remove(peerIp);
             if (forceHostnameResolution && m_resolver)
                 m_resolver->resolve(peerIp);
         }
@@ -360,7 +364,7 @@ void PeerListWidget::loadPeers(BitTorrent::TorrentHandle *const torrent, bool fo
         }
     }
     // Delete peers that are gone
-    QSetIterator<QString> it(oldeersSet);
+    QSetIterator<QString> it(oldPeersSet);
     while (it.hasNext()) {
         const QString &ip = it.next();
         m_missingFlags.remove(ip);
@@ -401,8 +405,8 @@ QStandardItem *PeerListWidget::addPeer(const QString &ip, BitTorrent::TorrentHan
     m_listModel->setData(m_listModel->index(row, PeerListDelegate::TOT_UP), peer.totalUpload());
     m_listModel->setData(m_listModel->index(row, PeerListDelegate::RELEVANCE), peer.relevance());
     QStringList downloadingFiles(torrent->info().filesForPiece(peer.downloadingPieceIndex()));
-    m_listModel->setData(m_listModel->index(row, PeerListDelegate::DOWNLOADING_PIECE), downloadingFiles.join(QLatin1String(";")));
-    m_listModel->setData(m_listModel->index(row, PeerListDelegate::DOWNLOADING_PIECE), downloadingFiles.join(QLatin1String("\n")), Qt::ToolTipRole);
+    m_listModel->setData(m_listModel->index(row, PeerListDelegate::DOWNLOADING_PIECE), downloadingFiles.join(QLatin1Char(';')));
+    m_listModel->setData(m_listModel->index(row, PeerListDelegate::DOWNLOADING_PIECE), downloadingFiles.join(QLatin1Char('\n')), Qt::ToolTipRole);
 
     return m_listModel->item(row, PeerListDelegate::IP);
 }
@@ -438,7 +442,7 @@ void PeerListWidget::updatePeer(const QString &ip, BitTorrent::TorrentHandle *co
 
 void PeerListWidget::handleResolved(const QString &ip, const QString &hostname)
 {
-    QStandardItem *item = m_peerItems.value(ip, 0);
+    QStandardItem *item = m_peerItems.value(ip, nullptr);
     if (item) {
         qDebug("Resolved %s -> %s", qUtf8Printable(ip), qUtf8Printable(hostname));
         item->setData(hostname, Qt::DisplayRole);
